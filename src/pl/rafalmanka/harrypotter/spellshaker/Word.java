@@ -14,7 +14,7 @@ public class Word {
     public Word(){         
     }
     
-    // constructor
+    // constructor (assigning id)
     public Word(int id, String word, String description, String language){
     	Log.d(TAG, "4 argument constructor (id:"+id+",word:"+word+",description:"+description+",languuage:"+language+")");
     	this._id = id;
@@ -23,13 +23,14 @@ public class Word {
         this._language = language;
     }
      
-    // constructor
+    // constructor (without assigning id)
     public Word(String word, String description, String language){
     	Log.d(TAG, "3 argument constructor (word:"+word+",description:"+description+",languuage:"+language+")");
         this._word = word;
         this._description = description;
         this._language = language;
     }
+    
     // getting ID
     public int getID(){
         return this._id;

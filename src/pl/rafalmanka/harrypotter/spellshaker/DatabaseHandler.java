@@ -16,7 +16,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String TAG = DatabaseHandler.class.getSimpleName();
 	// All Static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 10;
+	private static final int DATABASE_VERSION = 13;
 
 	// Database Name
 	private static final String DATABASE_NAME = "fiszki_shaker";
@@ -28,13 +28,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_ID = "id";
 	private static final String KEY_WORD = "word";
 	private static final String KEY_DESCRIPTION = "description";
-	private static final String KEY_LANGUAGE = "language";
-
-	private SQLiteDatabase db;
+	private static final String KEY_LANGUAGE = "language";	
+	private Context context;
+	//private SQLiteDatabase db;
 
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		Log.d(TAG, "DatabaseHandler constructor");
+		this.context = context;
 	}
 
 	// Creating Tables
@@ -48,17 +49,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL(CREATE_CONTACTS_TABLE);
 		Log.d(TAG, "creating instance of FileManager");
 		
-		//importing dictionaries from files to database
-		FileHandler filemanager = new FileHandler();
+		// importing dictionaries from files to database
+		FileHandler filemanager = new FileHandler(context);
 		Log.d(TAG, "putting all rowsets to List");
 		List<String[]> list = filemanager.getAllRecords();
-		
+
 		for (String[] record : list) {
 			Log.d(TAG, "creating query");
 			String insertStatement = "INSERT INTO " + TABLE_DICTIONARY + " ("
 					+ KEY_WORD + "," + KEY_DESCRIPTION + "," + KEY_LANGUAGE
-					+ ") VALUES ('" + TextUtils.htmlEncode(record[0]) + "','" + TextUtils.htmlEncode(record[1]) + "','"
-					+ record[2] + "');";
+					+ ") VALUES ('" + TextUtils.htmlEncode(record[0]) + "','"
+					+ TextUtils.htmlEncode(record[1]) + "','" + record[2]
+					+ "');";
 			Log.d(TAG, "executing statement: " + insertStatement);
 			db.execSQL(insertStatement);
 		}
@@ -84,7 +86,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Adding new contact
 	void addWord(Word word) {
 		Log.d(TAG, "addWord() function");
-		db = this.getWritableDatabase();
+		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
 		Log.d(TAG, "putting word: " + word.getWord());
@@ -139,6 +141,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			} while (cursor.moveToNext());
 		}
 
+		cursor.close();
 		// return contact list
 		return wordList;
 	}
@@ -179,8 +182,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Log.d(TAG, "preparing database");
 		SQLiteDatabase db = this.getReadableDatabase();
 		Log.d(TAG, "performing querey");
-		Cursor cursor = db.query(TABLE_DICTIONARY, null, KEY_LANGUAGE+" =? ",
-				new String[] { language } , null, null, "RANDOM()", null  );
+		Cursor cursor = db.query(TABLE_DICTIONARY, null, KEY_LANGUAGE + " =? ",
+				new String[] { language }, null, null, "RANDOM()", null);
 		if (cursor != null)
 			cursor.moveToFirst();
 
@@ -188,7 +191,5 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				cursor.getString(1), cursor.getString(2), cursor.getString(3));
 		// return Word object
 		return word;
-		
 	}
-
 }
