@@ -59,17 +59,21 @@ public class FileHandler {
 			Log.d(TAG, "extracting language from filename: " + fileName[0]);
 			String line = "";
 			while ((line = buffreader.readLine()) != null) {
-				String[] row = new String[3];
-				Log.d(TAG, "new line fetched from file: " + line);
+
+				Log.d(TAG, "splitting line into array");
 				String[] phrase = line.split(";");
-				Log.d(TAG, "phrase: " + phrase[0]);
-				row[0] = phrase[0];
-				Log.d(TAG, "description: " + phrase[1]);
-				row[1] = phrase[1];
-				Log.d(TAG, "language: " + fileName[0]);
-				row[2] = fileName[0];
-				Log.d(TAG, "adding row");
-				list.add(row);
+				if (phrase.length == 2) {
+					String[] row = new String[3];
+					Log.d(TAG, "phrase: " + phrase[0]);
+					row[0] = phrase[0];
+					Log.d(TAG, "description: " + phrase[1]);
+					row[1] = phrase[1];
+					Log.d(TAG, "language: " + fileName[0]);
+					row[2] = fileName[0];
+					Log.d(TAG, "adding row");
+
+					list.add(row);
+				}
 			}
 			buffreader.close();
 			Log.d(TAG, "returning results");
@@ -107,59 +111,59 @@ public class FileHandler {
 		}
 	}
 
-//	public String[] readFromFile(int lineNumber) {
-//		if (!trySDCardReady())
-//			return null;
-//		prepareDir();
-//		try {
-//			BufferedReader buffreader = new BufferedReader(
-//					new InputStreamReader(new FileInputStream(mFile)));
-//			Log.d(TAG, "bufferedReader created");
-//			for (int i = 0; i < lineNumber; i++) {
-//				buffreader.readLine();
-//			}
-//			Log.d(TAG, "skipped lines that are before line " + lineNumber);
-//			String line = buffreader.readLine();
-//			Log.d(TAG, "returning line: " + line);
-//			String[] fiszkaInfo = lineToArray(line);
-//			buffreader.close();
-//			return fiszkaInfo;
-//		} catch (FileNotFoundException e) {
-//			Log.e(TAG, "unable to open file");
-//			e.printStackTrace();
-//			return null;
-//		} catch (IOException e) {
-//			Log.e(TAG, "unable to read file");
-//			e.printStackTrace();
-//			return null;
-//		}
-//	}
-//
-//	private String[] lineToArray(String line) {
-//		return line.split(";");
-//	}
+	// public String[] readFromFile(int lineNumber) {
+	// if (!trySDCardReady())
+	// return null;
+	// prepareDir();
+	// try {
+	// BufferedReader buffreader = new BufferedReader(
+	// new InputStreamReader(new FileInputStream(mFile)));
+	// Log.d(TAG, "bufferedReader created");
+	// for (int i = 0; i < lineNumber; i++) {
+	// buffreader.readLine();
+	// }
+	// Log.d(TAG, "skipped lines that are before line " + lineNumber);
+	// String line = buffreader.readLine();
+	// Log.d(TAG, "returning line: " + line);
+	// String[] fiszkaInfo = lineToArray(line);
+	// buffreader.close();
+	// return fiszkaInfo;
+	// } catch (FileNotFoundException e) {
+	// Log.e(TAG, "unable to open file");
+	// e.printStackTrace();
+	// return null;
+	// } catch (IOException e) {
+	// Log.e(TAG, "unable to read file");
+	// e.printStackTrace();
+	// return null;
+	// }
+	// }
+	//
+	// private String[] lineToArray(String line) {
+	// return line.split(";");
+	// }
 
-//	public int getNumberOfElements() {
-//		Log.d(TAG, "counting number of lines in a file");
-//		LineNumberReader lineNumberReader;
-//		try {
-//			getAssets();
-//			lineNumberReader = new LineNumberReader(new FileReader(mFile));
-//			Log.d(TAG, "LineNumberReader iniciated");
-//			lineNumberReader.skip(Long.MAX_VALUE);
-//			int numberOfLines = lineNumberReader.getLineNumber();
-//			Log.d(TAG, "lines counted = " + numberOfLines);
-//			lineNumberReader.close();
-//			return numberOfLines;
-//		} catch (FileNotFoundException e) {
-//			Log.d(TAG, "FileNotFoundException");
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			Log.d(TAG, "IOException");
-//			e.printStackTrace();
-//		}
-//		return 0;
-//
-//	}
+	// public int getNumberOfElements() {
+	// Log.d(TAG, "counting number of lines in a file");
+	// LineNumberReader lineNumberReader;
+	// try {
+	// getAssets();
+	// lineNumberReader = new LineNumberReader(new FileReader(mFile));
+	// Log.d(TAG, "LineNumberReader iniciated");
+	// lineNumberReader.skip(Long.MAX_VALUE);
+	// int numberOfLines = lineNumberReader.getLineNumber();
+	// Log.d(TAG, "lines counted = " + numberOfLines);
+	// lineNumberReader.close();
+	// return numberOfLines;
+	// } catch (FileNotFoundException e) {
+	// Log.d(TAG, "FileNotFoundException");
+	// e.printStackTrace();
+	// } catch (IOException e) {
+	// Log.d(TAG, "IOException");
+	// e.printStackTrace();
+	// }
+	// return 0;
+	//
+	// }
 
 }

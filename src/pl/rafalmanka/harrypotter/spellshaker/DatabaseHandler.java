@@ -16,7 +16,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String TAG = DatabaseHandler.class.getSimpleName();
 	// All Static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 13;
+	private static final int DATABASE_VERSION = 27;
 
 	// Database Name
 	private static final String DATABASE_NAME = "fiszki_shaker";
@@ -110,6 +110,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor cursor = db.query(TABLE_DICTIONARY, new String[] { KEY_ID,
 				KEY_WORD, KEY_DESCRIPTION, KEY_LANGUAGE }, KEY_ID + "=?",
 				new String[] { String.valueOf(id) }, null, null, null, null);
+		db.close();
 		if (cursor != null)
 			cursor.moveToFirst();
 
