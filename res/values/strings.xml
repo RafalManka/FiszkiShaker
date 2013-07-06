@@ -6,6 +6,6 @@
     <string name="welcome_message">Welcome!</string>
     <string name="buttom_main">click me.</string>
     <string name="background_description">background image</string>
-    <string name="main_string">shake to perform action</string>
+    <string name="shake_to_perform_action">przed użyciem wstrząsnąć</string>
 
 </resources>

@@ -1,0 +1,30 @@
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true" >
+
+    <item
+        android:drawable="@drawable/cardboard_07"
+        android:duration="41"/>
+    <item
+        android:drawable="@drawable/cardboard_06"
+        android:duration="41"/>
+    <item
+        android:drawable="@drawable/cardboard_05"
+        android:duration="41"/>
+    <item
+        android:drawable="@drawable/cardboard_04"
+        android:duration="41"/>
+    <item
+        android:drawable="@drawable/cardboard_03"
+        android:duration="41"/>
+    <item
+        android:drawable="@drawable/cardboard_02"
+        android:duration="41"/>
+    <item
+        android:drawable="@drawable/cardboard_01"
+        android:duration="41"/>    
+    <!-- Reset to original -->
+    <item
+        android:drawable="@drawable/cardboard_01"
+        android:duration="10"/>
+
+</animation-list>
