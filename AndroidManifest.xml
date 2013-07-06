@@ -16,7 +16,7 @@
         android:label="Harry Potter Spell Shaker"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         <activity
-            android:name="pl.rafalmanka.harrypotter.spellshaker.MainActivity"
+            android:name="pl.rafalmanka.fiszki.shaker.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

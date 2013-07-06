@@ -1,4 +1,4 @@
-package pl.rafalmanka.harrypotter.spellshaker;
+package pl.rafalmanka.fiszki.shaker;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;

@@ -1,7 +1,7 @@
-package pl.rafalmanka.harrypotter.spellshaker;
+package pl.rafalmanka.fiszki.shaker;
 
 import pl.rafalmanka.fiszki.shaker.R;
-import pl.rafalmanka.harrypotter.spellshaker.ShakeDetector.OnShakeListener;
+import pl.rafalmanka.fiszki.shaker.ShakeDetector.OnShakeListener;
 import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
