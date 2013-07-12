@@ -24,15 +24,30 @@ public final class R {
         public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int custom_top_button=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int pattern_circles_blue=0x7f020002;
+        public static final int pattern_dogs_grey=0x7f020003;
+        public static final int pattern_stripes_darkblue=0x7f020004;
+        public static final int pattern_stripes_green=0x7f020005;
+        public static final int top_button=0x7f020006;
+        public static final int top_button_hover=0x7f020007;
+        public static final int top_button_selected=0x7f020008;
+        public static final int white_background_stroke=0x7f020009;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0002;
-        public static final int bouncing_description=0x7f0a0001;
-        public static final int bouncing_string=0x7f0a0000;
+        public static final int action_settings=0x7f0a0006;
+        public static final int bouncing_description=0x7f0a0003;
+        public static final int bouncing_string=0x7f0a0002;
+        public static final int button1=0x7f0a0005;
+        public static final int no_items_to_display=0x7f0a0000;
+        public static final int progressBar1=0x7f0a0001;
+        public static final int shake_to_perform_action=0x7f0a0004;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
+        public static final int activity_language_list=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int activity_topic_list=0x7f030002;
     }
     public static final class menu {
         public static final int main=0x7f090000;
@@ -45,8 +60,14 @@ public final class R {
         public static final int app_name=0x7f070000;
         public static final int background_description=0x7f070004;
         public static final int buttom_main=0x7f070003;
+        public static final int choose_language=0x7f070006;
+        public static final int choose_topic=0x7f07000b;
+        public static final int no_items_to_display=0x7f070009;
+        public static final int no_languages_alert_description=0x7f070008;
+        public static final int no_languages_alert_title=0x7f070007;
         public static final int shake_to_perform_action=0x7f070005;
         public static final int welcome_message=0x7f070002;
+        public static final int wybierz_zestaw=0x7f07000a;
     }
     public static final class style {
         /** 

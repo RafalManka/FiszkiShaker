@@ -1,8 +1,9 @@
 package pl.rafalmanka.fiszki.shaker;
 
-import pl.rafalmanka.fiszki.shaker.R;
 import pl.rafalmanka.fiszki.shaker.ShakeDetector.OnShakeListener;
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -20,6 +22,8 @@ public class MainActivity extends Activity {
 	private final String TAG = "MainActivity";
 	private TextView mWordOrig;
 	private TextView mWordTranslation;
+	private TextView mBottomTextInstruction;
+	private Typeface mTypeFace;
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
 	private ShakeDetector mShakeDetector;
@@ -27,6 +31,7 @@ public class MainActivity extends Activity {
 	private Word mWord;
 	private String mLanguage = "pl";
 	private Animation bounce;
+	private MediaPlayer player;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,21 +45,31 @@ public class MainActivity extends Activity {
 		bounce = AnimationUtils.loadAnimation(this, R.anim.bounce);
 
 		Log.d(TAG, "assigning strings from layout to variables");
+
+		mTypeFace = Typeface.createFromAsset(getAssets(),
+				"ubuntu_font/Ubuntu-B.ttf");
 		mWordOrig = (TextView) findViewById(R.id.bouncing_string);
+		mWordOrig.setTypeface(mTypeFace);
 		mWordTranslation = (TextView) findViewById(R.id.bouncing_description);
+		mWordTranslation.setTypeface(mTypeFace);
+		mBottomTextInstruction = (TextView) findViewById(R.id.shake_to_perform_action);
+		mBottomTextInstruction.setTypeface(mTypeFace);
 
 		Log.d(TAG, "creating instance of sensor event");
 		mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		mAccelerometer = mSensorManager
 				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		Log.d(TAG, "creating onshakelistener");
+
 		mShakeDetector = new ShakeDetector(new OnShakeListener() {
+
 			@Override
 			public void onShake() {
 				Log.d(TAG, "onSheked");
 				onEvent();
 			}
 		});
+
 	}
 
 	@Override
@@ -78,7 +93,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void playSound() {
-		MediaPlayer player = MediaPlayer.create(this, R.raw.spell);
+		player = MediaPlayer.create(this, R.raw.spell);
 		player.start();
 		player.setOnCompletionListener(new OnCompletionListener() {
 			@Override
@@ -96,6 +111,7 @@ public class MainActivity extends Activity {
 
 	private void onEvent() {
 		Log.d(TAG, "onEvented");
+		
 		if (!mTitleActive) {
 			Log.d(TAG, "preparing database");
 			DatabaseHandler db = new DatabaseHandler(this);
@@ -112,8 +128,8 @@ public class MainActivity extends Activity {
 			mWordTranslation.setText("");
 
 			Log.d(TAG, "animating title");
-			mWordOrig.startAnimation(bounce);
-			// animateFiszka(mWordOrig, 1500);
+			animateFiszka(mWordOrig, 1500);
+			//mWordOrig.startAnimation(bounce);
 
 			Log.d(TAG, "setting flag, that the title is showing");
 			mTitleActive = true;
@@ -132,7 +148,20 @@ public class MainActivity extends Activity {
 			Log.d(TAG, "animating background phase 2");
 		}
 
-		playSound();
+		//playSound();
+	}
+
+	public void gotoSelectLanguage(View v) {
+		Log.i(TAG, "onClicked");
+
+		try {
+			Intent intent = new Intent(this, LanguageListActivity.class);
+			startActivity(intent);
+		} catch (Exception e) {
+			Log.e(TAG, "Error: ", e);
+
+		}
+
 	}
 
 }

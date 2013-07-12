@@ -7,5 +7,11 @@
     <string name="buttom_main">click me.</string>
     <string name="background_description">background image</string>
     <string name="shake_to_perform_action">przed użyciem wstrząsnąć</string>
+    <string name="choose_language">Choose language</string>
+    <string name="no_languages_alert_title">no languages to display</string>
+    <string name="no_languages_alert_description">there was some problem in fetching language list. Please try again later or check Your internet connection.</string>
+    <string name="no_items_to_display">No items to display.</string>
+    <string name="wybierz_zestaw">wybierz zestaw</string>
+    <string name="choose_topic">wybierz temat</string>
 
 </resources>

@@ -2,61 +2,81 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/pattern_stripes_darkblue"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:layout_marginBottom="120dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/white_background_stroke"
         android:orientation="vertical" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="250dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.31"
             android:gravity="bottom"
             android:orientation="vertical" >
 
             <TextView
-                android:textIsSelectable="true"
                 android:id="@+id/bouncing_string"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal|center"
                 android:layout_margin="20dp"
                 android:gravity="center"
                 android:textColor="#000000"
-                android:textSize="22sp" />
+                android:textIsSelectable="true"
+                android:textSize="28sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="242dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.41"
             android:orientation="vertical" >
 
             <TextView
-                android:textIsSelectable="true"
                 android:id="@+id/bouncing_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal|center"
                 android:layout_margin="20dp"
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textIsSelectable="true"
+                android:textSize="28sp" />
 
         </LinearLayout>
-
     </LinearLayout>
 
     <TextView
+        android:id="@+id/shake_to_perform_action"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="#ffffff"
         android:gravity="center"
         android:padding="20dp"
+        
         android:text="@string/shake_to_perform_action"
-        android:textColor="#000000" />
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/custom_top_button"
+        android:onClick="gotoSelectLanguage"
+        android:padding="5dp"
+        android:text="@string/wybierz_zestaw" />
 
 </RelativeLayout>
