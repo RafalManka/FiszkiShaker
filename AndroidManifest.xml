@@ -38,6 +38,11 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
+        <activity android:name="WordsListActivity"
+            android:label="@string/choose_words"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            ></activity>
     </application>
 
 </manifest>

@@ -17,59 +17,59 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class WordsListActivity extends ListActivity {
+public class WordsListActivity extends Activity {
 
-	public static final int NUMBER_OF_LANGUAGES = 20;
-	public static final String TAG = TopicsListActivity.class.getSimpleName();
-	private JSONArray mTopicData = null;
+	public static final String TAG = WordsListActivity.class.getSimpleName();
+	public JSONArray mWordsData = null;
 	protected ProgressBar mProgressBar;
-	private final String KEY_TITLE = "topic_title";
+	private final String KEY_TITLE = "value";
+	private final String KEY_TRANSLATION = "translation";
 	private TextView noItemsToDisplay;
 	private int mTopicId;
+	private Button saveWordsButton;
+	public int mLanguageId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_language_list);
+		setContentView(R.layout.activity_word_list);
 		Log.d(TAG, "onCreated");
 		Bundle bundle = getIntent().getExtras();
-		mTopicId = bundle.getInt("language_id");
-		Log.d(TAG, "retrieving extras: " + mTopicId);
+		mLanguageId = bundle.getInt("language_id");
+		mTopicId = bundle.getInt("topic_id");
+		Log.d(TAG, "retrieving extras (topic_id): " + mTopicId
+				+ " and language_id: " + mLanguageId);
 
 		mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		Log.d(TAG, "process bar created");
 		noItemsToDisplay = (TextView) findViewById(R.id.no_items_to_display);
-		Log.d(TAG, "no items to display textarea created");
+		Log.d(TAG, "\"no items to display\" textarea created");
 
 		if (isNetworkAvaileable()) {
 			Log.d(TAG, "network is availeable, continue... ");
 			mProgressBar.setVisibility(View.VISIBLE);
 			Log.d(TAG, "progress bar set to visible");
-			GetBlogPostsTask getBlogPostsTask = new GetBlogPostsTask();
+			GetWordsFromAPITask getBlogPostsTask = new GetWordsFromAPITask();
 			Log.d(TAG, "async task finished");
 			getBlogPostsTask.execute();
-		} else {			
-			//just in case for future reference
-			// Toast.makeText(this, "Network is unavaileable!",
-			// Toast.LENGTH_LONG).show();
+		} else {
 			Log.d(TAG, "no internet connection, generating alert");
 			updateDisplayForErrors();
 			Log.d(TAG, "setting text for no items to display textview");
@@ -80,38 +80,14 @@ public class WordsListActivity extends ListActivity {
 
 	}
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-
-		try {
-			JSONObject jsonPost = mTopicData.getJSONObject(position);
-			mTopicId = Integer.parseInt(jsonPost.getString("topic_id"));
-			Log.d(TAG, "decreasing value of topic_id by 1 since Table");
-			Log.d(TAG, "topic id: "+mTopicId+" value: "+jsonPost.getString("topic_title")+"  passed to another intent: "+TopicsListActivity.class.getSimpleName());
-			Intent intent = new Intent(this, WordsListActivity.class);
-			Bundle bundle = new Bundle();
-			Log.d(TAG, "topic_id put into new Bundle");
-			bundle.putInt("topic_id", mTopicId); 
-			Log.d(TAG, "Bundle put into intent");
-			intent.putExtras(bundle); 
-			Log.d(TAG, "start new activity and finish");
-			startActivity(intent);
-			finish();
-		} catch (JSONException e) {
-			LogException(e);
-		}
-
-	}
-	
 	private void LogVerbose(String verbose) {
 		Log.v(TAG, verbose);
 	}
-	
+
 	private void LogInfo(String info) {
 		Log.i(TAG, info);
 	}
-	
+
 	private void LogDebug(String debug) {
 		Log.d(TAG, debug);
 	}
@@ -122,29 +98,56 @@ public class WordsListActivity extends ListActivity {
 
 	private void handleBlogResponse() {
 		mProgressBar.setVisibility(View.INVISIBLE);
-		if (mTopicData.length() == 0) {
+		if (mWordsData.length() == 0) {
 			updateDisplayForErrors();
 		} else {
 			try {
-				JSONArray jsonPosts = mTopicData;
+				JSONArray jsonPosts = mWordsData;
 				ArrayList<HashMap<String, String>> blogPosts = new ArrayList<HashMap<String, String>>();
 				for (int i = 0; i < jsonPosts.length(); i++) {
 					JSONObject post = jsonPosts.getJSONObject(i);
 					String language = post.getString(KEY_TITLE);
 					language = Html.fromHtml(language).toString();
+					String translation = post.getString(KEY_TRANSLATION);
+					translation = Html.fromHtml(translation).toString();
 
 					HashMap<String, String> blogPost = new HashMap<String, String>();
 					blogPost.put(KEY_TITLE, language);
+					blogPost.put(KEY_TRANSLATION, translation);
 					blogPosts.add(blogPost);
 				}
 
-				String[] keys = { KEY_TITLE };
-				int[] ids = { android.R.id.text1 };
-				SimpleAdapter adapter = new SimpleAdapter(this, blogPosts,
-						android.R.layout.simple_expandable_list_item_1, keys,
-						ids);
+				String[] keys = { KEY_TITLE, KEY_TRANSLATION };
+				int[] ids = { android.R.id.text1, android.R.id.text2 };
 
-				setListAdapter(adapter);
+				ListView lv = (ListView) findViewById(R.id.list_view);
+				// LoadMore button
+				saveWordsButton = new Button(this);
+				saveWordsButton.setText(R.string.submit);
+			
+				saveWordsButton.setOnClickListener(new OnClickListener() {
+					
+					@Override
+				    public void onClick(View v) {
+						
+						DatabaseHandler dbHandler = new DatabaseHandler(v.getContext());
+						dbHandler.createNewSet(mWordsData);
+						
+				        Intent intent = new Intent(v.getContext(),MainActivity.class);
+				        startActivity(intent);
+				        } 
+					
+				    });
+
+				// Adding Load More button to lisview at bottom
+				lv.addHeaderView(saveWordsButton);
+
+				// Getting adapter
+				WordListViewAdapter adapter = new WordListViewAdapter(this,
+						blogPosts);
+				lv.setAdapter(adapter);
+
+				// setListAdapter(adapter);
 			} catch (JSONException e) {
 				LogException(e);
 			}
@@ -179,7 +182,8 @@ public class WordsListActivity extends ListActivity {
 
 	}
 
-	private class GetBlogPostsTask extends AsyncTask<Object, Void, JSONArray> {
+	private class GetWordsFromAPITask extends
+			AsyncTask<Object, Void, JSONArray> {
 
 		@Override
 		protected JSONArray doInBackground(Object... params) {
@@ -187,9 +191,10 @@ public class WordsListActivity extends ListActivity {
 			JSONArray jsonResponse = null;
 			StringBuilder builder = new StringBuilder();
 			HttpClient client = new DefaultHttpClient();
-			HttpGet httpget = new HttpGet(
-					"http://api.rafalmanka.pl/api/fetchTopics?language="
-							+ mTopicId);
+			String query = "http://api.rafalmanka.pl/api/fetchWords?language="
+					+ mLanguageId + "&topic=" + mTopicId;
+			HttpGet httpget = new HttpGet(query);
+			LogDebug("query sent to API: " + query);
 
 			try {
 				HttpResponse response = client.execute(httpget);
@@ -209,7 +214,7 @@ public class WordsListActivity extends ListActivity {
 					}
 
 					jsonResponse = new JSONArray(builder.toString());
-					LogInfo("builder.toString(): "+builder.toString());
+					LogInfo("builder.toString(): " + builder.toString());
 				} else {
 					Log.e(TAG, builder.toString());
 				}
@@ -224,10 +229,11 @@ public class WordsListActivity extends ListActivity {
 
 		@Override
 		protected void onPostExecute(JSONArray result) {
-			mTopicData = result;
+			mWordsData = result;
 			handleBlogResponse();
 		}
 
 	}
+
 
 }

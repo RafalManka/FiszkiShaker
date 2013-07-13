@@ -36,10 +36,12 @@ public final class R {
         public static final int white_background_stroke=0x7f020009;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0006;
+        public static final int action_settings=0x7f0a0008;
         public static final int bouncing_description=0x7f0a0003;
         public static final int bouncing_string=0x7f0a0002;
         public static final int button1=0x7f0a0005;
+        public static final int list_view=0x7f0a0006;
+        public static final int name=0x7f0a0007;
         public static final int no_items_to_display=0x7f0a0000;
         public static final int progressBar1=0x7f0a0001;
         public static final int shake_to_perform_action=0x7f0a0004;
@@ -47,7 +49,8 @@ public final class R {
     public static final class layout {
         public static final int activity_language_list=0x7f030000;
         public static final int activity_main=0x7f030001;
-        public static final int activity_topic_list=0x7f030002;
+        public static final int activity_word_list=0x7f030002;
+        public static final int list_item=0x7f030003;
     }
     public static final class menu {
         public static final int main=0x7f090000;
@@ -62,10 +65,12 @@ public final class R {
         public static final int buttom_main=0x7f070003;
         public static final int choose_language=0x7f070006;
         public static final int choose_topic=0x7f07000b;
+        public static final int choose_words=0x7f07000c;
         public static final int no_items_to_display=0x7f070009;
         public static final int no_languages_alert_description=0x7f070008;
         public static final int no_languages_alert_title=0x7f070007;
         public static final int shake_to_perform_action=0x7f070005;
+        public static final int submit=0x7f07000d;
         public static final int welcome_message=0x7f070002;
         public static final int wybierz_zestaw=0x7f07000a;
     }

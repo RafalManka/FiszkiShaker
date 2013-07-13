@@ -43,6 +43,7 @@ public class TopicsListActivity extends ListActivity {
 	private final String KEY_TITLE = "topic_title";
 	private TextView noItemsToDisplay;
 	private int mTopicId;
+	private int mLanguageId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +51,8 @@ public class TopicsListActivity extends ListActivity {
 		setContentView(R.layout.activity_language_list);
 		Log.d(TAG, "onCreated");
 		Bundle bundle = getIntent().getExtras();
-		mTopicId = bundle.getInt("language_id");
-		Log.d(TAG, "retrieving extras: " + mTopicId);
+		mLanguageId = bundle.getInt("language_id");
+		Log.d(TAG, "retrieving extras (mLanguageId): " + mLanguageId);
 
 		mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		Log.d(TAG, "process bar created");
@@ -90,8 +91,9 @@ public class TopicsListActivity extends ListActivity {
 			Log.d(TAG, "topic id: "+mTopicId+" value: "+jsonPost.getString("topic_title")+"  passed to another intent: "+TopicsListActivity.class.getSimpleName());
 			Intent intent = new Intent(this, WordsListActivity.class);
 			Bundle bundle = new Bundle();
-			Log.d(TAG, "topic_id put into new Bundle");
+			Log.d(TAG, "language_id and topic_id put into new Bundle");
 			bundle.putInt("topic_id", mTopicId); 
+			bundle.putInt("language_id", mLanguageId); 
 			Log.d(TAG, "Bundle put into intent");
 			intent.putExtras(bundle); 
 			Log.d(TAG, "start new activity and finish");
@@ -188,7 +190,7 @@ public class TopicsListActivity extends ListActivity {
 			HttpClient client = new DefaultHttpClient();
 			HttpGet httpget = new HttpGet(
 					"http://api.rafalmanka.pl/api/fetchTopics?language="
-							+ mTopicId);
+							+ mLanguageId);
 
 			try {
 				HttpResponse response = client.execute(httpget);

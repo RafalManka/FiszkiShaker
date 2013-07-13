@@ -13,5 +13,7 @@
     <string name="no_items_to_display">No items to display.</string>
     <string name="wybierz_zestaw">wybierz zestaw</string>
     <string name="choose_topic">wybierz temat</string>
+    <string name="choose_words">wybierz słowa które chcesz pobrać</string>
+    <string name="submit">załaduj</string>
 
 </resources>

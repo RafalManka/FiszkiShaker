@@ -3,6 +3,10 @@ package pl.rafalmanka.fiszki.shaker;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -16,7 +20,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String TAG = DatabaseHandler.class.getSimpleName();
 	// All Static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 27;
+	private static final int DATABASE_VERSION = 29;
 
 	// Database Name
 	private static final String DATABASE_NAME = "fiszki_shaker";
@@ -28,9 +32,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_ID = "id";
 	private static final String KEY_WORD = "word";
 	private static final String KEY_DESCRIPTION = "description";
-	private static final String KEY_LANGUAGE = "language";	
+	private static final String KEY_LANGUAGE = "language";
 	private Context context;
-	//private SQLiteDatabase db;
+
+	// private SQLiteDatabase db;
 
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,12 +48,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		// creating clean table
 		Log.d(TAG, "onCreated");
-		String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_DICTIONARY + "("
-				+ KEY_ID + " INTEGER PRIMARY KEY," + KEY_WORD + " TEXT,"
-				+ KEY_DESCRIPTION + " TEXT," + KEY_LANGUAGE + " TEXT" + ")";
-		db.execSQL(CREATE_CONTACTS_TABLE);
+		Log.d(TAG, "Creating new table");
+		createNewTable(db);
+
 		Log.d(TAG, "creating instance of FileManager");
-		
+
 		// importing dictionaries from files to database
 		FileHandler filemanager = new FileHandler(context);
 		Log.d(TAG, "putting all rowsets to List");
@@ -66,6 +70,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		Log.d(TAG, "db successfully populated");
 
+	}
+
+	private void createNewTable(SQLiteDatabase db) {
+		String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_DICTIONARY + "("
+				+ KEY_ID + " INTEGER PRIMARY KEY," + KEY_WORD + " TEXT,"
+				+ KEY_DESCRIPTION + " TEXT," + KEY_LANGUAGE + " TEXT" + ")";
+		db.execSQL(CREATE_CONTACTS_TABLE);
 	}
 
 	// Upgrading database
@@ -90,17 +101,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		ContentValues values = new ContentValues();
 		Log.d(TAG, "putting word: " + word.getWord());
-		values.put(KEY_WORD, word.getWord()); // namne
+		values.put(KEY_WORD, word.getWord());
 		Log.d(TAG, "putting desc: " + word.getDescription());
-		values.put(KEY_DESCRIPTION, word.getDescription()); // description
+		values.put(KEY_DESCRIPTION, word.getDescription());
 		Log.d(TAG, "putting language: " + word.getLanguage());
-		values.put(KEY_LANGUAGE, word.getLanguage()); // language
+		values.put(KEY_LANGUAGE, word.getLanguage());
 		Log.d(TAG, "inserting row into dictionary (word: " + word.getWord()
 				+ ", description: " + word.getDescription() + ", language: "
 				+ word.getLanguage() + ")");
-		// Inserting Row
 		db.insert(TABLE_DICTIONARY, null, values);
-		db.close(); // Closing database connection
+		db.close();
 	}
 
 	// Getting single contact
@@ -121,7 +131,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	// Getting All Contacts
-	public List<Word> getAllWords() {
+	public List<Word> getWordsFromCSV() {
 		List<Word> wordList = new ArrayList<Word>();
 		// Select All Query
 		String selectQuery = "SELECT  * FROM " + TABLE_DICTIONARY;
@@ -147,50 +157,62 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return wordList;
 	}
 
-	// Updating single contact
-	public int updateContact(Word contact) {
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		ContentValues values = new ContentValues();
-		values.put(KEY_WORD, contact.getWord());
-		values.put(KEY_DESCRIPTION, contact.getDescription());
-
-		// updating row
-		return db.update(TABLE_DICTIONARY, values, KEY_ID + " = ?",
-				new String[] { String.valueOf(contact.getID()) });
-	}
-
-	// Deleting single contact
-	public void deleteContact(Word contact) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_DICTIONARY, KEY_ID + " = ?",
-				new String[] { String.valueOf(contact.getID()) });
-		db.close();
-	}
-
-	// Getting contacts Count
-	public int getContactsCount() {
-		String countQuery = "SELECT  * FROM " + TABLE_DICTIONARY;
+	public Word getRandom() {
+		Log.d(TAG, "getRandom");
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery(countQuery, null);
-		cursor.close();
 
-		// return count
-		return cursor.getCount();
-	}
+		Log.d(TAG, "get current language");
+		Cursor languageCursor = db.query(TABLE_DICTIONARY,
+				new String[] { "language" }, null, null, null, null, "1");
+		String languageID = "";
+		if (languageCursor.moveToFirst())
+			languageID = languageCursor.getString(languageCursor
+					.getColumnIndex("language"));
+		Log.d(TAG, "languageID: " + languageID);
+		languageCursor.close();
 
-	public Word getRandom(String language) {
-		Log.d(TAG, "preparing database");
-		SQLiteDatabase db = this.getReadableDatabase();
 		Log.d(TAG, "performing querey");
 		Cursor cursor = db.query(TABLE_DICTIONARY, null, KEY_LANGUAGE + " =? ",
-				new String[] { language }, null, null, "RANDOM()", null);
+				new String[] { languageID }, null, null, "RANDOM()", null);
 		if (cursor != null)
 			cursor.moveToFirst();
 
 		Word word = new Word(Integer.parseInt(cursor.getString(0)),
 				cursor.getString(1), cursor.getString(2), cursor.getString(3));
-		// return Word object
 		return word;
+	}
+
+	@Override
+	public synchronized void close() {
+		super.close();
+	}
+
+	public void createNewSet(JSONArray wordsJSONData) {
+		Log.d(TAG, "createNewSet");
+		Log.d(TAG, "mWordsData: " + wordsJSONData.toString());
+		SQLiteDatabase db = this.getReadableDatabase();
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DICTIONARY);
+		Log.d(TAG, "DROP TABLE IF EXISTS " + TABLE_DICTIONARY);
+		createNewTable(db);
+		Log.d(TAG, "creating Word objects");
+		for (int i = 0; i < wordsJSONData.length(); i++) {
+			JSONObject jsonWord;
+			try {
+				jsonWord = wordsJSONData.getJSONObject(i);
+
+				String value = jsonWord.getString("value");
+				Log.d(TAG, "value: " + value);
+				String transtalion = jsonWord.getString("translation");
+				Log.d(TAG, "transtalion: " + transtalion);
+				String language = jsonWord.getString("language_id");
+				Log.d(TAG, "language: " + language);
+
+				addWord(new Word(value, transtalion, language));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 }

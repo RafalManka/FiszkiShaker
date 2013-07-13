@@ -14,8 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -29,8 +27,7 @@ public class MainActivity extends Activity {
 	private ShakeDetector mShakeDetector;
 	private boolean mTitleActive = false;
 	private Word mWord;
-	private String mLanguage = "pl";
-	private Animation bounce;
+	//private Animation bounce;
 	private MediaPlayer player;
 
 	@Override
@@ -42,7 +39,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		Log.d(TAG, "creating instance of bouncing animation");
-		bounce = AnimationUtils.loadAnimation(this, R.anim.bounce);
+		//bounce = AnimationUtils.loadAnimation(this, R.anim.bounce);
 
 		Log.d(TAG, "assigning strings from layout to variables");
 
@@ -117,7 +114,7 @@ public class MainActivity extends Activity {
 			DatabaseHandler db = new DatabaseHandler(this);
 
 			Log.d(TAG, "fetching single random row");
-			mWord = db.getRandom(mLanguage);
+			mWord = db.getRandom();
 			Log.d(TAG, "Id: " + mWord.getID() + " ,word: " + mWord.getWord()
 					+ " ,description: " + Html.fromHtml(mWord.getDescription())
 					+ " , language: " + mWord.getLanguage());
@@ -148,7 +145,7 @@ public class MainActivity extends Activity {
 			Log.d(TAG, "animating background phase 2");
 		}
 
-		//playSound();
+		playSound();
 	}
 
 	public void gotoSelectLanguage(View v) {
