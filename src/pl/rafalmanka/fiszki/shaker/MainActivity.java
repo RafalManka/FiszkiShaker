@@ -3,32 +3,46 @@ package pl.rafalmanka.fiszki.shaker;
 import pl.rafalmanka.fiszki.shaker.ShakeDetector.OnShakeListener;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
+import android.provider.CalendarContract.Colors;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	private final String TAG = "MainActivity";
 	private TextView mWordOrig;
 	private TextView mWordTranslation;
-	private TextView mBottomTextInstruction;
 	private Typeface mTypeFace;
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
 	private ShakeDetector mShakeDetector;
-	private boolean mTitleActive = false;
 	private Word mWord;
-	//private Animation bounce;
+	// private Animation bounce;
 	private MediaPlayer player;
+	private int mWordCorrect = 0;
+	private int mWordIncorrect = 0;
+	private TextView mCorrectTotal;
+	private TextView mIncorrectTotal;
+	private View mButtonMarkCorrect;
+	private View mButtonMarkIncorrect;
+	private boolean mUndo = false;
+	private Button mButtonNextWord;
+	private boolean mAllowNextWord = true;
+	private boolean mFlipcardFace = true;
+	private FlipAnimation mFlipAnimation;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,24 +53,33 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		Log.d(TAG, "creating instance of bouncing animation");
-		//bounce = AnimationUtils.loadAnimation(this, R.anim.bounce);
+		// bounce = AnimationUtils.loadAnimation(this, R.anim.bounce);
 
 		Log.d(TAG, "assigning strings from layout to variables");
 
 		mTypeFace = Typeface.createFromAsset(getAssets(),
 				"ubuntu_font/Ubuntu-B.ttf");
-		mWordOrig = (TextView) findViewById(R.id.bouncing_string);
+		mWordOrig = (TextView) findViewById(R.id.flipcard_front);
 		mWordOrig.setTypeface(mTypeFace);
-		mWordTranslation = (TextView) findViewById(R.id.bouncing_description);
+		mWordTranslation = (TextView) findViewById(R.id.flipcard_back);
 		mWordTranslation.setTypeface(mTypeFace);
-		mBottomTextInstruction = (TextView) findViewById(R.id.shake_to_perform_action);
-		mBottomTextInstruction.setTypeface(mTypeFace);
 
 		Log.d(TAG, "creating instance of sensor event");
 		mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		mAccelerometer = mSensorManager
 				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		Log.d(TAG, "creating onshakelistener");
+
+		mCorrectTotal = (TextView) findViewById(R.id.textView_correct_total);
+		mIncorrectTotal = (TextView) findViewById(R.id.textView_incorrect_total);
+
+		mButtonMarkCorrect = (TextView) findViewById(R.id.button_word_known);
+		mButtonMarkIncorrect = (TextView) findViewById(R.id.button_word_unknown);
+		mButtonNextWord = (Button) findViewById(R.id.button_next_word);
+		mButtonNextWord.setClickable(false);
+		mButtonNextWord.setTextColor(Color.LTGRAY);
+		// mButtonNextWord.setTextColor(Color.LTGRAY);
+		onEvent();
 
 		mShakeDetector = new ShakeDetector(new OnShakeListener() {
 
@@ -107,9 +130,12 @@ public class MainActivity extends Activity {
 	}
 
 	private void onEvent() {
-		Log.d(TAG, "onEvented");
-		
-		if (!mTitleActive) {
+		if (mAllowNextWord) {
+			Log.d(TAG, "allowed");
+			mAllowNextWord = false;
+			Log.d(TAG, "mAllowNextWord changed to false 2");
+			Log.d(TAG, "onEvented");
+
 			Log.d(TAG, "preparing database");
 			DatabaseHandler db = new DatabaseHandler(this);
 
@@ -119,33 +145,22 @@ public class MainActivity extends Activity {
 					+ " ,description: " + Html.fromHtml(mWord.getDescription())
 					+ " , language: " + mWord.getLanguage());
 
-			Log.d(TAG,
-					"deleting description text, setting word text to new value");
+			Log.d(TAG, "setting new title: " + mWord.getWord());
 			mWordOrig.setText(Html.fromHtml(mWord.getWord()));
-			mWordTranslation.setText("");
 
 			Log.d(TAG, "animating title");
 			animateFiszka(mWordOrig, 1500);
-			//mWordOrig.startAnimation(bounce);
-
-			Log.d(TAG, "setting flag, that the title is showing");
-			mTitleActive = true;
-
-		} else {
+			// mWordOrig.startAnimation(bounce);
 
 			Log.d(TAG, "showing description: " + mWord.getDescription());
 			mWordTranslation.setText(Html.fromHtml(mWord.getDescription()));
 
-			Log.d(TAG, "animating description");
-			animateFiszka(mWordTranslation, 1500);
-
-			Log.d(TAG, "setting flag, that the title is NOT showing");
-			mTitleActive = false;
-
 			Log.d(TAG, "animating background phase 2");
-		}
 
-		playSound();
+			playSound();
+		} else {
+			Log.d(TAG, "not allowed");
+		}
 	}
 
 	public void gotoSelectLanguage(View v) {
@@ -156,7 +171,129 @@ public class MainActivity extends Activity {
 			startActivity(intent);
 		} catch (Exception e) {
 			Log.e(TAG, "Error: ", e);
+		}
+	}
 
+	public void onNextWordClick(View view) {
+		if (!mFlipcardFace) {
+			onCardClick(view);
+
+			mFlipAnimation.setAnimationListener(new AnimationListener() {
+
+				@Override
+				public void onAnimationStart(Animation animation) {}
+
+				@Override
+				public void onAnimationRepeat(Animation animation) {}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					onEvent();
+					clearAllButtons();
+				}
+
+			});
+		} else {
+			onEvent();
+			clearAllButtons();
+		}
+
+	}
+
+	private void clearAllButtons() {
+		clearButton(mButtonMarkCorrect, R.string.know_this_word,
+				new View[] { mButtonMarkIncorrect });
+		clearButton(mButtonMarkIncorrect, R.string.dont_know_this_word,
+				new View[] { mButtonMarkCorrect });
+	}
+
+	private void clearButton(View button, int resource, View[] unblockButtons) {
+		Log.d(TAG, "clearing button: " + button.getId());
+		if (unblockButtons != null) {
+			for (View unblockButton : unblockButtons) {
+				Log.d(TAG, "unblocking button: " + unblockButton.getId());
+				unblockButton.setClickable(true);
+				((TextView) unblockButton).setTextColor(Color.BLACK);
+			}
+		}
+		Log.d(TAG, "setting text of button back to " + getText(resource));
+		((TextView) button).setText(resource);
+		Log.d(TAG, "setting undo to false ");
+		mUndo = false;
+		mButtonNextWord.setClickable(false);
+		mButtonNextWord.setTextColor(Color.LTGRAY);
+		mAllowNextWord = false;
+		Log.d(TAG, "mAllowNextWord changed to false 1");
+	}
+
+	private void changeButtonToUndo(View button, View[] blockedButtons) {
+		Log.d(TAG, "changing button to undo button: " + button.getId());
+		if (blockedButtons != null) {
+			for (View blockedButton : blockedButtons) {
+				Log.d(TAG, "blopcking button " + button.getId());
+				blockedButton.setClickable(false);
+				((TextView) blockedButton).setTextColor(Color.LTGRAY);
+			}
+		}
+		((TextView) button).setText(R.string.undo);
+		mUndo = true;
+		mButtonNextWord.setClickable(true);
+		mButtonNextWord.setTextColor(Color.BLACK);
+		mAllowNextWord = true;
+		Log.d(TAG, "mAllowNextWord changed to true");
+	}
+
+	public void onCardClick(View view) {
+		if (mFlipcardFace) {
+			mFlipcardFace = false;
+		} else {
+			mFlipcardFace = true;
+		}
+		flipCard();
+	}
+
+	private void flipCard() {
+		View rootLayout = (View) findViewById(R.id.main_activity_root);
+		View cardFace = (View) findViewById(R.id.flipcard_front);
+		View cardBack = (View) findViewById(R.id.flipcard_back);
+
+		mFlipAnimation = new FlipAnimation(cardFace, cardBack);
+		if (cardFace.getVisibility() == View.GONE) {
+			mFlipAnimation.reverse();
+		}
+
+		rootLayout.startAnimation(mFlipAnimation);
+	}
+
+	public void addScore(View view) {
+		Log.d(TAG, "addScore for id: " + view.getId());
+
+		switch (view.getId()) {
+		case R.id.button_word_known:
+			Log.d(TAG, "word known id: " + R.id.button_word_known);
+			if (mUndo) {
+				mWordCorrect--;
+				clearButton(mButtonMarkCorrect, R.string.know_this_word,
+						new View[] { mButtonMarkIncorrect });
+			} else {
+				mWordCorrect++;
+				changeButtonToUndo(mButtonMarkCorrect,
+						new View[] { mButtonMarkIncorrect });
+			}
+			mCorrectTotal.setText(mWordCorrect + "");
+			break;
+		case R.id.button_word_unknown:
+			if (mUndo) {
+				mWordIncorrect--;
+				clearButton(mButtonMarkIncorrect, R.string.dont_know_this_word,
+						new View[] { mButtonMarkCorrect });
+			} else {
+				mWordIncorrect++;
+				changeButtonToUndo(mButtonMarkIncorrect,
+						new View[] { mButtonMarkCorrect });
+			}
+			mIncorrectTotal.setText(mWordIncorrect + "");
+			break;
 		}
 
 	}

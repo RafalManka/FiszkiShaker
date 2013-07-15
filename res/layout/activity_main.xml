@@ -2,10 +2,66 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/pattern_stripes_darkblue"
+    android:background="@drawable/mybackground"
     android:orientation="vertical" >
 
     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-2dp"
+            android:background="@drawable/custom_top_button"
+            android:onClick="gotoSelectLanguage"
+            android:padding="5dp"
+            android:text="@string/wybierz_zestaw"
+            android:layout_weight="0.5" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_top_button"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/score_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/current_score"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/textView_correct_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="0"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#148722" />
+
+            <TextView
+                android:id="@+id/textView_incorrect_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="0"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#C71414" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/main_activity_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="120dp"
@@ -15,68 +71,73 @@
         android:background="@drawable/white_background_stroke"
         android:orientation="vertical" >
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/flipcard_front"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.31"
-            android:gravity="bottom"
-            android:orientation="vertical" >
+            android:background="@drawable/white_background_stroke"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="onCardClick"
+            android:padding="20dp"
+            android:textColor="@android:color/black"
+            android:textSize="32sp" >
+        </TextView>
 
-            <TextView
-                android:id="@+id/bouncing_string"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal|center"
-                android:layout_margin="20dp"
-                android:gravity="center"
-                android:textColor="#000000"
-                android:textIsSelectable="true"
-                android:textSize="28sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/flipcard_back"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.41"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/bouncing_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal|center"
-                android:layout_margin="20dp"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#000000"
-                android:textIsSelectable="true"
-                android:textSize="28sp" />
-
-        </LinearLayout>
+            android:background="@drawable/white_background_stroke"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="onCardClick"
+            android:textColor="@android:color/black"
+            android:textSize="32sp"
+            android:visibility="gone" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/shake_to_perform_action"
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:gravity="center"
-        android:padding="20dp"
-        
-        android:text="@string/shake_to_perform_action"
-        android:textSize="24sp" />
+        android:layout_alignParentLeft="true" >
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/custom_top_button"
-        android:onClick="gotoSelectLanguage"
-        android:padding="5dp"
-        android:text="@string/wybierz_zestaw" />
+        <Button
+            android:id="@+id/button_word_known"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_action_button"
+            android:onClick="addScore"
+            android:padding="5dp"
+            android:text="@string/know_this_word" />
+
+        <Button
+            android:id="@+id/button_word_unknown"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_action_button"
+            android:clickable="true"
+            android:onClick="addScore"
+            android:padding="5dp"
+            android:text="@string/dont_know_this_word" />
+
+        <Button
+            android:id="@+id/button_next_word"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_action_button"
+            android:clickable="true"
+            android:onClick="onNextWordClick"
+            android:padding="5dp"
+            android:text="@string/shake_to_perform_action" />
+
+    </LinearLayout>
 
 </RelativeLayout>
