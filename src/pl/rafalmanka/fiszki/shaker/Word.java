@@ -14,6 +14,8 @@ public class Word {
     public Word(){         
     }
     
+
+    
     // constructor (assigning id)
     public Word(int id, String word, String description, String language){
     	Log.d(TAG, "4 argument constructor (id:"+id+",word:"+word+",description:"+description+",languuage:"+language+")");

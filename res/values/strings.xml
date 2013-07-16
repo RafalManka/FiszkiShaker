@@ -20,7 +20,13 @@
     <string name="current_score">wynik:</string>
     <string name="undo">cofnij</string>
     <string name="sound">dźwięk</string>
-     <string name="save">zapisz</string>
-	<string name="activity_settings">activity_settings</string>
+    <string name="save">zapisz</string>
+    <string name="activity_settings">activity_settings</string>
+    <string name="menu_add_new_word">dodaj nowe słowo</string>
+    <string name="add_new_word_word">nowe słowo</string>
+    <string name="add_new_word_description">tłumaczenie</string>
+    <string name="button_add_new_word_submit">Dodaj</string>
+    <string name="activity_add_new_word">dodaj nowe słowo</string>
+ <string name="word_succesfully_added">word succesfully added</string>
 
 </resources>

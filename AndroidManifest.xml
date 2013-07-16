@@ -51,6 +51,12 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+         <activity
+            android:name="AddNewWordActivity"
+            android:label="@string/activity_add_new_word"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
     </application>
 
 </manifest>

@@ -143,10 +143,16 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent intent = new Intent(this, SettingsActivity.class);
+
 		switch (item.getItemId()) {
 		case R.id.menu_settings:
-			startActivity(intent);
+			Intent settings_intent = new Intent(this, SettingsActivity.class);
+			startActivity(settings_intent);
+			break;
+		case R.id.menu_add_new_word:
+			Intent add_new_word_intent = new Intent(this,
+					AddNewWordActivity.class);
+			startActivity(add_new_word_intent);
 			break;
 		}
 

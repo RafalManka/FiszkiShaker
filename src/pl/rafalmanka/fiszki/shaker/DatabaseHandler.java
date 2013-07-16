@@ -160,20 +160,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public Word getRandom() {
 		Log.d(TAG, "getRandom");
 		SQLiteDatabase db = this.getReadableDatabase();
-
-		Log.d(TAG, "get current language");
-		Cursor languageCursor = db.query(TABLE_DICTIONARY,
-				new String[] { "language" }, null, null, null, null, "1");
-		String languageID = "";
-		if (languageCursor.moveToFirst())
-			languageID = languageCursor.getString(languageCursor
-					.getColumnIndex("language"));
-		Log.d(TAG, "languageID: " + languageID);
-		languageCursor.close();
-
 		Log.d(TAG, "performing querey");
 		Cursor cursor = db.query(TABLE_DICTIONARY, null, KEY_LANGUAGE + " =? ",
-				new String[] { languageID }, null, null, "RANDOM()", null);
+				new String[] { getCurrentLanguageID() }, null, null,
+				"RANDOM()", null);
 		if (cursor != null)
 			cursor.moveToFirst();
 
@@ -214,5 +204,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		}
 
+	}
+	
+
+	public String getCurrentLanguageID() {
+		SQLiteDatabase db = this.getReadableDatabase();
+		Log.d(TAG, "get current language");
+		Cursor languageCursor = db.query(TABLE_DICTIONARY,
+				new String[] { "language" }, null, null, null, null, "1");
+		String languageID = "";
+		if (languageCursor.moveToFirst())
+			languageID = languageCursor.getString(languageCursor
+					.getColumnIndex("language"));
+		Log.d(TAG, "languageID: " + languageID);
+		languageCursor.close();
+		return languageID;
 	}
 }
