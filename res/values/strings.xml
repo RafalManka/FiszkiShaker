@@ -19,5 +19,8 @@
     <string name="dont_know_this_word">nie znam słowa</string>
     <string name="current_score">wynik:</string>
     <string name="undo">cofnij</string>
+    <string name="sound">dźwięk</string>
+     <string name="save">zapisz</string>
+	<string name="activity_settings">activity_settings</string>
 
 </resources>

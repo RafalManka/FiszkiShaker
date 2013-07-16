@@ -27,32 +27,28 @@ public final class R {
         public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
-        public static final int action_button=0x7f020000;
-        public static final int action_button_nonclickable=0x7f020001;
-        public static final int custom_action_button=0x7f020002;
-        public static final int custom_top_button=0x7f020003;
-        public static final int ic_launcher=0x7f020004;
-        public static final int mybackground=0x7f020005;
-        public static final int pattern_circles_blue=0x7f020006;
-        public static final int pattern_dogs_grey=0x7f020007;
+        public static final int audio_volume_loud=0x7f020000;
+        public static final int audio_volume_muted=0x7f020001;
+        public static final int brokeh_effect_background=0x7f020002;
+        public static final int brokeh_effect_flipcard_green=0x7f020003;
+        public static final int brokeh_effect_flipcard_red=0x7f020004;
+        public static final int brokeh_effect_flipcard_topbar=0x7f020005;
+        public static final int ic_launcher=0x7f020006;
+        public static final int mybackground=0x7f020007;
         public static final int pattern_fish=0x7f020008;
-        public static final int pattern_stripes_darkblue=0x7f020009;
-        public static final int pattern_stripes_green=0x7f02000a;
-        public static final int top_button=0x7f02000b;
-        public static final int top_button_hover=0x7f02000c;
-        public static final int top_button_selected=0x7f02000d;
-        public static final int white_background_stroke=0x7f02000e;
     }
     public static final class id {
-        public static final int action_settings=0x7f0b000e;
         public static final int button1=0x7f0b0002;
         public static final int button_next_word=0x7f0b000b;
+        public static final int button_save_settings=0x7f0b000f;
         public static final int button_word_known=0x7f0b0009;
         public static final int button_word_unknown=0x7f0b000a;
+        public static final int checkbox_sound=0x7f0b000e;
         public static final int flipcard_back=0x7f0b0008;
         public static final int flipcard_front=0x7f0b0007;
         public static final int list_view=0x7f0b000c;
         public static final int main_activity_root=0x7f0b0006;
+        public static final int menu_settings=0x7f0b0010;
         public static final int name=0x7f0b000d;
         public static final int no_items_to_display=0x7f0b0000;
         public static final int progressBar1=0x7f0b0001;
@@ -65,6 +61,7 @@ public final class R {
         public static final int activity_main=0x7f030001;
         public static final int activity_word_list=0x7f030002;
         public static final int list_item=0x7f030003;
+        public static final int settings=0x7f030004;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;
@@ -74,6 +71,7 @@ public final class R {
     }
     public static final class string {
         public static final int action_settings=0x7f070001;
+        public static final int activity_settings=0x7f070014;
         public static final int app_name=0x7f070000;
         public static final int background_description=0x7f070004;
         public static final int buttom_main=0x7f070003;
@@ -86,7 +84,9 @@ public final class R {
         public static final int no_items_to_display=0x7f070009;
         public static final int no_languages_alert_description=0x7f070008;
         public static final int no_languages_alert_title=0x7f070007;
+        public static final int save=0x7f070013;
         public static final int shake_to_perform_action=0x7f070005;
+        public static final int sound=0x7f070012;
         public static final int submit=0x7f07000d;
         public static final int undo=0x7f070011;
         public static final int welcome_message=0x7f070002;

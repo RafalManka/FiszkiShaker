@@ -15,11 +15,12 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="Fiszki Shaker"
-        android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
+        android:label="Fiszki"
+        android:theme="@android:style/Theme.NoTitleBar" >
         <activity
             android:name="pl.rafalmanka.fiszki.shaker.MainActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,19 +31,26 @@
             android:name="LanguageListActivity"
             android:label="@string/choose_language"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
             android:name="TopicsListActivity"
             android:label="@string/choose_topic"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
-        <activity android:name="WordsListActivity"
+        <activity
+            android:name="WordsListActivity"
             android:label="@string/choose_words"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            ></activity>
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="SettingsActivity"
+            android:label="@string/activity_settings"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
     </application>
 
 </manifest>

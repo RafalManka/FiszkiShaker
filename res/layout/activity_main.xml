@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/mybackground"
+    android:background="@drawable/brokeh_effect_background"
     android:orientation="vertical" >
+
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -11,20 +12,22 @@
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="82dp"
+            android:layout_height="50dp"
+            android:layout_margin="2dp"
             android:layout_marginTop="-2dp"
-            android:background="@drawable/custom_top_button"
+            android:background="@drawable/brokeh_effect_flipcard_topbar"
             android:onClick="gotoSelectLanguage"
             android:padding="5dp"
-            android:text="@string/wybierz_zestaw"
-            android:layout_weight="0.5" />
+            android:text="@string/wybierz_zestaw" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@drawable/custom_top_button"
-            android:layout_weight="2" >
+            android:layout_margin="2dp"
+            android:layout_weight="2"
+            android:background="@drawable/brokeh_effect_flipcard_topbar"
+            android:gravity="center" >
 
             <TextView
                 android:id="@+id/score_title"
@@ -55,9 +58,7 @@
                 android:text="0"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#C71414" />
-
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -68,14 +69,13 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="80dp"
-        android:background="@drawable/white_background_stroke"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/flipcard_front"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/white_background_stroke"
+            android:background="@drawable/brokeh_effect_flipcard_red"
             android:clickable="true"
             android:gravity="center"
             android:onClick="onCardClick"
@@ -88,7 +88,7 @@
             android:id="@+id/flipcard_back"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/white_background_stroke"
+            android:background="@drawable/brokeh_effect_flipcard_green"
             android:clickable="true"
             android:gravity="center"
             android:onClick="onCardClick"
@@ -109,7 +109,7 @@
             android:layout_height="match_parent"
             android:layout_margin="1dp"
             android:layout_weight="1"
-            android:background="@drawable/custom_action_button"
+            android:background="@drawable/brokeh_effect_flipcard_topbar"
             android:onClick="addScore"
             android:padding="5dp"
             android:text="@string/know_this_word" />
@@ -120,7 +120,7 @@
             android:layout_height="match_parent"
             android:layout_margin="1dp"
             android:layout_weight="1"
-            android:background="@drawable/custom_action_button"
+            android:background="@drawable/brokeh_effect_flipcard_topbar"
             android:clickable="true"
             android:onClick="addScore"
             android:padding="5dp"
@@ -132,12 +132,11 @@
             android:layout_height="match_parent"
             android:layout_margin="1dp"
             android:layout_weight="1"
-            android:background="@drawable/custom_action_button"
+            android:background="@drawable/brokeh_effect_flipcard_topbar"
             android:clickable="true"
             android:onClick="onNextWordClick"
             android:padding="5dp"
             android:text="@string/shake_to_perform_action" />
-
     </LinearLayout>
 
 </RelativeLayout>

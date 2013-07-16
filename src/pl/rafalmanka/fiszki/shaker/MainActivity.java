@@ -3,6 +3,7 @@ package pl.rafalmanka.fiszki.shaker;
 import pl.rafalmanka.fiszki.shaker.ShakeDetector.OnShakeListener;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
@@ -10,10 +11,12 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
-import android.provider.CalendarContract.Colors;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -49,6 +52,8 @@ public class MainActivity extends Activity {
 		Log.d(TAG, "OnCreated");
 		super.onCreate(savedInstanceState);
 
+		Log.d(TAG, "creating preferences");
+
 		Log.d(TAG, "creating layout of an activity");
 		setContentView(R.layout.activity_main);
 
@@ -77,8 +82,8 @@ public class MainActivity extends Activity {
 		mButtonMarkIncorrect = (TextView) findViewById(R.id.button_word_unknown);
 		mButtonNextWord = (Button) findViewById(R.id.button_next_word);
 		mButtonNextWord.setClickable(false);
-		mButtonNextWord.setTextColor(Color.LTGRAY);
-		// mButtonNextWord.setTextColor(Color.LTGRAY);
+		mButtonNextWord.setTextColor(Color.DKGRAY);
+		// mButtonNextWord.setTextColor(Color.DKGRAY);
 		onEvent();
 
 		mShakeDetector = new ShakeDetector(new OnShakeListener() {
@@ -87,6 +92,7 @@ public class MainActivity extends Activity {
 			public void onShake() {
 				Log.d(TAG, "onSheked");
 				onEvent();
+				clearAllButtons();
 			}
 		});
 
@@ -113,20 +119,38 @@ public class MainActivity extends Activity {
 	}
 
 	private void playSound() {
-		player = MediaPlayer.create(this, R.raw.spell);
-		player.start();
-		player.setOnCompletionListener(new OnCompletionListener() {
-			@Override
-			public void onCompletion(MediaPlayer mp) {
-				mp.release();
-			}
-		});
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		if (sharedPreferences.getBoolean("SOUND_PREFERENCE", false)) {
+			player = MediaPlayer.create(this, R.raw.spell);
+			player.start();
+			player.setOnCompletionListener(new OnCompletionListener() {
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					mp.release();
+				}
+			});
+		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
+		super.onCreateOptionsMenu(menu);
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent = new Intent(this, SettingsActivity.class);
+		switch (item.getItemId()) {
+		case R.id.menu_settings:
+			startActivity(intent);
+			break;
+		}
+
+		return false;
 	}
 
 	private void onEvent() {
@@ -181,10 +205,12 @@ public class MainActivity extends Activity {
 			mFlipAnimation.setAnimationListener(new AnimationListener() {
 
 				@Override
-				public void onAnimationStart(Animation animation) {}
+				public void onAnimationStart(Animation animation) {
+				}
 
 				@Override
-				public void onAnimationRepeat(Animation animation) {}
+				public void onAnimationRepeat(Animation animation) {
+				}
 
 				@Override
 				public void onAnimationEnd(Animation animation) {
@@ -221,7 +247,7 @@ public class MainActivity extends Activity {
 		Log.d(TAG, "setting undo to false ");
 		mUndo = false;
 		mButtonNextWord.setClickable(false);
-		mButtonNextWord.setTextColor(Color.LTGRAY);
+		mButtonNextWord.setTextColor(Color.DKGRAY);
 		mAllowNextWord = false;
 		Log.d(TAG, "mAllowNextWord changed to false 1");
 	}
@@ -232,7 +258,7 @@ public class MainActivity extends Activity {
 			for (View blockedButton : blockedButtons) {
 				Log.d(TAG, "blopcking button " + button.getId());
 				blockedButton.setClickable(false);
-				((TextView) blockedButton).setTextColor(Color.LTGRAY);
+				((TextView) blockedButton).setTextColor(Color.DKGRAY);
 			}
 		}
 		((TextView) button).setText(R.string.undo);
