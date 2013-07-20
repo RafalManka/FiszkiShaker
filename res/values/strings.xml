@@ -27,6 +27,18 @@
     <string name="add_new_word_description">tłumaczenie</string>
     <string name="button_add_new_word_submit">Dodaj</string>
     <string name="activity_add_new_word">dodaj nowe słowo</string>
- <string name="word_succesfully_added">word succesfully added</string>
+    <string name="word_succesfully_added">poprawnie dodano pozycję do słownika</string>
+    <string name="menu_add_new_dictionary">dodaj nowy zestaw</string>
+    <string name="textView_add_new_dictionary_enter_title">Nazwa nowego słownika:</string>
+    <string name="pozwol_innym_na_korzystanie_z_niego">pozwól, by inni mogli wykorzystać ten zestaw w przyszłości</string>
+    <string name="textView_add_new_word">dodaj pozycję</string>
+    <string name="activity_add_new_dictionary">dodaj nową pozycję</string>
+    <string name="word">słowo</string>
+    <string name="translation">tłumaczenie</string>
+    <string name="title">nazwa zestawu słówek</string>
+    <string name="word_has_ben_included">zostanie dodane do nowego słownika</string>
+    <string name="word_has_ben_excluded">nie zostanie dodane do nowego słownika</string>
+    <string name="add_to_list">dodaj do listy</string>
+    <string name="create_set">zatwierdź zestaw</string>
 
 </resources>

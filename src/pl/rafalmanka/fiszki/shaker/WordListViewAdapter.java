@@ -45,7 +45,7 @@ public class WordListViewAdapter extends BaseAdapter {
         HashMap<String, String> item = new HashMap<String, String>();
         item = data.get(position);
         //Setting all values in listview
-        name.setText(item.get("value")+" ("+item.get("translation")+")");
+        name.setText(item.get(WordsListActivity.KEY_WORD)+" ("+item.get(WordsListActivity.KEY_TRANSLATION)+")");
         return vi;
     }
 }

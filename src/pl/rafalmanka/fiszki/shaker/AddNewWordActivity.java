@@ -1,5 +1,7 @@
 package pl.rafalmanka.fiszki.shaker;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,11 +22,18 @@ public class AddNewWordActivity extends Activity {
 	public void addNewWord(View view) {
 		EditText newWord = (EditText) findViewById(R.id.editText_add_new_word_word);
 		Log.d(TAG, "new word: " + newWord.getText().toString());
-		EditText newDescription = (EditText) findViewById(R.id.editText_add_new_word_description);
-		Log.d(TAG, "new description: " + newDescription);
+		EditText newTranslation = (EditText) findViewById(R.id.editText_add_new_word_description);
+		Log.d(TAG, "new description: " + newTranslation);
 		DatabaseHandler databaseHandler = new DatabaseHandler(view.getContext());
-		databaseHandler.addWord(new Word(newWord.getText().toString(),
-				newDescription.getText().toString(), databaseHandler.getCurrentLanguageID()));
+		Word word = new Word();
+		word.setWord(newWord.getText().toString());
+		word.setLanguageId(Integer.parseInt(databaseHandler.getValueOfCurrentSet(DatabaseHandler.TABLE_LANGUAGE,DatabaseHandler.COLUMN_LANGUAGE_ID)));
+		word.setLanguage(databaseHandler.getValueOfCurrentSet(DatabaseHandler.TABLE_LANGUAGE,DatabaseHandler.COLUMN_LANGUAGE));
+		word.setSetName(databaseHandler.getValueOfCurrentSet(DatabaseHandler.TABLE_WORDSET,DatabaseHandler.COLUMN_WORDSET_NAME));
+		word.setSetId(Integer.parseInt(databaseHandler.getValueOfCurrentSet(DatabaseHandler.TABLE_WORDSET,DatabaseHandler.COLUMN_WORDSET_ID)));		
+
+		word.setTranslations(DatabaseHandler.addWordToList(new ArrayList<Word>(), new Word(newTranslation.getText().toString())));		
+		databaseHandler.addWord(word);
 		Toast.makeText(view.getContext(), R.string.word_succesfully_added,
 				Toast.LENGTH_LONG).show();
 	}

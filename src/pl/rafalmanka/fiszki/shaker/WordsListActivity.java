@@ -37,14 +37,24 @@ import android.widget.TextView;
 public class WordsListActivity extends Activity {
 
 	public static final String TAG = WordsListActivity.class.getSimpleName();
-	public JSONArray mWordsData = null;
+	public JSONObject mWordsData = null;
 	protected ProgressBar mProgressBar;
-	private final String KEY_TITLE = "value";
-	private final String KEY_TRANSLATION = "translation";
+	public static final String KEY_WORDSET_ID = "wordset_id";
+	public static final String KEY_WORDSET = "wordset";
+	public static final String KEY_LANGUAGE_ID = "language_id";
+	public static final String KEY_LANGUAGE = "language";
+	public static final String KEY_WORDS = "words";
+	public static final String KEY_WORD = "word";
+	public static final String KEY_TRANSLATION = "translation";
+
+	private ArrayList<Word> wordInfo = new ArrayList<Word>();
+
 	private TextView noItemsToDisplay;
-	private int mTopicId;
+	private int mWordsetId;
+	private String mWordset;
 	private Button saveWordsButton;
 	public int mLanguageId;
+	public String mLanguage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +63,8 @@ public class WordsListActivity extends Activity {
 		Log.d(TAG, "onCreated");
 		Bundle bundle = getIntent().getExtras();
 		mLanguageId = bundle.getInt("language_id");
-		mTopicId = bundle.getInt("topic_id");
-		Log.d(TAG, "retrieving extras (topic_id): " + mTopicId
+		mWordsetId = bundle.getInt("topic_id");
+		Log.d(TAG, "retrieving extras (topic_id): " + mWordsetId
 				+ " and language_id: " + mLanguageId);
 
 		mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -80,10 +90,6 @@ public class WordsListActivity extends Activity {
 
 	}
 
-	private void LogVerbose(String verbose) {
-		Log.v(TAG, verbose);
-	}
-
 	private void LogInfo(String info) {
 		Log.i(TAG, info);
 	}
@@ -102,52 +108,90 @@ public class WordsListActivity extends Activity {
 			updateDisplayForErrors();
 		} else {
 			try {
-				JSONArray jsonPosts = mWordsData;
-				ArrayList<HashMap<String, String>> blogPosts = new ArrayList<HashMap<String, String>>();
-				for (int i = 0; i < jsonPosts.length(); i++) {
-					JSONObject post = jsonPosts.getJSONObject(i);
-					String language = post.getString(KEY_TITLE);
-					language = Html.fromHtml(language).toString();
-					String translation = post.getString(KEY_TRANSLATION);
-					translation = Html.fromHtml(translation).toString();
+				mLanguageId = mWordsData.getInt(KEY_LANGUAGE_ID);
+				Log.d(TAG, "language id of wordset: " + mLanguageId);
+				mLanguage = Html.fromHtml(mWordsData.getString(KEY_LANGUAGE))
+						.toString();
+				Log.d(TAG, "language of wordset: " + mLanguage);
 
+				mWordsetId = mWordsData.getInt(KEY_WORDSET_ID);
+				Log.d(TAG, "wordset id: " + mWordsetId);
+				mWordset = Html.fromHtml(mWordsData.getString(KEY_WORDSET))
+						.toString();
+				Log.d(TAG, "wordset: " + mWordset);
+				JSONArray jsonWords = mWordsData.getJSONArray(KEY_WORDS);
+
+				ArrayList<HashMap<String, String>> blogPosts = new ArrayList<HashMap<String, String>>();
+				for (int i = 0; i < jsonWords.length(); i++) {
+
+					JSONObject word = jsonWords.getJSONObject(i);
+					String word_title = Html.fromHtml(word.getString(KEY_WORD))
+							.toString();
+
+					Word wordData = new Word();
+					wordData.setWord(word_title);
+					wordData.setLanguageId(mLanguageId);
+					wordData.setLanguage(mLanguage);
+					wordData.setSetName(mWordset);
+					wordData.setWordsetId(mWordsetId);
+					ArrayList<Word> translations = new ArrayList<Word>();
+
+					Log.d(TAG, "word title: " + word_title);
+					JSONArray jsonTranslations = word
+							.getJSONArray(KEY_TRANSLATION);
+					String translation = "";
+					Word wordTmp;
+					for (int j = 0; j < (jsonTranslations.length() - 1); j++) {
+						translation += Html.fromHtml(jsonTranslations
+								.getString(j)) + ", ";
+						wordTmp = new Word();
+						wordTmp.setWord(Html.fromHtml(
+								jsonTranslations.getString(j)).toString());
+						translations.add(wordTmp);
+					}
+					translation += jsonTranslations.getString(jsonTranslations
+							.length() - 1);
+					Log.d(TAG, "concatenated translation: " + translation);
+
+					wordTmp = new Word();
+					wordTmp.setWord(Html.fromHtml(
+							jsonTranslations.getString(jsonTranslations
+									.length() - 1)).toString());
+					translations.add(wordTmp);
+					wordData.setTranslations(translations);
+					wordInfo.add(wordData);
 					HashMap<String, String> blogPost = new HashMap<String, String>();
-					blogPost.put(KEY_TITLE, language);
+					blogPost.put(KEY_WORD, word_title);
 					blogPost.put(KEY_TRANSLATION, translation);
 					blogPosts.add(blogPost);
 				}
 
-				String[] keys = { KEY_TITLE, KEY_TRANSLATION };
-				int[] ids = { android.R.id.text1, android.R.id.text2 };
-
 				ListView lv = (ListView) findViewById(R.id.list_view);
-				// LoadMore button
+
 				saveWordsButton = new Button(this);
 				saveWordsButton.setText(R.string.submit);
-			
+
 				saveWordsButton.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
-				    public void onClick(View v) {
-						
-						DatabaseHandler dbHandler = new DatabaseHandler(v.getContext());
-						dbHandler.createNewSet(mWordsData);
-						
-				        Intent intent = new Intent(v.getContext(),MainActivity.class);
-				        startActivity(intent);
-				        } 
-					
-				    });
+					public void onClick(View v) {
 
-				// Adding Load More button to lisview at bottom
+						DatabaseHandler dbHandler = new DatabaseHandler(v
+								.getContext());
+						dbHandler.createNewSet(wordInfo);
+
+						Intent intent = new Intent(v.getContext(),
+								MainActivity.class);
+						startActivity(intent);
+					}
+
+				});
+
 				lv.addHeaderView(saveWordsButton);
-
-				// Getting adapter
 				WordListViewAdapter adapter = new WordListViewAdapter(this,
 						blogPosts);
 				lv.setAdapter(adapter);
 
-				// setListAdapter(adapter);
 			} catch (JSONException e) {
 				LogException(e);
 			}
@@ -183,16 +227,16 @@ public class WordsListActivity extends Activity {
 	}
 
 	private class GetWordsFromAPITask extends
-			AsyncTask<Object, Void, JSONArray> {
+			AsyncTask<Object, Void, JSONObject> {
 
 		@Override
-		protected JSONArray doInBackground(Object... params) {
+		protected JSONObject doInBackground(Object... params) {
 			int responseCode = -1;
-			JSONArray jsonResponse = null;
+			JSONObject jsonResponse = null;
 			StringBuilder builder = new StringBuilder();
 			HttpClient client = new DefaultHttpClient();
 			String query = "http://api.rafalmanka.pl/api/fetchWords?language="
-					+ mLanguageId + "&topic=" + mTopicId;
+					+ mLanguageId + "&topic=" + mWordsetId;
 			HttpGet httpget = new HttpGet(query);
 			LogDebug("query sent to API: " + query);
 
@@ -213,7 +257,7 @@ public class WordsListActivity extends Activity {
 						builder.append(line);
 					}
 
-					jsonResponse = new JSONArray(builder.toString());
+					jsonResponse = new JSONObject(builder.toString());
 					LogInfo("builder.toString(): " + builder.toString());
 				} else {
 					Log.e(TAG, builder.toString());
@@ -228,12 +272,11 @@ public class WordsListActivity extends Activity {
 		}
 
 		@Override
-		protected void onPostExecute(JSONArray result) {
+		protected void onPostExecute(JSONObject result) {
 			mWordsData = result;
 			handleBlogResponse();
 		}
 
 	}
-
 
 }

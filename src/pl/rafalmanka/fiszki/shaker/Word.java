@@ -1,75 +1,155 @@
 package pl.rafalmanka.fiszki.shaker;
 
+import java.util.ArrayList;
+
 import android.util.Log;
 
 public class Word {
 	public static final String TAG = Word.class.getSimpleName();
-    //private variables
-    int _id;
-    String _word;
-    String _description;
-    String _language;
-     
-    // Empty constructor
-    public Word(){         
-    }
-    
 
-    
-    // constructor (assigning id)
-    public Word(int id, String word, String description, String language){
-    	Log.d(TAG, "4 argument constructor (id:"+id+",word:"+word+",description:"+description+",languuage:"+language+")");
-    	this._id = id;
-        this._word = word;
-        this._description = description;
-        this._language = language;
-    }
-     
-    // constructor (without assigning id)
-    public Word(String word, String description, String language){
-    	Log.d(TAG, "3 argument constructor (word:"+word+",description:"+description+",languuage:"+language+")");
-        this._word = word;
-        this._description = description;
-        this._language = language;
-    }
-    
-    // getting ID
-    public int getID(){
-        return this._id;
-    }
-     
-    // setting id
-    public void setID(int id){
-        this._id = id;
-    }
-     
-    // getting word
-    public String getWord(){
-        return this._word;
-    }
-     
-    // setting word
-    public void setWord(String word){
-        this._word = word;
-    }
-     
-    // getting description
-    public String getDescription(){
-        return this._description;
-    }
-     
-    // setting description
-    public void setDescription(String phone_number){
-        this._description = phone_number;
-    }
-    
- // getting description
-    public String getLanguage(){
-        return this._language;
-    }
-     
-    // setting description
-    public void setLanguage(String language){
-        this._language = language;
-    }
+	private int mWordId;
+	private String mWord;
+	private String mLanguage;
+	private ArrayList<Word> mTranslations = new ArrayList<Word>();
+	private int mLanguageId;
+	private int mWordsetId;
+	private int mSetId;
+	
+	public static String mNameOfSet = "default";
+
+	public Word() {
+	}
+	
+	public Word(String word) {
+		mWord = word;
+	}
+
+	/*public Word(int id, String word, String translation, String language) {
+		Log.d(TAG, "4 argument constructor (id:" + id + ",word:" + word
+				+ ",description:" + translation + ",languuage:" + language
+				+ ")");
+		mWordId = id;
+		mWord = word;
+//		Word translation = new Word();
+//		translation.setWord(description);
+//		mTranslations.add(translation);
+		mLanguage = language;
+	}
+
+	public Word(String word, String translation, String language) {
+		Log.d(TAG, "3 argument constructor (word:" + word + ",description:"
+				+ translation + ",languuage:" + language + ")");
+		mWord = word;
+//		Word translation = new Word();
+//		translation.setWord(description);
+//		mTranslations.add(translation);
+		mLanguage = language;
+	}
+
+	public Word(String nameOfSet, String word, String translation,
+			String language) {
+		mNameOfSet = nameOfSet;
+		mWord = word;
+//		Word _translation = new Word();
+//		_translation.setWord(translation);
+//		mTranslations.add(_translation);
+		mLanguage = language;
+	}
+
+	public Word(int id, String nameOfSet, String word, String translation,
+			String language) {
+		mWordId = id;
+		mNameOfSet = nameOfSet;
+		mWord = word;
+		Word _translation = new Word();
+		_translation.setWord(translation);
+		mTranslations.add(_translation);
+		mLanguage = language;
+	}
+
+	public Word(String word) {
+		mWord = word;
+	}
+*/
+	public int getID() {
+		return mWordId;
+	}
+
+	public void setID(int id) {
+		mWordId = id;
+	}
+
+	public String getWord() {
+		return mWord;
+	}
+
+	public void setWord(String word) {
+		mWord = word;
+	}
+
+	public String getLanguage() {
+		return mLanguage;
+	}
+
+	public void setLanguage(String language) {
+		mLanguage = language;
+	}
+
+	public String getNameOfSet() {
+		return mNameOfSet;
+	}
+
+	public void setSetName(String nameOfSet) {
+		mNameOfSet = nameOfSet;
+	}
+
+	public ArrayList<Word> getTranslations() {
+		return mTranslations;
+	}
+
+	public void setTranslations(ArrayList<Word> translations) {
+		mTranslations = translations;
+	}
+
+	public void setLanguageId(int languageId) {
+		mLanguageId = languageId;
+		
+	}
+	
+	public int getLanguageId() {
+		return mLanguageId;
+		
+	}
+	
+	public int getWordsetId() {
+		return mWordsetId;
+		
+	}
+	
+	public void setWordsetId(int wordsetId) {
+		mWordsetId = wordsetId;
+		
+	}
+
+	public String getConcatenatedTranslations() {
+		Log.d(TAG, "start method getConcatenatedTranslations");
+		String concatenatedTranslation="";		
+		Log.d(TAG, "list size: "+mTranslations.size());
+		for (int i = 0; i < ( mTranslations.size() -1 ) ; i++) {
+			Log.d(TAG, "concatenating word: "+mTranslations.get(i).getWord());
+			concatenatedTranslation+= mTranslations.get(i).getWord()+", ";
+		}
+		Log.d(TAG, "adding last word: "+mTranslations.get(mTranslations.size()-1).getWord());
+		concatenatedTranslation+=mTranslations.get(mTranslations.size()-1).getWord();
+		return concatenatedTranslation;
+	}
+
+	public void setSetId(int setId) {
+		mSetId = setId;
+		
+	}
+	
+	public int getSetId(){
+		return mSetId;
+	}
 }

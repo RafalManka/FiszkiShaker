@@ -1,5 +1,7 @@
 package pl.rafalmanka.fiszki.shaker;
 
+import java.util.ArrayList;
+
 import pl.rafalmanka.fiszki.shaker.ShakeDetector.OnShakeListener;
 import android.app.Activity;
 import android.content.Intent;
@@ -51,6 +53,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.d(TAG, "OnCreated");
 		super.onCreate(savedInstanceState);
+
+		DatabaseHandler ndm = new DatabaseHandler(getApplicationContext());
 
 		Log.d(TAG, "creating preferences");
 
@@ -154,6 +158,15 @@ public class MainActivity extends Activity {
 					AddNewWordActivity.class);
 			startActivity(add_new_word_intent);
 			break;
+		case R.id.menu_add_new_dictionary:
+			SharedPreferences sharedPreferences = PreferenceManager
+					.getDefaultSharedPreferences(this);
+			String language = sharedPreferences.getString("LANGUAGE", "");
+			Intent add_new_dictionary_intent = new Intent(this,
+					AddNewDictionaryActivity.class);
+			add_new_dictionary_intent.putExtra("LANGUAGE", language);
+			startActivity(add_new_dictionary_intent);
+			break;
 		}
 
 		return false;
@@ -171,9 +184,9 @@ public class MainActivity extends Activity {
 
 			Log.d(TAG, "fetching single random row");
 			mWord = db.getRandom();
-			Log.d(TAG, "Id: " + mWord.getID() + " ,word: " + mWord.getWord()
-					+ " ,description: " + Html.fromHtml(mWord.getDescription())
-					+ " , language: " + mWord.getLanguage());
+
+			Log.d(TAG, "name of set: " + mWord.getNameOfSet() + " ,word: "
+					+ mWord.getWord() + " , language: " + mWord.getLanguage());
 
 			Log.d(TAG, "setting new title: " + mWord.getWord());
 			mWordOrig.setText(Html.fromHtml(mWord.getWord()));
@@ -182,10 +195,11 @@ public class MainActivity extends Activity {
 			animateFiszka(mWordOrig, 1500);
 			// mWordOrig.startAnimation(bounce);
 
-			Log.d(TAG, "showing description: " + mWord.getDescription());
-			mWordTranslation.setText(Html.fromHtml(mWord.getDescription()));
-
-			Log.d(TAG, "animating background phase 2");
+			Log.d(TAG,
+					"showing description: "
+							+ mWord.getConcatenatedTranslations());
+			mWordTranslation.setText(Html.fromHtml(mWord
+					.getConcatenatedTranslations()));
 
 			playSound();
 		} else {
