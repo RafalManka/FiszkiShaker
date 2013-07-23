@@ -1,4 +1,4 @@
-package pl.rafalmanka.fiszki.shaker;
+package pl.rafalmanka.fiszki.shaker.utils;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;

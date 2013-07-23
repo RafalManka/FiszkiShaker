@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Fiszki Shaker</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Ustawienia</string>
     <string name="welcome_message">Welcome!</string>
     <string name="buttom_main">click me.</string>
     <string name="background_description">background image</string>
@@ -40,5 +40,15 @@
     <string name="word_has_ben_excluded">nie zostanie dodane do nowego słownika</string>
     <string name="add_to_list">dodaj do listy</string>
     <string name="create_set">zatwierdź zestaw</string>
+    <string name="checkBox_random_fetching">losuj fiszki</string>
+    <string name="activity_choose_local_set">wybierz z dostępnego zestawu słówek</string>
+    <string name="menu_choose_wordset">moje zestawy słówek</string>
+    <string name="wordset_with_that_name_already_exists">Zestaw słówek o takiej nazwie został pobrany już wcześniej.</string>
+    <string name="choose_wordset">wybierz</string>
+    <string name="delete_wordset">usuń</string>
+    <string name="are_you_sure_you_want_to_delete_wordset">Czy jestes pweien, że chcesz usunąć ten zestaw?</string>
+    <string name="yes">TAK</string>
+    <string name="no">NIE</string>
+    <string name="you_have_to_have_at_least_one_wordset">nie możesz usunąć ostatniego zestawu słówek</string>
 
 </resources>

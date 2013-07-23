@@ -1,10 +1,19 @@
-package pl.rafalmanka.fiszki.shaker;
+package pl.rafalmanka.fiszki.shaker.view;
 
 import java.util.ArrayList;
 
+import pl.rafalmanka.fiszki.shaker.R;
+import pl.rafalmanka.fiszki.shaker.R.id;
+import pl.rafalmanka.fiszki.shaker.R.layout;
+import pl.rafalmanka.fiszki.shaker.R.string;
+import pl.rafalmanka.fiszki.shaker.model.DatabaseHandler;
+import pl.rafalmanka.fiszki.shaker.model.Word;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,8 +41,8 @@ public class AddNewDictionaryActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_new_dictionary);
-		DatabaseHandler databaseHandler = new DatabaseHandler(getBaseContext());
-		mLanguage = databaseHandler.getValueOfCurrentSet(DatabaseHandler.TABLE_LANGUAGE,DatabaseHandler.COLUMN_LANGUAGE);
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);		
+		mLanguage = sharedPreferences.getString(SettingsActivity.CURRENT_WORDSET, SettingsActivity.DEFAULT_WORDSET);
 
 		mEditTextTitle = (EditText) findViewById(R.id.editText_add_new_dictionary_enter_title);
 		mEditTextTitle.setHint(R.string.title);
@@ -133,7 +142,7 @@ public class AddNewDictionaryActivity extends Activity {
 
 				DatabaseHandler databaseHandler = new DatabaseHandler(
 						getBaseContext());
-				databaseHandler.createNewSet(mWordsList);
+				databaseHandler.addNewSet(mWordsList);
 
 				Intent intent = new Intent(view.getContext(),
 						MainActivity.class);

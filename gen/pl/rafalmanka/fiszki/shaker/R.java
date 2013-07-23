@@ -42,12 +42,15 @@ public final class R {
         public static final int button_add_new_dictionary_add_another=0x7f0b0013;
         public static final int button_add_new_dictionary_submit_set=0x7f0b0015;
         public static final int button_add_new_word_submit=0x7f0b001a;
+        public static final int button_choose_wordset=0x7f0b001c;
+        public static final int button_delete_wordset=0x7f0b001d;
         public static final int button_next_word=0x7f0b000b;
-        public static final int button_save_settings=0x7f0b001d;
+        public static final int button_save_settings=0x7f0b0020;
         public static final int button_word_known=0x7f0b0009;
         public static final int button_word_unknown=0x7f0b000a;
         public static final int checkBox_allow_other_to_use_set=0x7f0b000f;
-        public static final int checkbox_sound=0x7f0b001c;
+        public static final int checkBox_random_fetching=0x7f0b001f;
+        public static final int checkbox_sound=0x7f0b001e;
         public static final int editText_add_new_dictionary_add_new_translation=0x7f0b0012;
         public static final int editText_add_new_dictionary_add_new_word=0x7f0b0011;
         public static final int editText_add_new_dictionary_enter_title=0x7f0b000e;
@@ -57,9 +60,10 @@ public final class R {
         public static final int flipcard_front=0x7f0b0007;
         public static final int list_view=0x7f0b000c;
         public static final int main_activity_root=0x7f0b0006;
-        public static final int menu_add_new_dictionary=0x7f0b0020;
-        public static final int menu_add_new_word=0x7f0b001f;
-        public static final int menu_settings=0x7f0b001e;
+        public static final int menu_add_new_dictionary=0x7f0b0023;
+        public static final int menu_add_new_word=0x7f0b0022;
+        public static final int menu_choose_wordset=0x7f0b0024;
+        public static final int menu_settings=0x7f0b0021;
         public static final int name=0x7f0b001b;
         public static final int no_items_to_display=0x7f0b0000;
         public static final int progressBar1=0x7f0b0001;
@@ -73,13 +77,14 @@ public final class R {
         public static final int textview_add_new_word_word=0x7f0b0016;
     }
     public static final class layout {
-        public static final int activity_language_list=0x7f030000;
+        public static final int activity_list=0x7f030000;
         public static final int activity_main=0x7f030001;
         public static final int activity_word_list=0x7f030002;
         public static final int add_new_dictionary=0x7f030003;
         public static final int add_new_word=0x7f030004;
         public static final int list_item=0x7f030005;
-        public static final int settings=0x7f030006;
+        public static final int list_item_manage_set=0x7f030006;
+        public static final int settings=0x7f030007;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;
@@ -91,23 +96,30 @@ public final class R {
         public static final int action_settings=0x7f070001;
         public static final int activity_add_new_dictionary=0x7f07001f;
         public static final int activity_add_new_word=0x7f070019;
+        public static final int activity_choose_local_set=0x7f070028;
         public static final int activity_settings=0x7f070014;
         public static final int add_new_word_description=0x7f070017;
         public static final int add_new_word_word=0x7f070016;
         public static final int add_to_list=0x7f070025;
         public static final int app_name=0x7f070000;
+        public static final int are_you_sure_you_want_to_delete_wordset=0x7f07002d;
         public static final int background_description=0x7f070004;
         public static final int buttom_main=0x7f070003;
         public static final int button_add_new_word_submit=0x7f070018;
+        public static final int checkBox_random_fetching=0x7f070027;
         public static final int choose_language=0x7f070006;
         public static final int choose_topic=0x7f07000b;
         public static final int choose_words=0x7f07000c;
+        public static final int choose_wordset=0x7f07002b;
         public static final int create_set=0x7f070026;
         public static final int current_score=0x7f070010;
+        public static final int delete_wordset=0x7f07002c;
         public static final int dont_know_this_word=0x7f07000f;
         public static final int know_this_word=0x7f07000e;
         public static final int menu_add_new_dictionary=0x7f07001b;
         public static final int menu_add_new_word=0x7f070015;
+        public static final int menu_choose_wordset=0x7f070029;
+        public static final int no=0x7f07002f;
         public static final int no_items_to_display=0x7f070009;
         public static final int no_languages_alert_description=0x7f070008;
         public static final int no_languages_alert_title=0x7f070007;
@@ -126,7 +138,10 @@ public final class R {
         public static final int word_has_ben_excluded=0x7f070024;
         public static final int word_has_ben_included=0x7f070023;
         public static final int word_succesfully_added=0x7f07001a;
+        public static final int wordset_with_that_name_already_exists=0x7f07002a;
         public static final int wybierz_zestaw=0x7f07000a;
+        public static final int yes=0x7f07002e;
+        public static final int you_have_to_have_at_least_one_wordset=0x7f070030;
     }
     public static final class style {
         /** 

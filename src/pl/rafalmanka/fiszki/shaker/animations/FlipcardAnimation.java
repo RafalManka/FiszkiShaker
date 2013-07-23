@@ -1,4 +1,4 @@
-package pl.rafalmanka.fiszki.shaker;
+package pl.rafalmanka.fiszki.shaker.animations;
 
 import android.view.View;
 

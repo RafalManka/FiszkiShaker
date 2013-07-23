@@ -1,4 +1,4 @@
-package pl.rafalmanka.fiszki.shaker;
+package pl.rafalmanka.fiszki.shaker.view;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -16,6 +16,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import pl.rafalmanka.fiszki.shaker.R;
+import pl.rafalmanka.fiszki.shaker.R.id;
+import pl.rafalmanka.fiszki.shaker.R.layout;
+import pl.rafalmanka.fiszki.shaker.R.string;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -47,7 +52,7 @@ public class LanguageListActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_language_list);
+		setContentView(R.layout.activity_list);
 		mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		noItemsToDisplay = (TextView) findViewById(R.id.no_items_to_display);
 

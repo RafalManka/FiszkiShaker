@@ -1,9 +1,19 @@
-package pl.rafalmanka.fiszki.shaker;
+package pl.rafalmanka.fiszki.shaker.view;
 
 import java.util.ArrayList;
 
+import pl.rafalmanka.fiszki.shaker.R;
+import pl.rafalmanka.fiszki.shaker.R.id;
+import pl.rafalmanka.fiszki.shaker.R.layout;
+import pl.rafalmanka.fiszki.shaker.R.string;
+import pl.rafalmanka.fiszki.shaker.model.DatabaseHandler;
+import pl.rafalmanka.fiszki.shaker.model.Word;
+
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -27,15 +37,17 @@ public class AddNewWordActivity extends Activity {
 		DatabaseHandler databaseHandler = new DatabaseHandler(view.getContext());
 		Word word = new Word();
 		word.setWord(newWord.getText().toString());
-		word.setLanguageId(Integer.parseInt(databaseHandler.getValueOfCurrentSet(DatabaseHandler.TABLE_LANGUAGE,DatabaseHandler.COLUMN_LANGUAGE_ID)));
-		word.setLanguage(databaseHandler.getValueOfCurrentSet(DatabaseHandler.TABLE_LANGUAGE,DatabaseHandler.COLUMN_LANGUAGE));
-		word.setSetName(databaseHandler.getValueOfCurrentSet(DatabaseHandler.TABLE_WORDSET,DatabaseHandler.COLUMN_WORDSET_NAME));
-		word.setSetId(Integer.parseInt(databaseHandler.getValueOfCurrentSet(DatabaseHandler.TABLE_WORDSET,DatabaseHandler.COLUMN_WORDSET_ID)));		
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);		
+		//word.setLanguage(sharedPreferences.getString(SettingsActivity.CURRENT_LANGUAGE, SettingsActivity.DEFAULT_LANGUAGE));
+		word.setSetName(sharedPreferences.getString(SettingsActivity.CURRENT_WORDSET, SettingsActivity.DEFAULT_WORDSET));	
 
 		word.setTranslations(DatabaseHandler.addWordToList(new ArrayList<Word>(), new Word(newTranslation.getText().toString())));		
 		databaseHandler.addWord(word);
 		Toast.makeText(view.getContext(), R.string.word_succesfully_added,
 				Toast.LENGTH_LONG).show();
+		
+		Intent intent = new Intent(this, MainActivity.class);
+		startActivity(intent);
 	}
 
 }

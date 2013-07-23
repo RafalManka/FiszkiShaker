@@ -1,4 +1,4 @@
-package pl.rafalmanka.fiszki.shaker;
+package pl.rafalmanka.fiszki.shaker.model;
 
 import java.io.BufferedReader;
 import java.io.File;

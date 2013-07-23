@@ -1,7 +1,12 @@
-package pl.rafalmanka.fiszki.shaker;
+package pl.rafalmanka.fiszki.shaker.adapters;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import pl.rafalmanka.fiszki.shaker.R;
+import pl.rafalmanka.fiszki.shaker.R.id;
+import pl.rafalmanka.fiszki.shaker.R.layout;
+import pl.rafalmanka.fiszki.shaker.view.WordsListActivity;
  
 import android.app.Activity;
 import android.content.Context;

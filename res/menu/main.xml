@@ -15,5 +15,10 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/menu_add_new_dictionary"/>
+    <item
+        android:id="@+id/menu_choose_wordset"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_choose_wordset"/>
 
 </menu>

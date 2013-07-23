@@ -1,11 +1,16 @@
-package pl.rafalmanka.fiszki.shaker;
+package pl.rafalmanka.fiszki.shaker.view;
 
-import java.util.ArrayList;
-
-import pl.rafalmanka.fiszki.shaker.ShakeDetector.OnShakeListener;
+import pl.rafalmanka.fiszki.shaker.R;
+import pl.rafalmanka.fiszki.shaker.animations.FlipAnimation;
+import pl.rafalmanka.fiszki.shaker.model.DatabaseHandler;
+import pl.rafalmanka.fiszki.shaker.model.Word;
+import pl.rafalmanka.fiszki.shaker.utils.ShakeDetector;
+import pl.rafalmanka.fiszki.shaker.utils.ShakeDetector.OnShakeListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
@@ -48,13 +53,16 @@ public class MainActivity extends Activity {
 	private boolean mAllowNextWord = true;
 	private boolean mFlipcardFace = true;
 	private FlipAnimation mFlipAnimation;
+	private SharedPreferences mSharedPreferences;
+	private int mCounter = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		Log.d(TAG, "OnCreated");
 		super.onCreate(savedInstanceState);
-
-		DatabaseHandler ndm = new DatabaseHandler(getApplicationContext());
+		mSharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
 
 		Log.d(TAG, "creating preferences");
 
@@ -123,9 +131,8 @@ public class MainActivity extends Activity {
 	}
 
 	private void playSound() {
-		SharedPreferences sharedPreferences = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		if (sharedPreferences.getBoolean("SOUND_PREFERENCE", false)) {
+		
+		if (mSharedPreferences.getBoolean(SettingsActivity.SOUND_PREFERENCE, false)) {
 			player = MediaPlayer.create(this, R.raw.spell);
 			player.start();
 			player.setOnCompletionListener(new OnCompletionListener() {
@@ -159,13 +166,19 @@ public class MainActivity extends Activity {
 			startActivity(add_new_word_intent);
 			break;
 		case R.id.menu_add_new_dictionary:
-			SharedPreferences sharedPreferences = PreferenceManager
+			mSharedPreferences = PreferenceManager
 					.getDefaultSharedPreferences(this);
-			String language = sharedPreferences.getString("LANGUAGE", "");
+			String language = mSharedPreferences.getString("LANGUAGE", "");
 			Intent add_new_dictionary_intent = new Intent(this,
 					AddNewDictionaryActivity.class);
 			add_new_dictionary_intent.putExtra("LANGUAGE", language);
 			startActivity(add_new_dictionary_intent);
+			break;
+		case R.id.menu_choose_wordset:
+			Intent choose_wordset_intent = new Intent(this,
+					ChooseLocalSetActivity.class);
+			Log.d(TAG, "intent created");
+			startActivity(choose_wordset_intent);
 			break;
 		}
 
@@ -182,8 +195,14 @@ public class MainActivity extends Activity {
 			Log.d(TAG, "preparing database");
 			DatabaseHandler db = new DatabaseHandler(this);
 
-			Log.d(TAG, "fetching single random row");
-			mWord = db.getRandom();
+			if (mSharedPreferences.getBoolean(SettingsActivity.RANDOMIZE_PREFERENCE, false)) {
+				Log.d(TAG, "fetching single random row");
+				mWord = db.getRandom();
+			} else {
+				mWord = db.getNext(mCounter);
+				mCounter++;
+			}
+			
 
 			Log.d(TAG, "name of set: " + mWord.getNameOfSet() + " ,word: "
 					+ mWord.getWord() + " , language: " + mWord.getLanguage());

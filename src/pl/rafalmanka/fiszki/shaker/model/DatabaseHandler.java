@@ -1,26 +1,28 @@
-package pl.rafalmanka.fiszki.shaker;
+package pl.rafalmanka.fiszki.shaker.model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import pl.rafalmanka.fiszki.shaker.R;
+import pl.rafalmanka.fiszki.shaker.view.SettingsActivity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
 	public static final String TAG = DatabaseHandler.class.getSimpleName();
 
-	public static final int DATABASE_VERSION = 76;
+	public static final int DATABASE_VERSION = 107;
 	public static final String DATABASE_NAME = "fiszki_shaker";
 	public static final String COLUMN_WORD_ID = "id_word";
 	public static final String COLUMN_TRANSLATION_ID = "id_translation";
@@ -37,17 +39,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String TABLE_WORD_HAS_SET = "word_has_wordset";
 	public static final String TABLE_LANGUAGE = "language";
 
-	private Context context;
+	private Context mContext;
 
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		Log.d(TAG, "constructing DatabaseHandler");
-		this.context = context;
+		this.mContext = context;
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		Log.d(TAG, "onCreated");
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(mContext);
+		Editor editor = sharedPreferences.edit();
+		editor.putString(SettingsActivity.CURRENT_WORDSET,
+				SettingsActivity.DEFAULT_WORDSET);
+		editor.commit();
+
 		Log.i(TAG, "Creating new database");
 		createDb(db);
 		Log.i(TAG, "populating database from file manager");
@@ -69,8 +78,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		ArrayList<Word> dummyTranslations_1 = new ArrayList<Word>();
 		String dummyTranslation_w1_1 = "Salon";
 		String dummyTranslation_w1_2 = "Pokój goscinny";
-		// dummyTranslations_1.add(new Word(dummyTranslation_w1_1));
-		// dummyTranslations_1.add(new Word(dummyTranslation_w1_2));
+		dummyTranslations_1.add(new Word(dummyTranslation_w1_1));
+		dummyTranslations_1.add(new Word(dummyTranslation_w1_2));
 		dummyWord_1.setTranslations(dummyTranslations_1);
 
 		Word dummyWord_2 = new Word();
@@ -82,70 +91,131 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String dummyTranslation_w2_1 = "Gabinet";
 		String dummyTranslation_w2_2 = "Pracownia";
 		String dummyTranslation_w2_3 = "Czytelnia";
-		// dummyTranslations_2.add(new Word(dummyTranslation_w2_1));
-		// dummyTranslations_2.add(new Word(dummyTranslation_w2_2));
-		// dummyTranslations_2.add(new Word(dummyTranslation_w2_3));
+		dummyTranslations_2.add(new Word(dummyTranslation_w2_1));
+		dummyTranslations_2.add(new Word(dummyTranslation_w2_2));
+		dummyTranslations_2.add(new Word(dummyTranslation_w2_3));
 		dummyWord_2.setTranslations(dummyTranslations_2);
 
 		dummyWordset.add(dummyWord_1);
 		dummyWordset.add(dummyWord_2);
 
-		populateDb(db, language, nameOfSet, dummyWordset);
+		insertIntoDb(db, language, nameOfSet, dummyWordset);
 	}
 
 	private void populateDbFromFileManager(SQLiteDatabase db) {
-		FileHandler filemanager = new FileHandler(context);
+		FileHandler filemanager = new FileHandler(mContext);
 		Log.d(TAG, "putting all rowsets to List");
 		List<String[]> list = filemanager.getAllRecords();
-
+		Log.d(TAG, "list size: " + list.size());
 		ArrayList<Word> words = new ArrayList<Word>();
 		for (String[] position : list) {
 			Word word = new Word();
 			word.setWord(position[0]);
+			word.setSetName(SettingsActivity.DEFAULT_WORDSET);
 			Word translation = new Word();
 			translation.setWord(position[1]);
 			ArrayList<Word> translations = new ArrayList<Word>();
 			translations.add(translation);
-
 			word.setTranslations(translations);
-
 			words.add(word);
 		}
 
 		String mLanguage = "English";
-		populateDb(db, mLanguage, Word.mNameOfSet, words);
+		insertIntoDb(db, mLanguage, SettingsActivity.DEFAULT_WORDSET, words);
 
 	}
 
-	public void createNewSet(ArrayList<Word> words) {
+	public void addNewSet(ArrayList<Word> words) {
+
+		// check if set exists
 		Log.d(TAG, "entering method createNewSet");
 		SQLiteDatabase db = this.getReadableDatabase();
-		Log.d(TAG, "removing db");
-		removeDb(db);
-		Log.d(TAG, "creating db");
-		createDb(db);
 		Log.d(TAG, "populating db");
-		populateDb(db, words.get(0).getLanguage(), words.get(0).getNameOfSet(),
-				words);
+		insertIntoDb(db, words.get(0).getLanguage(), words.get(0)
+				.getNameOfSet(), words);
 		db.close();
 	}
 
-	private void populateDb(SQLiteDatabase db, String language,
+	private void insertIntoDb(SQLiteDatabase db, String language,
 			String nameOfSet, ArrayList<Word> words) {
+		long lastInsertedId_Language = insertLanguageIntoDb(db, language);
+		long lastInsertedId_wordSet = insertWordsetIntoDb(db, nameOfSet,
+				lastInsertedId_Language);
+		insertWordsIntoDb(db, words, lastInsertedId_wordSet);
+		Log.d(TAG, "db successfully populated");
+
+	}
+
+	private long insertLanguageIntoDb(SQLiteDatabase db, String language) {
+		Log.d(TAG, "insertLanguageIntoDb");
 
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(COLUMN_LANGUAGE, language);
 		Log.d(TAG, "inserting value of language: " + language);
-		long lastInsertedId_Language = db.insert(TABLE_LANGUAGE, null,
-				contentValues);
+		long languageId = db.insert(TABLE_LANGUAGE, null, contentValues);
+		return languageId;
+	}
 
-		Log.d(TAG, "inserting value of wordset: " + nameOfSet);
-		contentValues.clear();
-		contentValues.put(COLUMN_WORDSET_NAME, nameOfSet);
-		contentValues.put(COLUMN_LANGUAGE_ID, lastInsertedId_Language);
-		long lastInsertedId_wordSet = db.insert(TABLE_WORDSET, null,
-				contentValues);
+	private long insertWordsetIntoDb(SQLiteDatabase db, String nameOfSet,
+			long lastInsertedId_Language) {
+		Log.d(TAG, "insertWordsetIntoDb");
 
+		String query = "SELECT * FROM " + TABLE_WORDSET + " ";
+
+		Log.d(TAG, query);
+		Cursor crsr = db.rawQuery(query, null);
+
+		boolean wordsetExists = false;
+
+		if (crsr.getCount() != 0) {
+
+			crsr.moveToFirst();
+
+			String wordSetName = crsr.getString(crsr
+					.getColumnIndex(COLUMN_WORDSET_NAME));
+
+			Log.d(TAG, "size of wordsets: " + crsr.getCount() + " name: "
+					+ wordSetName);
+
+			do {
+				if (nameOfSet.equalsIgnoreCase(wordSetName)) {
+					wordsetExists = true;
+				}
+			} while (crsr.moveToNext());
+		}
+
+		long lastInsertedId_wordSet = -1;
+		if (!wordsetExists) {
+
+			Log.d(TAG, "inserting value of wordset: " + nameOfSet);
+
+			Log.d(TAG, "COLUMN_WORDSET_NAME: " + nameOfSet);
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(COLUMN_WORDSET_NAME, nameOfSet);
+			contentValues.put(COLUMN_LANGUAGE_ID, lastInsertedId_Language);
+			lastInsertedId_wordSet = db.insert(TABLE_WORDSET, null,
+					contentValues);
+			Log.d(TAG, "wordset didnt exist before, creatd now with id: "
+					+ lastInsertedId_wordSet);
+		} else {
+
+			String query1 = "SELECT * FROM " + TABLE_WORDSET + " WHERE "+COLUMN_WORDSET_NAME+" = '"+nameOfSet+"'";
+
+			Log.d(TAG, "query: "+query1);
+			Cursor cs = db.rawQuery(query1, null);
+			cs.moveToFirst();		
+
+			lastInsertedId_wordSet = cs.getLong(cs.getColumnIndex(COLUMN_WORDSET_ID));
+			Log.d(TAG, "wordset exists in database under index: "+ lastInsertedId_wordSet);
+
+		}
+		crsr.close();
+		return lastInsertedId_wordSet;
+	}
+
+	private void insertWordsIntoDb(SQLiteDatabase db, ArrayList<Word> words,
+			long lastInsertedId_wordSet) {
+		ContentValues contentValues = new ContentValues();
 		Log.d(TAG, "inserting words");
 		for (Word word : words) {
 
@@ -181,7 +251,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.insert(TABLE_WORD_HAS_SET, null, contentValues);
 
 		}
-		Log.d(TAG, "db successfully populated");
 	}
 
 	private void createDb(SQLiteDatabase db) {
@@ -198,7 +267,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ TABLE_WORD_HAS_TRANSLATION + " (" + COLUMN_WORD_ID
 				+ " INTEGER REFERENCES " + TABLE_WORD + " (" + COLUMN_WORD_ID
 				+ "), " + COLUMN_TRANSLATION_ID + " INTEGER REFERENCES "
-				+ TABLE_WORD + " (" + COLUMN_WORD_ID + "))";
+				+ TABLE_WORD + " (" + COLUMN_WORD_ID + ") ON DELETE CASCADE ) ";
 		Log.d(TAG, "Executing: " + CREATE_TABLE_WORD_HAS_TRANSLATION);
 		db.execSQL(CREATE_TABLE_WORD_HAS_TRANSLATION);
 
@@ -214,26 +283,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ COLUMN_WORDSET_ID + " INTEGER PRIMARY KEY, "
 				+ COLUMN_WORDSET_NAME + " TEXT, " + COLUMN_LANGUAGE_ID
 				+ " INTEGER REFERENCES " + TABLE_LANGUAGE + "("
-				+ COLUMN_LANGUAGE_ID + "))";
+				+ COLUMN_LANGUAGE_ID + ") ON DELETE CASCADE )";
 		Log.d(TAG, "Executing: " + CREATE_TABLE_WORD_SET);
 		db.execSQL(CREATE_TABLE_WORD_SET);
 
 		Log.d(TAG, "creating table word_has_set");
 		String CREATE_TABLE_WORD_HAS_SET = "CREATE TABLE " + TABLE_WORD_HAS_SET
 				+ " (" + COLUMN_WORDSET_ID + " INTEGER REFERENCES "
-				+ TABLE_WORDSET + "(" + COLUMN_WORDSET_ID + "), "
-				+ COLUMN_WORD_ID + " INTEGER REFERENCES " + TABLE_WORD + " ("
-				+ COLUMN_WORD_ID + "))";
+				+ TABLE_WORDSET + "(" + COLUMN_WORDSET_ID
+				+ ") ON DELETE CASCADE, " + COLUMN_WORD_ID
+				+ " INTEGER REFERENCES " + TABLE_WORD + " (" + COLUMN_WORD_ID
+				+ ") ON DELETE CASCADE )";
 		Log.d(TAG, "Executing: " + CREATE_TABLE_WORD_HAS_SET);
 		db.execSQL(CREATE_TABLE_WORD_HAS_SET);
 
 	}
 
-	// Upgrading database
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.d(TAG, "onUpgraded");
-
 		removeDb(db);
 		onCreate(db);
 	}
@@ -259,73 +327,96 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		ArrayList<Word> wordInfo = new ArrayList<Word>();
 		wordInfo.add(word);
 		SQLiteDatabase db = getWritableDatabase();
-		populateDb(db, word.getLanguage(), word.getNameOfSet(), wordInfo);
+		SharedPreferences sharedPrefs = PreferenceManager
+				.getDefaultSharedPreferences(mContext);
+		String currentWordset = sharedPrefs.getString(
+				SettingsActivity.CURRENT_WORDSET,
+				SettingsActivity.DEFAULT_WORDSET);
+		insertIntoDb(db, word.getLanguage(), currentWordset, wordInfo);
 		db.close();
-	}
-
-	Word getWord(int id) {
-		// TODO
-		SQLiteDatabase db = this.getReadableDatabase();
-
-		Cursor cursor = db.query("TABLE_DICTIONARY", new String[] {
-				COLUMN_WORD_ID, COLUMN_WORD, COLUMN_TRANSLATION,
-				COLUMN_LANGUAGE }, COLUMN_WORD_ID + "=?",
-				new String[] { String.valueOf(id) }, null, null, null, null);
-		db.close();
-		if (cursor != null)
-			cursor.moveToFirst();
-
-		// Word word = new Word(Integer.parseInt(cursor.getColumnName(0)),
-		// cursor.getString(1), cursor.getString(2), cursor.getString(3));
-
-		// return word;
-		return null;
-	}
-
-	public Word getRandom() {
-		Log.d(TAG, "starting method geeRandom");
-
-		SQLiteDatabase db = this.getReadableDatabase();
-		ArrayList<Word> wordSet = getWordsFromDb(db);
-		db.close();
-
-		Random random = new Random();
-
-		int rand = 0;
-
-		rand = random.nextInt(wordSet.size());
-		Word output = wordSet.get(rand);
-		Log.d(TAG,
-				"random word: " + output.getWord() + " - "
-						+ output.getConcatenatedTranslations());
-		return output;
 	}
 
 	public ArrayList<Word> getWordsFromDb(SQLiteDatabase db) {
-
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(mContext);
 		Log.d(TAG, "performing querey");
+		Log.d(TAG,
+				"shared preference: "
+						+ sharedPreferences.getString(
+								SettingsActivity.CURRENT_WORDSET,
+								SettingsActivity.DEFAULT_WORDSET));
 
-		String query = "SELECT " + " tw." + COLUMN_WORD + " AS \""
-				+ COLUMN_WORD + "\", " + " tht." + COLUMN_TRANSLATION_ID
-				+ " AS \"" + COLUMN_TRANSLATION_ID + "\", " + " tt."
-				+ COLUMN_WORD + " AS \"" + COLUMN_TRANSLATION + "\", "
-				+ " whs." + COLUMN_WORD_ID + " AS \"word_has_set_word_id\", "
-				+ " tws." + COLUMN_WORDSET_NAME + " AS \""
-				+ COLUMN_WORDSET_NAME + "\", " + " l." + COLUMN_LANGUAGE
-				+ " AS \"" + COLUMN_LANGUAGE + "\" " + " FROM " + TABLE_WORD
-				+ " as tw " + "INNER JOIN " + TABLE_WORD_HAS_TRANSLATION
-				+ " AS tht ON tw." + COLUMN_WORD_ID + "=tht." + COLUMN_WORD_ID
-				+ " " + "INNER JOIN " + TABLE_WORD + " AS tt ON tht."
-				+ COLUMN_TRANSLATION_ID + "=tt." + COLUMN_WORD_ID + " "
-				+ "INNER JOIN " + TABLE_WORD_HAS_SET + " AS whs ON whs."
-				+ COLUMN_WORD_ID + "=tw." + COLUMN_WORD_ID + " "
-				+ "INNER JOIN " + TABLE_WORDSET + " AS tws ON tws."
-				+ COLUMN_WORDSET_ID + "=whs." + COLUMN_WORDSET_ID
-				+ " INNER JOIN " + TABLE_LANGUAGE + " AS l ON l."
-				+ COLUMN_LANGUAGE_ID + "=tws." + COLUMN_LANGUAGE_ID + " ";
-		// + " ORDER BY RANDOM() LIMIT 1";
+		String query = "SELECT " + " tw."
+				+ COLUMN_WORD
+				+ " AS \""
+				+ COLUMN_WORD
+				+ "\", "
+				+ " tht."
+				+ COLUMN_TRANSLATION_ID
+				+ " AS \""
+				+ COLUMN_TRANSLATION_ID
+				+ "\", "
+				+ " tt."
+				+ COLUMN_WORD
+				+ " AS \""
+				+ COLUMN_TRANSLATION
+				+ "\", "
+				+ " whs."
+				+ COLUMN_WORD_ID
+				+ " AS \"word_has_set_word_id\", "
+				+ " tws."
+				+ COLUMN_WORDSET_NAME
+				+ " AS \""
+				+ COLUMN_WORDSET_NAME
+				+ "\", "
+				+ " l."
+				+ COLUMN_LANGUAGE
+				+ " AS \""
+				+ COLUMN_LANGUAGE
+				+ "\" "
+				+ " FROM "
+				+ TABLE_WORD
+				+ " as tw "
+				+ "INNER JOIN "
+				+ TABLE_WORD_HAS_TRANSLATION
+				+ " AS tht ON tw."
+				+ COLUMN_WORD_ID
+				+ "=tht."
+				+ COLUMN_WORD_ID
+				+ " "
+				+ "INNER JOIN "
+				+ TABLE_WORD
+				+ " AS tt ON tht."
+				+ COLUMN_TRANSLATION_ID
+				+ "=tt."
+				+ COLUMN_WORD_ID
+				+ " "
+				+ "INNER JOIN "
+				+ TABLE_WORD_HAS_SET
+				+ " AS whs ON whs."
+				+ COLUMN_WORD_ID
+				+ "=tw."
+				+ COLUMN_WORD_ID
+				+ " "
+				+ "INNER JOIN "
+				+ TABLE_WORDSET
+				+ " AS tws ON tws."
+				+ COLUMN_WORDSET_ID
+				+ "=whs."
+				+ COLUMN_WORDSET_ID
+				+ " INNER JOIN "
+				+ TABLE_LANGUAGE
+				+ " AS l ON l."
+				+ COLUMN_LANGUAGE_ID
+				+ "=tws."
+				+ COLUMN_LANGUAGE_ID
+				+ " "
+				+ " WHERE tws."
+				+ COLUMN_WORDSET_NAME
+				+ " = '"
+				+ sharedPreferences.getString(SettingsActivity.CURRENT_WORDSET,
+						SettingsActivity.DEFAULT_WORDSET) + "' ";
 
-		// String query="SELECT * FROM word";
 		Log.d(TAG, query);
 		Cursor c = db.rawQuery(query, null);
 
@@ -337,13 +428,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		ArrayList<Word> translationSet = new ArrayList<Word>();
 		String translation;
 		do {
-
 			if (!wordTemp.equals(c.getString(c.getColumnIndex(COLUMN_WORD)))) {
 				if (word != null) {
 					wordSet.add(word);
 				}
 
-				// Log.d(TAG, "loop count = " + counter++);
 				wordTemp = c.getString(c.getColumnIndex(COLUMN_WORD));
 
 				word = new Word();
@@ -369,6 +458,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			}
 
 		} while (c.moveToNext());
+		c.close();
 		wordSet.add(word);
 
 		return wordSet;
@@ -379,39 +469,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		super.close();
 	}
 
-	private void createNewSet(JSONArray wordsJSONData) {
-		Log.d(TAG, "createNewSet");
-		Log.d(TAG, "mWordsData: " + wordsJSONData.toString());
-		SQLiteDatabase db = this.getReadableDatabase();
-		createDb(db);
-		Log.d(TAG, "creating Word objects");
-		for (int i = 0; i < wordsJSONData.length(); i++) {
-			JSONObject jsonWord;
-			try {
-				jsonWord = wordsJSONData.getJSONObject(i);
-
-				String value = jsonWord.getString("value");
-				Log.d(TAG, "value: " + value);
-				String transtalion = jsonWord.getString("translation");
-				Log.d(TAG, "transtalion: " + transtalion);
-				String language = jsonWord.getString("language_id");
-				Log.d(TAG, "language: " + language);
-
-				// addWord(new Word(value, transtalion, language));
-			} catch (JSONException e) {
-				Log.e(TAG, "Error: ", e);
-			}
-
-		}
-
-	}
-
-	public String getValueOfCurrentSet(String tableName, String columnName) {
+	private String getValueOfCurrentSet(String tableName, String columnName) {
 		Log.d(TAG, "entering getValueOfCurrentSet method");
 		Log.d(TAG, "getting value of column: " + columnName);
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor languageCursor = db.query(tableName,
 				new String[] { columnName }, null, null, null, null, "1");
+		db.close();
 		String valFetched = "";
 		if (languageCursor.moveToFirst())
 			valFetched = languageCursor.getString(languageCursor
@@ -420,9 +484,109 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		languageCursor.close();
 		return valFetched;
 	}
-	
-	public static ArrayList<Word> addWordToList(ArrayList<Word> arrayList, Word word){		
-		arrayList.add(word);		
+
+	public Word getNext(int counter) {
+		Log.d(TAG, "starting method getNext");
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		ArrayList<Word> wordSet = getWordsFromDb(db);
+		db.close();
+
+		int size = counter % wordSet.size();
+		Log.d(TAG, "fetching word number: " + size);
+		return wordSet.get(size);
+	}
+
+	public Word getRandom() {
+		Log.d(TAG, "starting method geeRandom");
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		ArrayList<Word> wordSet = getWordsFromDb(db);
+		db.close();
+
+		Random random = new Random();
+		int rand = 0;
+		rand = random.nextInt(wordSet.size());
+		Word output = wordSet.get(rand);
+		Log.d(TAG,
+				"random word: " + output.getWord() + " - "
+						+ output.getConcatenatedTranslations());
+		return output;
+	}
+
+	public static ArrayList<Word> addWordToList(ArrayList<Word> arrayList,
+			Word word) {
+		arrayList.add(word);
 		return arrayList;
+	}
+
+	public String[] getWordsets() {
+		Log.d(TAG, "getWordsets method");
+
+		String query = "SELECT " + COLUMN_WORDSET_NAME + " FROM "
+				+ TABLE_WORDSET + " ";
+
+		Log.d(TAG, query);
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor c = db.rawQuery(query, null);
+		c.moveToFirst();
+		db.close();
+		Log.d(TAG, "size of wordsets4: " + c.getCount());
+
+		String[] wordsets = new String[c.getCount()];
+
+		int counter = 0;
+		do {
+			wordsets[counter] = c.getString(c
+					.getColumnIndex(COLUMN_WORDSET_NAME));
+			Log.d(TAG,
+					"wordset: "
+							+ c.getString(c.getColumnIndex(COLUMN_WORDSET_NAME)));
+			counter++;
+		} while (c.moveToNext());
+		c.close();
+		return wordsets;
+	}
+
+	public void deleteWordset(String columnValue) {
+
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(mContext);
+
+		String[] wordsets = getWordsets();
+		if (wordsets.length > 1) {
+
+			if (sharedPreferences.getString(SettingsActivity.CURRENT_WORDSET,
+					SettingsActivity.DEFAULT_WORDSET).equals(columnValue)) {
+				Editor editor = sharedPreferences.edit();
+				if (sharedPreferences.getString(
+						SettingsActivity.CURRENT_WORDSET,
+						SettingsActivity.DEFAULT_WORDSET).equals(
+						SettingsActivity.DEFAULT_WORDSET)) {
+					editor.putString(SettingsActivity.CURRENT_WORDSET,
+							wordsets[0]);
+				} else {
+
+					editor.putString(SettingsActivity.CURRENT_WORDSET,
+							SettingsActivity.DEFAULT_WORDSET);
+
+				}
+				editor.commit();
+			}
+
+		} else {
+			Toast.makeText(mContext,
+					R.string.you_have_to_have_at_least_one_wordset,
+					Toast.LENGTH_LONG).show();
+			return;
+		}
+		String query = "DELETE " + " FROM " + TABLE_WORDSET + " WHERE "
+				+ COLUMN_WORDSET_NAME + " = '" + columnValue + "' ";
+
+		Log.d(TAG, query);
+		SQLiteDatabase db = getWritableDatabase();
+		db.rawQuery(query, null).moveToFirst();
+		db.close();
+
 	}
 }

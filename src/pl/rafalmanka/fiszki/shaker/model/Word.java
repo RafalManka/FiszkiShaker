@@ -1,6 +1,8 @@
-package pl.rafalmanka.fiszki.shaker;
+package pl.rafalmanka.fiszki.shaker.model;
 
 import java.util.ArrayList;
+
+import pl.rafalmanka.fiszki.shaker.view.SettingsActivity;
 
 import android.util.Log;
 
@@ -15,7 +17,7 @@ public class Word {
 	private int mWordsetId;
 	private int mSetId;
 	
-	public static String mNameOfSet = "default";
+	public static String mNameOfSet = SettingsActivity.DEFAULT_WORDSET;
 
 	public Word() {
 	}

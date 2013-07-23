@@ -1,4 +1,4 @@
-package pl.rafalmanka.fiszki.shaker;
+package pl.rafalmanka.fiszki.shaker.view;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -17,14 +17,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pl.rafalmanka.fiszki.shaker.R;
+import pl.rafalmanka.fiszki.shaker.R.id;
+import pl.rafalmanka.fiszki.shaker.R.layout;
+import pl.rafalmanka.fiszki.shaker.R.string;
+import pl.rafalmanka.fiszki.shaker.adapters.WordListViewAdapter;
+import pl.rafalmanka.fiszki.shaker.model.DatabaseHandler;
+import pl.rafalmanka.fiszki.shaker.model.Word;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -178,7 +189,15 @@ public class WordsListActivity extends Activity {
 
 						DatabaseHandler dbHandler = new DatabaseHandler(v
 								.getContext());
-						dbHandler.createNewSet(wordInfo);
+						dbHandler.addNewSet(wordInfo);
+						
+						SharedPreferences mSharedPreferences = 
+								PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+						Editor editor = mSharedPreferences.edit();
+						editor.putString(SettingsActivity.CURRENT_WORDSET, wordInfo.get(0).getNameOfSet());
+						editor.commit();
+						
+						Log.d(TAG, "preference set to: "+ mSharedPreferences.getString(SettingsActivity.CURRENT_WORDSET, "default"));
 
 						Intent intent = new Intent(v.getContext(),
 								MainActivity.class);
