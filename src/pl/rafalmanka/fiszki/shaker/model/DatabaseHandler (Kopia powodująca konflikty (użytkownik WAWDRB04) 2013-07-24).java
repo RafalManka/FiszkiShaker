@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import pl.rafalmanka.fiszki.shaker.R;
 import pl.rafalmanka.fiszki.shaker.view.SettingsActivity;
+
+import android.app.AlertDialog.Builder;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,6 +19,7 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,7 +29,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	public static final String TAG = DatabaseHandler.class.getSimpleName();
 
-	public static final int DATABASE_VERSION = 108;
+	public static final int DATABASE_VERSION = 95;
 	public static final String DATABASE_NAME = "fiszki_shaker";
 	public static final String COLUMN_WORD_ID = "id_word";
 	public static final String COLUMN_TRANSLATION_ID = "id_translation";
@@ -138,83 +145,46 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	private void insertIntoDb(SQLiteDatabase db, String language,
 			String nameOfSet, ArrayList<Word> words) {
-		long lastInsertedId_Language = insertLanguageIntoDb(db, language);
-		long lastInsertedId_wordSet = insertWordsetIntoDb(db, nameOfSet,
-				lastInsertedId_Language);
-		insertWordsIntoDb(db, words, lastInsertedId_wordSet);
-		Log.d(TAG, "db successfully populated");
-	}
-
-	private long insertLanguageIntoDb(SQLiteDatabase db, String language) {
-		Log.d(TAG, "insertLanguageIntoDb");
 
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(COLUMN_LANGUAGE, language);
 		Log.d(TAG, "inserting value of language: " + language);
-		long languageId = db.insert(TABLE_LANGUAGE, null, contentValues);
-		return languageId;
-	}
-
-	private long insertWordsetIntoDb(SQLiteDatabase db, String nameOfSet,
-			long lastInsertedId_Language) {
-		Log.d(TAG, "insertWordsetIntoDb");
-
-		String query = "SELECT * FROM " + TABLE_WORDSET + " WHERE "+COLUMN_WORDSET_NAME+" = '"+nameOfSet+"'";
-
-		Log.d(TAG, query);
-		Cursor crsr = db.rawQuery(query, null);
-
+		long lastInsertedId_Language = db.insert(TABLE_LANGUAGE, null,
+				contentValues);
+		
+		Log.d(TAG, "checking, if wordset exists in database already");
+		String query = "SELECT " + COLUMN_WORDSET_NAME +","+COLUMN_WORDSET_ID+ " FROM "
+				+ TABLE_WORDSET + "";
+		Cursor cursorWS = db.rawQuery(query, null);
+		cursorWS.moveToFirst();
 		boolean wordsetExists = false;
-
-		if (crsr.getCount() != 0) {
-
-			crsr.moveToFirst();
-
-			String wordSetName = crsr.getString(crsr
-					.getColumnIndex(COLUMN_WORDSET_NAME));
-
-			Log.d(TAG, "size of wordsets: " + crsr.getCount() + " name: "
-					+ wordSetName);
-
-			do {
-				if (nameOfSet.equalsIgnoreCase(wordSetName)) {
-					wordsetExists = true;
-				}
-			} while (crsr.moveToNext());
-		}
+		do {
+			if (cursorWS
+					.getString(cursorWS.getColumnIndex(COLUMN_WORDSET_NAME))
+					.equals(nameOfSet)) {
+				wordsetExists = true;
+			}
+		} while (cursorWS.moveToNext());
 
 		long lastInsertedId_wordSet = -1;
 		if (!wordsetExists) {
+			
+			
 
 			Log.d(TAG, "inserting value of wordset: " + nameOfSet);
+			contentValues.clear();
 
-			Log.d(TAG, "COLUMN_WORDSET_NAME: " + nameOfSet);
-			ContentValues contentValues = new ContentValues();
 			contentValues.put(COLUMN_WORDSET_NAME, nameOfSet);
 			contentValues.put(COLUMN_LANGUAGE_ID, lastInsertedId_Language);
 			lastInsertedId_wordSet = db.insert(TABLE_WORDSET, null,
 					contentValues);
-			Log.d(TAG, "wordset didnt exist before, creatd now with id: "
-					+ lastInsertedId_wordSet);
+			Log.d(TAG, "wordset already exists and have id of: "+lastInsertedId_wordSet);
 		} else {
-
-			
-
-			Log.d(TAG, "query: "+query);
-			crsr = db.rawQuery(query, null);
-			crsr.moveToFirst();		
-
-			lastInsertedId_wordSet = crsr.getLong(crsr.getColumnIndex(COLUMN_WORDSET_ID));
-			Log.d(TAG, "wordset exists in database under index: "+ lastInsertedId_wordSet);
-
+			lastInsertedId_wordSet = cursorWS.getLong(cursorWS
+					.getColumnIndex(COLUMN_WORDSET_ID));
+			Log.d(TAG, "wordset does not exist yet. inserting one of index: "+lastInsertedId_wordSet);
 		}
-		crsr.close();
-		return lastInsertedId_wordSet;
-	}
 
-	private void insertWordsIntoDb(SQLiteDatabase db, ArrayList<Word> words,
-			long lastInsertedId_wordSet) {
-		ContentValues contentValues = new ContentValues();
 		Log.d(TAG, "inserting words");
 		for (Word word : words) {
 
@@ -250,6 +220,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.insert(TABLE_WORD_HAS_SET, null, contentValues);
 
 		}
+		Log.d(TAG, "db successfully populated");
 	}
 
 	private void createDb(SQLiteDatabase db) {
@@ -457,7 +428,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			}
 
 		} while (c.moveToNext());
-		c.close();
 		wordSet.add(word);
 
 		return wordSet;
@@ -543,7 +513,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 							+ c.getString(c.getColumnIndex(COLUMN_WORDSET_NAME)));
 			counter++;
 		} while (c.moveToNext());
-		c.close();
+
 		return wordsets;
 	}
 
