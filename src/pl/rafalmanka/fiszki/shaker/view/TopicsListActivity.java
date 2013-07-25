@@ -1,11 +1,20 @@
 package pl.rafalmanka.fiszki.shaker.view;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import java.util.HashMap;
+import android.app.AlertDialog;
+import android.app.ListActivity;
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -17,223 +26,209 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pl.rafalmanka.fiszki.shaker.R;
-import pl.rafalmanka.fiszki.shaker.R.id;
-import pl.rafalmanka.fiszki.shaker.R.layout;
-import pl.rafalmanka.fiszki.shaker.R.string;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import android.app.AlertDialog;
-import android.app.ListActivity;
-import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
+import pl.rafalmanka.fiszki.shaker.R;
 
 public class TopicsListActivity extends ListActivity {
 
-	public static final String TAG = TopicsListActivity.class.getSimpleName();
-	private JSONArray mTopicData = null;
-	protected ProgressBar mProgressBar;
-	private final String KEY_TITLE = "topic_title";
-	private TextView noItemsToDisplay;
-	private int mTopicId;
-	private int mLanguageId;
+    public static final String TAG = TopicsListActivity.class.getSimpleName();
+    private JSONArray mTopicData = null;
+    protected ProgressBar mProgressBar;
+    private final String KEY_TITLE = "topic_title";
+    private TextView noItemsToDisplay;
+    private int mTopicId;
+    private int mLanguageId;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_list);
-		Log.d(TAG, "onCreated");
-		Bundle bundle = getIntent().getExtras();
-		mLanguageId = bundle.getInt("language_id");
-		Log.d(TAG, "retrieving extras (mLanguageId): " + mLanguageId);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_list);
+        Log.d(TAG, "onCreated");
+        Bundle bundle = getIntent().getExtras();
+        mLanguageId = bundle.getInt("language_id");
+        Log.d(TAG, "retrieving extras (mLanguageId): " + mLanguageId);
 
-		mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
-		Log.d(TAG, "process bar created");
-		noItemsToDisplay = (TextView) findViewById(R.id.no_items_to_display);
-		Log.d(TAG, "no items to display textarea created");
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
+        Log.d(TAG, "process bar created");
+        noItemsToDisplay = (TextView) findViewById(R.id.no_items_to_display);
+        Log.d(TAG, "no items to display textarea created");
 
-		if (isNetworkAvaileable()) {
-			Log.d(TAG, "network is availeable, continue... ");
-			mProgressBar.setVisibility(View.VISIBLE);
-			Log.d(TAG, "progress bar set to visible");
-			GetBlogPostsTask getBlogPostsTask = new GetBlogPostsTask();
-			Log.d(TAG, "async task finished");
-			getBlogPostsTask.execute();
-		} else {			
-			//just in case for future reference
-			// Toast.makeText(this, "Network is unavaileable!",
-			// Toast.LENGTH_LONG).show();
-			Log.d(TAG, "no internet connection, generating alert");
-			updateDisplayForErrors();
-			Log.d(TAG, "setting text for no items to display textview");
-			noItemsToDisplay.setText(R.string.no_items_to_display);
-			Log.d(TAG, "setting progressbar to invisible");
-			mProgressBar.setVisibility(View.INVISIBLE);
-		}
+        if (isNetworkAvaileable()) {
+            Log.d(TAG, "network is availeable, continue... ");
+            mProgressBar.setVisibility(View.VISIBLE);
+            Log.d(TAG, "progress bar set to visible");
+            GetBlogPostsTask getBlogPostsTask = new GetBlogPostsTask();
+            Log.d(TAG, "async task finished");
+            getBlogPostsTask.execute();
+        } else {
+            //just in case for future reference
+            // Toast.makeText(this, "Network is unavaileable!",
+            // Toast.LENGTH_LONG).show();
+            Log.d(TAG, "no internet connection, generating alert");
+            updateDisplayForErrors();
+            Log.d(TAG, "setting text for no items to display textview");
+            noItemsToDisplay.setText(R.string.no_items_to_display);
+            Log.d(TAG, "setting progressbar to invisible");
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
 
-	}
+    }
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
 
-		try {
-			JSONObject jsonPost = mTopicData.getJSONObject(position);
-			mTopicId = Integer.parseInt(jsonPost.getString("topic_id"));
-			Log.d(TAG, "decreasing value of topic_id by 1 since Table");
-			Log.d(TAG, "topic id: "+mTopicId+" value: "+jsonPost.getString("topic_title")+"  passed to another intent: "+TopicsListActivity.class.getSimpleName());
-			Intent intent = new Intent(this, WordsListActivity.class);
-			Bundle bundle = new Bundle();
-			Log.d(TAG, "language_id and topic_id put into new Bundle");
-			bundle.putInt("topic_id", mTopicId); 
-			bundle.putInt("language_id", mLanguageId); 
-			Log.d(TAG, "Bundle put into intent");
-			intent.putExtras(bundle); 
-			Log.d(TAG, "start new activity and finish");
-			startActivity(intent);
-			finish();
-		} catch (JSONException e) {
-			LogException(e);
-		}
+        try {
+            JSONObject jsonPost = mTopicData.getJSONObject(position);
+            mTopicId = Integer.parseInt(jsonPost.getString("topic_id"));
+            Log.d(TAG, "decreasing value of topic_id by 1 since Table");
+            Log.d(TAG, "topic id: " + mTopicId + " value: " + jsonPost.getString("topic_title") + "  passed to another intent: " + TopicsListActivity.class.getSimpleName());
+            Intent intent = new Intent(this, WordsListActivity.class);
+            Bundle bundle = new Bundle();
+            Log.d(TAG, "language_id and topic_id put into new Bundle");
+            bundle.putInt("topic_id", mTopicId);
+            bundle.putInt("language_id", mLanguageId);
+            Log.d(TAG, "Bundle put into intent");
+            intent.putExtras(bundle);
+            Log.d(TAG, "start new activity and finish");
+            startActivity(intent);
+            finish();
+        } catch (JSONException e) {
+            LogException(e);
+        }
 
-	}
-	
-	private void LogVerbose(String verbose) {
-		Log.v(TAG, verbose);
-	}
-	
-	private void LogInfo(String info) {
-		Log.i(TAG, info);
-	}
-	
-	private void LogDebug(String debug) {
-		Log.d(TAG, debug);
-	}
+    }
 
-	private void LogException(Exception e) {
-		Log.e(TAG, "exception caught: ", e);
-	}
+    private void LogVerbose(String verbose) {
+        Log.v(TAG, verbose);
+    }
 
-	private void handleBlogResponse() {
-		mProgressBar.setVisibility(View.INVISIBLE);
-		if (mTopicData.length() == 0) {
-			updateDisplayForErrors();
-		} else {
-			try {
-				JSONArray jsonPosts = mTopicData;
-				ArrayList<HashMap<String, String>> blogPosts = new ArrayList<HashMap<String, String>>();
-				for (int i = 0; i < jsonPosts.length(); i++) {
-					JSONObject post = jsonPosts.getJSONObject(i);
-					String language = post.getString(KEY_TITLE);
-					language = Html.fromHtml(language).toString();
+    private void LogInfo(String info) {
+        Log.i(TAG, info);
+    }
 
-					HashMap<String, String> blogPost = new HashMap<String, String>();
-					blogPost.put(KEY_TITLE, language);
-					blogPosts.add(blogPost);
-				}
+    private void LogDebug(String debug) {
+        Log.d(TAG, debug);
+    }
 
-				String[] keys = { KEY_TITLE };
-				int[] ids = { android.R.id.text1 };
-				SimpleAdapter adapter = new SimpleAdapter(this, blogPosts,
-						android.R.layout.simple_expandable_list_item_1, keys,
-						ids);
+    private void LogException(Exception e) {
+        Log.e(TAG, "exception caught: ", e);
+    }
 
-				setListAdapter(adapter);
-			} catch (JSONException e) {
-				LogException(e);
-			}
-		}
+    private void handleBlogResponse() {
+        mProgressBar.setVisibility(View.INVISIBLE);
+        if (mTopicData.length() == 0) {
+            updateDisplayForErrors();
+        } else {
+            try {
+                JSONArray jsonPosts = mTopicData;
+                ArrayList<HashMap<String, String>> blogPosts = new ArrayList<HashMap<String, String>>();
+                for (int i = 0; i < jsonPosts.length(); i++) {
+                    JSONObject post = jsonPosts.getJSONObject(i);
+                    String language = post.getString(KEY_TITLE);
+                    language = Html.fromHtml(language).toString();
 
-	}
+                    HashMap<String, String> blogPost = new HashMap<String, String>();
+                    blogPost.put(KEY_TITLE, language);
+                    blogPosts.add(blogPost);
+                }
 
-	private void updateDisplayForErrors() {
-		Log.d(TAG, "updateDisplayForErrors");
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(getString(R.string.no_languages_alert_title));
-		builder.setMessage(getString(R.string.no_languages_alert_description));
-		builder.setPositiveButton(android.R.string.ok, null);
-		AlertDialog dialog = builder.create();
-		dialog.show();
-		Log.d(TAG, "get emptyTextView");
-		TextView emptyTextView = (TextView) findViewById(R.id.no_items_to_display);
-		Log.d(TAG, "show alert");
-		emptyTextView.setText(getString(R.string.no_items_to_display));
-		Log.d(TAG, "done");
-	}
+                String[] keys = {KEY_TITLE};
+                int[] ids = {android.R.id.text1};
+                SimpleAdapter adapter = new SimpleAdapter(this, blogPosts,
+                        android.R.layout.simple_expandable_list_item_1, keys,
+                        ids);
 
-	private boolean isNetworkAvaileable() {
-		ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+                setListAdapter(adapter);
+            } catch (JSONException e) {
+                LogException(e);
+            }
+        }
 
-		if (networkInfo != null && networkInfo.isConnected()) {
-			return true;
-		} else {
-			return false;
-		}
+    }
 
-	}
+    private void updateDisplayForErrors() {
+        Log.d(TAG, "updateDisplayForErrors");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.no_languages_alert_title));
+        builder.setMessage(getString(R.string.no_languages_alert_description));
+        builder.setPositiveButton(android.R.string.ok, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        Log.d(TAG, "get emptyTextView");
+        TextView emptyTextView = (TextView) findViewById(R.id.no_items_to_display);
+        Log.d(TAG, "show alert");
+        emptyTextView.setText(getString(R.string.no_items_to_display));
+        Log.d(TAG, "done");
+    }
 
-	private class GetBlogPostsTask extends AsyncTask<Object, Void, JSONArray> {
+    private boolean isNetworkAvaileable() {
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
 
-		@Override
-		protected JSONArray doInBackground(Object... params) {
-			int responseCode = -1;
-			JSONArray jsonResponse = null;
-			StringBuilder builder = new StringBuilder();
-			HttpClient client = new DefaultHttpClient();
-			HttpGet httpget = new HttpGet(
-					"http://api.rafalmanka.pl/api/fetchTopics?language="
-							+ mLanguageId);
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
 
-			try {
-				HttpResponse response = client.execute(httpget);
-				StatusLine statusLine = response.getStatusLine();
-				Log.d(TAG, "status line: " + statusLine);
-				responseCode = statusLine.getStatusCode();
-				LogDebug(responseCode + "");
-				if (responseCode == HttpURLConnection.HTTP_OK) {
-					HttpEntity entity = response.getEntity();
-					InputStream content = entity.getContent();
-					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(content));
-					String line;
-					while ((line = reader.readLine()) != null) {
-						Log.d(TAG, "line: " + line);
-						builder.append(line);
-					}
+    }
 
-					jsonResponse = new JSONArray(builder.toString());
-					LogInfo("builder.toString(): "+builder.toString());
-				} else {
-					Log.e(TAG, builder.toString());
-				}
-			} catch (JSONException e) {
-				LogException(e);
-			} catch (Exception e) {
-				LogException(e);
-			}
+    private class GetBlogPostsTask extends AsyncTask<Object, Void, JSONArray> {
 
-			return jsonResponse;
-		}
+        @Override
+        protected JSONArray doInBackground(Object... params) {
+            int responseCode = -1;
+            JSONArray jsonResponse = null;
+            StringBuilder builder = new StringBuilder();
+            HttpClient client = new DefaultHttpClient();
+            HttpGet httpget = new HttpGet(
+                    "http://api.rafalmanka.pl/api/fetchTopics?language="
+                            + mLanguageId);
 
-		@Override
-		protected void onPostExecute(JSONArray result) {
-			mTopicData = result;
-			handleBlogResponse();
-		}
+            try {
+                HttpResponse response = client.execute(httpget);
+                StatusLine statusLine = response.getStatusLine();
+                Log.d(TAG, "status line: " + statusLine);
+                responseCode = statusLine.getStatusCode();
+                LogDebug(responseCode + "");
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    HttpEntity entity = response.getEntity();
+                    InputStream content = entity.getContent();
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(content));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        Log.d(TAG, "line: " + line);
+                        builder.append(line);
+                    }
 
-	}
+                    jsonResponse = new JSONArray(builder.toString());
+                    LogInfo("builder.toString(): " + builder.toString());
+                } else {
+                    Log.e(TAG, builder.toString());
+                }
+            } catch (JSONException e) {
+                LogException(e);
+            } catch (Exception e) {
+                LogException(e);
+            }
+
+            return jsonResponse;
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray result) {
+            mTopicData = result;
+            handleBlogResponse();
+        }
+
+    }
 
 }

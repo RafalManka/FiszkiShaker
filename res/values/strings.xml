@@ -21,7 +21,7 @@
     <string name="undo">cofnij</string>
     <string name="sound">dźwięk</string>
     <string name="save">zapisz</string>
-    <string name="activity_settings">activity_settings</string>
+    <string name="activity_settings">Ustawienia</string>
     <string name="menu_add_new_word">dodaj nowe słowo</string>
     <string name="add_new_word_word">nowe słowo</string>
     <string name="add_new_word_description">tłumaczenie</string>
@@ -32,7 +32,7 @@
     <string name="textView_add_new_dictionary_enter_title">Nazwa nowego słownika:</string>
     <string name="pozwol_innym_na_korzystanie_z_niego">pozwól, by inni mogli wykorzystać ten zestaw w przyszłości</string>
     <string name="textView_add_new_word">dodaj pozycję</string>
-    <string name="activity_add_new_dictionary">dodaj nową pozycję</string>
+    <string name="activity_add_new_wordset">dodaj</string>
     <string name="word">słowo</string>
     <string name="translation">tłumaczenie</string>
     <string name="title">nazwa zestawu słówek</string>
@@ -50,5 +50,9 @@
     <string name="yes">TAK</string>
     <string name="no">NIE</string>
     <string name="you_have_to_have_at_least_one_wordset">nie możesz usunąć ostatniego zestawu słówek</string>
+    <string name="activity_main">nauka słówek</string>
+    <string name="title_bar_starting_point_activity">Menu główne</string>
+    <string name="activity_flipcards">Fiszki</string>
+    <string name="activity_download_wordset">Pobierz słówka</string>
 
 </resources>

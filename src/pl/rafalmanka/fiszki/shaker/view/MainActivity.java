@@ -1,16 +1,8 @@
 package pl.rafalmanka.fiszki.shaker.view;
 
-import pl.rafalmanka.fiszki.shaker.R;
-import pl.rafalmanka.fiszki.shaker.animations.FlipAnimation;
-import pl.rafalmanka.fiszki.shaker.model.DatabaseHandler;
-import pl.rafalmanka.fiszki.shaker.model.Word;
-import pl.rafalmanka.fiszki.shaker.utils.ShakeDetector;
-import pl.rafalmanka.fiszki.shaker.utils.ShakeDetector.OnShakeListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
@@ -31,336 +23,343 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import pl.rafalmanka.fiszki.shaker.R;
+import pl.rafalmanka.fiszki.shaker.animations.FlipAnimation;
+import pl.rafalmanka.fiszki.shaker.model.DatabaseHandler;
+import pl.rafalmanka.fiszki.shaker.model.Word;
+import pl.rafalmanka.fiszki.shaker.utils.ShakeDetector;
+import pl.rafalmanka.fiszki.shaker.utils.ShakeDetector.OnShakeListener;
+
 public class MainActivity extends Activity {
-	private final String TAG = "MainActivity";
-	private TextView mWordOrig;
-	private TextView mWordTranslation;
-	private Typeface mTypeFace;
-	private SensorManager mSensorManager;
-	private Sensor mAccelerometer;
-	private ShakeDetector mShakeDetector;
-	private Word mWord;
-	// private Animation bounce;
-	private MediaPlayer player;
-	private int mWordCorrect = 0;
-	private int mWordIncorrect = 0;
-	private TextView mCorrectTotal;
-	private TextView mIncorrectTotal;
-	private View mButtonMarkCorrect;
-	private View mButtonMarkIncorrect;
-	private boolean mUndo = false;
-	private Button mButtonNextWord;
-	private boolean mAllowNextWord = true;
-	private boolean mFlipcardFace = true;
-	private FlipAnimation mFlipAnimation;
-	private SharedPreferences mSharedPreferences;
-	private int mCounter = 0;
+    private final String TAG = "MainActivity";
+    private TextView mWordOrig;
+    private TextView mWordTranslation;
+    private Typeface mTypeFace;
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
+    private Word mWord;
+    // private Animation bounce;
+    private MediaPlayer player;
+    private int mWordCorrect = 0;
+    private int mWordIncorrect = 0;
+    private TextView mCorrectTotal;
+    private TextView mIncorrectTotal;
+    private View mButtonMarkCorrect;
+    private View mButtonMarkIncorrect;
+    private boolean mUndo = false;
+    private Button mButtonNextWord;
+    private boolean mAllowNextWord = true;
+    private boolean mFlipcardFace = true;
+    private FlipAnimation mFlipAnimation;
+    private SharedPreferences mSharedPreferences;
+    private int mCounter = 0;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
-		Log.d(TAG, "OnCreated");
-		super.onCreate(savedInstanceState);
-		mSharedPreferences = PreferenceManager
-				.getDefaultSharedPreferences(this);
+        Log.d(TAG, "OnCreated");
+        super.onCreate(savedInstanceState);
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
 
-		Log.d(TAG, "creating preferences");
+        Log.d(TAG, "creating preferences");
 
-		Log.d(TAG, "creating layout of an activity");
-		setContentView(R.layout.activity_main);
+        Log.d(TAG, "creating layout of an activity");
+        setContentView(R.layout.activity_main);
 
-		Log.d(TAG, "creating instance of bouncing animation");
-		// bounce = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        Log.d(TAG, "creating instance of bouncing animation");
+        // bounce = AnimationUtils.loadAnimation(this, R.anim.bounce);
 
-		Log.d(TAG, "assigning strings from layout to variables");
+        Log.d(TAG, "assigning strings from layout to variables");
 
-		mTypeFace = Typeface.createFromAsset(getAssets(),
-				"ubuntu_font/Ubuntu-B.ttf");
-		mWordOrig = (TextView) findViewById(R.id.flipcard_front);
-		mWordOrig.setTypeface(mTypeFace);
-		mWordTranslation = (TextView) findViewById(R.id.flipcard_back);
-		mWordTranslation.setTypeface(mTypeFace);
+        mTypeFace = Typeface.createFromAsset(getAssets(),
+                "ubuntu_font/Ubuntu-B.ttf");
+        mWordOrig = (TextView) findViewById(R.id.flipcard_front);
+        mWordOrig.setTypeface(mTypeFace);
+        mWordTranslation = (TextView) findViewById(R.id.flipcard_back);
+        mWordTranslation.setTypeface(mTypeFace);
 
-		Log.d(TAG, "creating instance of sensor event");
-		mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-		mAccelerometer = mSensorManager
-				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		Log.d(TAG, "creating onshakelistener");
+        Log.d(TAG, "creating instance of sensor event");
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        Log.d(TAG, "creating onshakelistener");
 
-		mCorrectTotal = (TextView) findViewById(R.id.textView_correct_total);
-		mIncorrectTotal = (TextView) findViewById(R.id.textView_incorrect_total);
+        mCorrectTotal = (TextView) findViewById(R.id.textView_correct_total);
+        mIncorrectTotal = (TextView) findViewById(R.id.textView_incorrect_total);
 
-		mButtonMarkCorrect = (TextView) findViewById(R.id.button_word_known);
-		mButtonMarkIncorrect = (TextView) findViewById(R.id.button_word_unknown);
-		mButtonNextWord = (Button) findViewById(R.id.button_next_word);
-		mButtonNextWord.setClickable(false);
-		mButtonNextWord.setTextColor(Color.DKGRAY);
-		// mButtonNextWord.setTextColor(Color.DKGRAY);
-		onEvent();
+        mButtonMarkCorrect = (TextView) findViewById(R.id.button_word_known);
+        mButtonMarkIncorrect = (TextView) findViewById(R.id.button_word_unknown);
+        mButtonNextWord = (Button) findViewById(R.id.button_next_word);
+        mButtonNextWord.setClickable(false);
+        mButtonNextWord.setTextColor(Color.DKGRAY);
+        // mButtonNextWord.setTextColor(Color.DKGRAY);
+        onEvent();
 
-		mShakeDetector = new ShakeDetector(new OnShakeListener() {
+        mShakeDetector = new ShakeDetector(new OnShakeListener() {
 
-			@Override
-			public void onShake() {
-				Log.d(TAG, "onSheked");
-				onEvent();
-				clearAllButtons();
-			}
-		});
+            @Override
+            public void onShake() {
+                Log.d(TAG, "onSheked");
+                onEvent();
+                clearAllButtons();
+            }
+        });
 
-	}
+    }
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		mSensorManager.unregisterListener(mShakeDetector);
-	}
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(mShakeDetector);
+    }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-				SensorManager.SENSOR_DELAY_UI);
-	}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                SensorManager.SENSOR_DELAY_UI);
+    }
 
-	private void animateFiszka(TextView textView, int duration) {
-		AlphaAnimation fadeInAnimation = new AlphaAnimation(0, 1);
-		fadeInAnimation.setDuration(duration);
-		fadeInAnimation.setFillAfter(true);
-		textView.setAnimation(fadeInAnimation);
-	}
+    private void animateFiszka(TextView textView, int duration) {
+        AlphaAnimation fadeInAnimation = new AlphaAnimation(0, 1);
+        fadeInAnimation.setDuration(duration);
+        fadeInAnimation.setFillAfter(true);
+        textView.setAnimation(fadeInAnimation);
+    }
 
-	private void playSound() {
-		
-		if (mSharedPreferences.getBoolean(SettingsActivity.SOUND_PREFERENCE, false)) {
-			player = MediaPlayer.create(this, R.raw.spell);
-			player.start();
-			player.setOnCompletionListener(new OnCompletionListener() {
-				@Override
-				public void onCompletion(MediaPlayer mp) {
-					mp.release();
-				}
-			});
-		}
-	}
+    private void playSound() {
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.main, menu);
-		return true;
-	}
+        if (mSharedPreferences.getBoolean(SettingsActivity.SOUND_PREFERENCE, false)) {
+            player = MediaPlayer.create(this, R.raw.spell);
+            player.start();
+            player.setOnCompletionListener(new OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.release();
+                }
+            });
+        }
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main, menu);
+        return true;
+    }
 
-		switch (item.getItemId()) {
-		case R.id.menu_settings:
-			Intent settings_intent = new Intent(this, SettingsActivity.class);
-			startActivity(settings_intent);
-			break;
-		case R.id.menu_add_new_word:
-			Intent add_new_word_intent = new Intent(this,
-					AddNewWordActivity.class);
-			startActivity(add_new_word_intent);
-			break;
-		case R.id.menu_add_new_dictionary:
-			mSharedPreferences = PreferenceManager
-					.getDefaultSharedPreferences(this);
-			String language = mSharedPreferences.getString("LANGUAGE", "");
-			Intent add_new_dictionary_intent = new Intent(this,
-					AddNewDictionaryActivity.class);
-			add_new_dictionary_intent.putExtra("LANGUAGE", language);
-			startActivity(add_new_dictionary_intent);
-			break;
-		case R.id.menu_choose_wordset:
-			Intent choose_wordset_intent = new Intent(this,
-					ChooseLocalSetActivity.class);
-			Log.d(TAG, "intent created");
-			startActivity(choose_wordset_intent);
-			break;
-		}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-		return false;
-	}
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                Intent settings_intent = new Intent(this, SettingsActivity.class);
+                startActivity(settings_intent);
+                break;
+            case R.id.menu_add_new_word:
+                Intent add_new_word_intent = new Intent(this,
+                        AddNewWordActivity.class);
+                startActivity(add_new_word_intent);
+                break;
+            case R.id.menu_add_new_dictionary:
+                mSharedPreferences = PreferenceManager
+                        .getDefaultSharedPreferences(this);
+                String language = mSharedPreferences.getString("LANGUAGE", "");
+                Intent add_new_dictionary_intent = new Intent(this,
+                        AddNewWordsetActivity.class);
+                add_new_dictionary_intent.putExtra("LANGUAGE", language);
+                startActivity(add_new_dictionary_intent);
+                break;
+            case R.id.menu_choose_wordset:
+                Intent choose_wordset_intent = new Intent(this,
+                        ChooseLocalSetActivity.class);
+                Log.d(TAG, "intent created");
+                startActivity(choose_wordset_intent);
+                break;
+        }
 
-	private void onEvent() {
-		if (mAllowNextWord) {
-			Log.d(TAG, "allowed");
-			mAllowNextWord = false;
-			Log.d(TAG, "mAllowNextWord changed to false 2");
-			Log.d(TAG, "onEvented");
+        return false;
+    }
 
-			Log.d(TAG, "preparing database");
-			DatabaseHandler db = new DatabaseHandler(this);
+    private void onEvent() {
+        if (mAllowNextWord) {
+            Log.d(TAG, "allowed");
+            mAllowNextWord = false;
+            Log.d(TAG, "mAllowNextWord changed to false 2");
+            Log.d(TAG, "onEvented");
 
-			if (mSharedPreferences.getBoolean(SettingsActivity.RANDOMIZE_PREFERENCE, false)) {
-				Log.d(TAG, "fetching single random row");
-				mWord = db.getRandom();
-			} else {
-				mWord = db.getNext(mCounter);
-				mCounter++;
-			}
-			
+            Log.d(TAG, "preparing database");
+            DatabaseHandler db = new DatabaseHandler(this);
 
-			Log.d(TAG, "name of set: " + mWord.getNameOfSet() + " ,word: "
-					+ mWord.getWord() + " , language: " + mWord.getLanguage());
+            if (mSharedPreferences.getBoolean(SettingsActivity.RANDOMIZE_PREFERENCE, false)) {
+                Log.d(TAG, "fetching single random row");
+                mWord = db.getRandom();
+            } else {
+                mWord = db.getNext(mCounter);
+                mCounter++;
+            }
 
-			Log.d(TAG, "setting new title: " + mWord.getWord());
-			mWordOrig.setText(Html.fromHtml(mWord.getWord()));
 
-			Log.d(TAG, "animating title");
-			animateFiszka(mWordOrig, 1500);
-			// mWordOrig.startAnimation(bounce);
+            Log.d(TAG, "name of set: " + mWord.getNameOfSet() + " ,word: "
+                    + mWord.getWord() + " , language: " + mWord.getLanguage());
 
-			Log.d(TAG,
-					"showing description: "
-							+ mWord.getConcatenatedTranslations());
-			mWordTranslation.setText(Html.fromHtml(mWord
-					.getConcatenatedTranslations()));
+            Log.d(TAG, "setting new title: " + mWord.getWord());
+            mWordOrig.setText(Html.fromHtml(mWord.getWord()));
 
-			playSound();
-		} else {
-			Log.d(TAG, "not allowed");
-		}
-	}
+            Log.d(TAG, "animating title");
+            animateFiszka(mWordOrig, 1500);
+            // mWordOrig.startAnimation(bounce);
 
-	public void gotoSelectLanguage(View v) {
-		Log.i(TAG, "onClicked");
+            Log.d(TAG,
+                    "showing description: "
+                            + mWord.getConcatenatedTranslations());
+            mWordTranslation.setText(Html.fromHtml(mWord
+                    .getConcatenatedTranslations()));
 
-		try {
-			Intent intent = new Intent(this, LanguageListActivity.class);
-			startActivity(intent);
-		} catch (Exception e) {
-			Log.e(TAG, "Error: ", e);
-		}
-	}
+            playSound();
+        } else {
+            Log.d(TAG, "not allowed");
+        }
+    }
 
-	public void onNextWordClick(View view) {
-		if (!mFlipcardFace) {
-			onCardClick(view);
+    public void gotoSelectLanguage(View v) {
+        Log.i(TAG, "onClicked");
 
-			mFlipAnimation.setAnimationListener(new AnimationListener() {
+        try {
+            Intent intent = new Intent(this, LanguageListActivity.class);
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.e(TAG, "Error: ", e);
+        }
+    }
 
-				@Override
-				public void onAnimationStart(Animation animation) {
-				}
+    public void onNextWordClick(View view) {
+        if (!mFlipcardFace) {
+            onCardClick(view);
 
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-				}
+            mFlipAnimation.setAnimationListener(new AnimationListener() {
 
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					onEvent();
-					clearAllButtons();
-				}
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
 
-			});
-		} else {
-			onEvent();
-			clearAllButtons();
-		}
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
 
-	}
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    onEvent();
+                    clearAllButtons();
+                }
 
-	private void clearAllButtons() {
-		clearButton(mButtonMarkCorrect, R.string.know_this_word,
-				new View[] { mButtonMarkIncorrect });
-		clearButton(mButtonMarkIncorrect, R.string.dont_know_this_word,
-				new View[] { mButtonMarkCorrect });
-	}
+            });
+        } else {
+            onEvent();
+            clearAllButtons();
+        }
 
-	private void clearButton(View button, int resource, View[] unblockButtons) {
-		Log.d(TAG, "clearing button: " + button.getId());
-		if (unblockButtons != null) {
-			for (View unblockButton : unblockButtons) {
-				Log.d(TAG, "unblocking button: " + unblockButton.getId());
-				unblockButton.setClickable(true);
-				((TextView) unblockButton).setTextColor(Color.BLACK);
-			}
-		}
-		Log.d(TAG, "setting text of button back to " + getText(resource));
-		((TextView) button).setText(resource);
-		Log.d(TAG, "setting undo to false ");
-		mUndo = false;
-		mButtonNextWord.setClickable(false);
-		mButtonNextWord.setTextColor(Color.DKGRAY);
-		mAllowNextWord = false;
-		Log.d(TAG, "mAllowNextWord changed to false 1");
-	}
+    }
 
-	private void changeButtonToUndo(View button, View[] blockedButtons) {
-		Log.d(TAG, "changing button to undo button: " + button.getId());
-		if (blockedButtons != null) {
-			for (View blockedButton : blockedButtons) {
-				Log.d(TAG, "blopcking button " + button.getId());
-				blockedButton.setClickable(false);
-				((TextView) blockedButton).setTextColor(Color.DKGRAY);
-			}
-		}
-		((TextView) button).setText(R.string.undo);
-		mUndo = true;
-		mButtonNextWord.setClickable(true);
-		mButtonNextWord.setTextColor(Color.BLACK);
-		mAllowNextWord = true;
-		Log.d(TAG, "mAllowNextWord changed to true");
-	}
+    private void clearAllButtons() {
+        clearButton(mButtonMarkCorrect, R.string.know_this_word,
+                new View[]{mButtonMarkIncorrect});
+        clearButton(mButtonMarkIncorrect, R.string.dont_know_this_word,
+                new View[]{mButtonMarkCorrect});
+    }
 
-	public void onCardClick(View view) {
-		if (mFlipcardFace) {
-			mFlipcardFace = false;
-		} else {
-			mFlipcardFace = true;
-		}
-		flipCard();
-	}
+    private void clearButton(View button, int resource, View[] unblockButtons) {
+        Log.d(TAG, "clearing button: " + button.getId());
+        if (unblockButtons != null) {
+            for (View unblockButton : unblockButtons) {
+                Log.d(TAG, "unblocking button: " + unblockButton.getId());
+                unblockButton.setClickable(true);
+                ((TextView) unblockButton).setTextColor(Color.BLACK);
+            }
+        }
+        Log.d(TAG, "setting text of button back to " + getText(resource));
+        ((TextView) button).setText(resource);
+        Log.d(TAG, "setting undo to false ");
+        mUndo = false;
+        mButtonNextWord.setClickable(false);
+        mButtonNextWord.setTextColor(Color.DKGRAY);
+        mAllowNextWord = false;
+        Log.d(TAG, "mAllowNextWord changed to false 1");
+    }
 
-	private void flipCard() {
-		View rootLayout = (View) findViewById(R.id.main_activity_root);
-		View cardFace = (View) findViewById(R.id.flipcard_front);
-		View cardBack = (View) findViewById(R.id.flipcard_back);
+    private void changeButtonToUndo(View button, View[] blockedButtons) {
+        Log.d(TAG, "changing button to undo button: " + button.getId());
+        if (blockedButtons != null) {
+            for (View blockedButton : blockedButtons) {
+                Log.d(TAG, "blopcking button " + button.getId());
+                blockedButton.setClickable(false);
+                ((TextView) blockedButton).setTextColor(Color.DKGRAY);
+            }
+        }
+        ((TextView) button).setText(R.string.undo);
+        mUndo = true;
+        mButtonNextWord.setClickable(true);
+        mButtonNextWord.setTextColor(Color.BLACK);
+        mAllowNextWord = true;
+        Log.d(TAG, "mAllowNextWord changed to true");
+    }
 
-		mFlipAnimation = new FlipAnimation(cardFace, cardBack);
-		if (cardFace.getVisibility() == View.GONE) {
-			mFlipAnimation.reverse();
-		}
+    public void onCardClick(View view) {
+        if (mFlipcardFace) {
+            mFlipcardFace = false;
+        } else {
+            mFlipcardFace = true;
+        }
+        flipCard();
+    }
 
-		rootLayout.startAnimation(mFlipAnimation);
-	}
+    private void flipCard() {
+        View rootLayout = (View) findViewById(R.id.main_activity_root);
+        View cardFace = (View) findViewById(R.id.flipcard_front);
+        View cardBack = (View) findViewById(R.id.flipcard_back);
 
-	public void addScore(View view) {
-		Log.d(TAG, "addScore for id: " + view.getId());
+        mFlipAnimation = new FlipAnimation(cardFace, cardBack);
+        if (cardFace.getVisibility() == View.GONE) {
+            mFlipAnimation.reverse();
+        }
 
-		switch (view.getId()) {
-		case R.id.button_word_known:
-			Log.d(TAG, "word known id: " + R.id.button_word_known);
-			if (mUndo) {
-				mWordCorrect--;
-				clearButton(mButtonMarkCorrect, R.string.know_this_word,
-						new View[] { mButtonMarkIncorrect });
-			} else {
-				mWordCorrect++;
-				changeButtonToUndo(mButtonMarkCorrect,
-						new View[] { mButtonMarkIncorrect });
-			}
-			mCorrectTotal.setText(mWordCorrect + "");
-			break;
-		case R.id.button_word_unknown:
-			if (mUndo) {
-				mWordIncorrect--;
-				clearButton(mButtonMarkIncorrect, R.string.dont_know_this_word,
-						new View[] { mButtonMarkCorrect });
-			} else {
-				mWordIncorrect++;
-				changeButtonToUndo(mButtonMarkIncorrect,
-						new View[] { mButtonMarkCorrect });
-			}
-			mIncorrectTotal.setText(mWordIncorrect + "");
-			break;
-		}
+        rootLayout.startAnimation(mFlipAnimation);
+    }
 
-	}
+    public void addScore(View view) {
+        Log.d(TAG, "addScore for id: " + view.getId());
+
+        switch (view.getId()) {
+            case R.id.button_word_known:
+                Log.d(TAG, "word known id: " + R.id.button_word_known);
+                if (mUndo) {
+                    mWordCorrect--;
+                    clearButton(mButtonMarkCorrect, R.string.know_this_word,
+                            new View[]{mButtonMarkIncorrect});
+                } else {
+                    mWordCorrect++;
+                    changeButtonToUndo(mButtonMarkCorrect,
+                            new View[]{mButtonMarkIncorrect});
+                }
+                mCorrectTotal.setText(mWordCorrect + "");
+                break;
+            case R.id.button_word_unknown:
+                if (mUndo) {
+                    mWordIncorrect--;
+                    clearButton(mButtonMarkIncorrect, R.string.dont_know_this_word,
+                            new View[]{mButtonMarkCorrect});
+                } else {
+                    mWordIncorrect++;
+                    changeButtonToUndo(mButtonMarkIncorrect,
+                            new View[]{mButtonMarkCorrect});
+                }
+                mIncorrectTotal.setText(mWordIncorrect + "");
+                break;
+        }
+
+    }
 
 }
