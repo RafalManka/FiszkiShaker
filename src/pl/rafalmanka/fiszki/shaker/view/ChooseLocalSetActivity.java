@@ -51,7 +51,7 @@ public class ChooseLocalSetActivity extends ListActivity {
 
         setContentView(R.layout.activity_list);
 
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar_activity_list);
         mProgressBar.setVisibility(View.VISIBLE);
         GetWordsets getWordsets = new GetWordsets();
         getWordsets.execute();

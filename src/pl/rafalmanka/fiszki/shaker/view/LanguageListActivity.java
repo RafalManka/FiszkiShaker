@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
@@ -47,9 +50,30 @@ public class LanguageListActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.title_bar);
+
+        TextView textView = (TextView) findViewById(R.id.textView_titlebar);
+        textView.setText(R.string.activity_choose_language);
+
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_titlebar);
+        linearLayout.setBackgroundColor(getResources().getColor(R.color.colors_titlebar_purple));
+
+        LinearLayout bgLinearLayout = (LinearLayout) findViewById(R.id.layout_list);
+        bgLinearLayout.setBackgroundColor(getResources().getColor(R.color.colors_layout_purple));
+
+        ImageButton ib = (ImageButton) findViewById(R.id.imageButton_titlebar);
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), StartingPointActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar_activity_list);
         noItemsToDisplay = (TextView) findViewById(R.id.no_items_to_display);
 
         if (isNetworkAvaileable()) {

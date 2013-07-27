@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#0db9de">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <!--<TextView
+            android:id="@+id/textView_add_new_dictionary_enter_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textView_add_new_dictionary_enter_title"
+            android:layout_margin="10dp"
+            android:textAppearance="?android:attr/textAppearanceLarge" />-->
+
+        <EditText
+            android:id="@+id/editText_add_new_dictionary_enter_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"
+            android:padding="15dp">
+
+            <requestFocus />
+        </EditText>
+
+
+
+        <!--<TextView
+            android:id="@+id/textView_add_new_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textView_add_new_word"
+            android:layout_margin="10dp"
+            android:textAppearance="?android:attr/textAppearanceLarge" />-->
+
+        <EditText
+            android:id="@+id/editText_add_new_dictionary_add_new_word"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:ems="10"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"/>
+
+        <EditText
+            android:id="@+id/editText_add_new_dictionary_add_new_translation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:ems="10"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"/>
+
+        <Button
+            android:id="@+id/button_add_new_dictionary_add_another"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_to_list"
+            android:background="#F1734C"
+
+            android:textColor="@android:color/white"
+            android:padding="15dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"/>
+
+      <LinearLayout
+            android:id="@+id/test_this"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_add_new_dictionary_submit_set"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_set"
+            android:background="#F1734C"
+            android:padding="15dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"/>
+        <CheckBox
+                android:id="@+id/checkBox_allow_other_to_use_set"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pozwol_innym_na_korzystanie_z_niego"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"/>
+      
+    </LinearLayout>
+</ScrollView>

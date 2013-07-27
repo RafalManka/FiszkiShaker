@@ -15,7 +15,7 @@
         <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/imageButton"
+                android:id="@+id/imageButton_titlebar"
                 android:src="@drawable/titlebar_logo"
                 android:scaleType="fitCenter"
                 android:background="@android:color/transparent"

@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
@@ -47,14 +50,35 @@ public class TopicsListActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreated");
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        Log.d(TAG, "onCreated");
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.title_bar);
+
+        LinearLayout ll = (LinearLayout) findViewById(R.id.layout_titlebar);
+        ll.setBackgroundColor(getResources().getColor(R.color.colors_titlebar_brown));
+
+        TextView tv = (TextView) findViewById(R.id.textView_titlebar);
+        tv.setText(R.string.titlebar_topic_list);
+
+        LinearLayout bgLinearLayout = (LinearLayout) findViewById(R.id.layout_list);
+        bgLinearLayout.setBackgroundColor(getResources().getColor(R.color.colors_listview_brown));
+
+        ImageButton ib = (ImageButton) findViewById(R.id.imageButton_titlebar);
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), StartingPointActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Bundle bundle = getIntent().getExtras();
         mLanguageId = bundle.getInt("language_id");
         Log.d(TAG, "retrieving extras (mLanguageId): " + mLanguageId);
 
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar_activity_list);
         Log.d(TAG, "process bar created");
         noItemsToDisplay = (TextView) findViewById(R.id.no_items_to_display);
         Log.d(TAG, "no items to display textarea created");

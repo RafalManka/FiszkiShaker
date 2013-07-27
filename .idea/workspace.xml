@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidConfiguredLogFilters">
+    <filters>
+      <filter>
+        <option name="logLevel" value="verbose" />
+        <option name="logMessagePattern" value="" />
+        <option name="logTagPattern" value="" />
+        <option name="name" value="szejker" />
+        <option name="packageNamePattern" value="pl.rafalmanka.fiszki.shaker" />
+        <option name="pid" value="" />
+      </filter>
+    </filters>
+  </component>
   <component name="AndroidLayoutPreviewToolWindow">
     <option name="state">
       <GlobalState />
@@ -12,6 +24,30 @@
       </config>
     </shared>
     <layouts>
+      <layout url="file://$PROJECT_DIR$/res/layout-large/activity_main.xml">
+        <config>
+          <device>5.1in WVGA</device>
+          <theme>@android:style/Theme.Holo</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/res/layout-small/activity_main.xml">
+        <config>
+          <device>2.7in QVGA slider</device>
+          <theme>@android:style/Theme.Holo</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/res/layout-xlarge/activity_main.xml">
+        <config>
+          <device>2.7in QVGA</device>
+          <theme>@android:style/Theme.Holo</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/res/layout/activity_main.xml">
+        <config>
+          <device>3.2in HVGA slider (ADP1)</device>
+          <theme>@android:style/Theme.Holo</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/res/layout/splash_screen.xml">
         <config>
           <device>7in WSVGA (Tablet)</device>
@@ -21,51 +57,41 @@
     </layouts>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="ERROR" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="szejker" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="483537e0-64b2-44fb-895d-37f23f37f686" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/book.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/check_mark.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/cloud_download.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/down.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/edit.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/list.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/process.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/settings.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/AddNewWordsetActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/SplashScreen.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/StartingPointActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/button_book.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/button_download.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/button_edit.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/button_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/values/colors.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/splash_screen.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/starting_point.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/values/themes.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/title_bar.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-ldpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-mdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-xxhdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/model/DatabaseHandler (Kopia powodująca konflikty (użytkownik WAWDRB04) 2013-07-24).java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/AddNewDictionaryActivity.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/AddNewWordActivity.java" afterPath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/AddNewWordActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/button_arrow.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/button_minus.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/button_plus.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-mdpi/button_undo.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-mdpi/mybackground.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-xxhdpi/britain_icon.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-xxhdpi/icon_settings.png" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/layout/add_new_dictionary.xml" afterPath="$PROJECT_DIR$/res/layout/add_new_wordset.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/titlebar_logo.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/titlebar_logo.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/AddNewWordsetActivity.java" afterPath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/AddNewWordsetActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/pl/rafalmanka/fiszki/shaker/BuildConfig.java" afterPath="$PROJECT_DIR$/gen/pl/rafalmanka/fiszki/shaker/BuildConfig.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/ChooseLocalSetActivity.java" afterPath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/ChooseLocalSetActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/LanguageListActivity.java" afterPath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/LanguageListActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/MainActivity.java" afterPath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/pl/rafalmanka/fiszki/shaker/R.java" afterPath="$PROJECT_DIR$/gen/pl/rafalmanka/fiszki/shaker/R.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/SettingsActivity.java" afterPath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/SettingsActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/SplashScreen.java" afterPath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/SplashScreen.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/StartingPointActivity.java" afterPath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/StartingPointActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/TopicsListActivity.java" afterPath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/TopicsListActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/WordsListActivity.java" afterPath="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/WordsListActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/activity_list.xml" afterPath="$PROJECT_DIR$/res/layout/activity_list.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/activity_main.xml" afterPath="$PROJECT_DIR$/res/layout/activity_main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/activity_word_list.xml" afterPath="$PROJECT_DIR$/res/layout/activity_word_list.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/colors.xml" afterPath="$PROJECT_DIR$/res/values/colors.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/list_item.xml" afterPath="$PROJECT_DIR$/res/layout/list_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/settings.xml" afterPath="$PROJECT_DIR$/res/layout/settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/starting_point.xml" afterPath="$PROJECT_DIR$/res/layout/starting_point.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/styles.xml" afterPath="$PROJECT_DIR$/res/values/styles.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values-v11/styles.xml" afterPath="$PROJECT_DIR$/res/values-v11/styles.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values-v14/styles.xml" afterPath="$PROJECT_DIR$/res/values-v14/styles.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/title_bar.xml" afterPath="$PROJECT_DIR$/res/layout/title_bar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="FiszkiShaker.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -76,8 +102,13 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="Commander">
+    <leftPanel />
+    <rightPanel />
+    <splitter proportion="0.5" />
+  </component>
   <component name="CompilerWorkspaceConfiguration">
-    <option name="USE_COMPILE_SERVER" value="false" />
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -86,7 +117,6 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -123,6 +153,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -132,43 +163,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="starting_point.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/starting_point.xml">
+      <file leaf-file-name="MainActivity.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="281" column="41" selection-start="9719" selection-end="9719" vertical-scroll-proportion="0.7901431" vertical-offset="3895" max-vertical-offset="6066">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_main.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/activity_main.xml">
           <provider editor-type-id="android-designer">
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state line="84" column="60" selection-start="3741" selection-end="3760" vertical-scroll-proportion="0.0" vertical-offset="1494" max-vertical-offset="2826">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="54" selection-start="2300" selection-end="2300" vertical-scroll-proportion="0.0" vertical-offset="648" max-vertical-offset="1134">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="title_bar.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/title_bar.xml">
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="52" selection-start="696" selection-end="696" vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="666">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StartingPointActivity.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/StartingPointActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="45" selection-start="1943" selection-end="1943" vertical-scroll-proportion="1.1628319" vertical-offset="207" max-vertical-offset="1062">
+            <state line="148" column="40" selection-start="5598" selection-end="5598" vertical-scroll-proportion="-11.0" vertical-offset="2356" max-vertical-offset="3492">
               <folding />
             </state>
           </provider>
@@ -192,29 +202,52 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/values-v14/styles.xml" />
-        <option value="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/SplashScreen.java" />
-        <option value="$PROJECT_DIR$/res/drawable-mdpi/button_book.xml" />
-        <option value="$PROJECT_DIR$/res/drawable-mdpi/button_settings.xml" />
-        <option value="$PROJECT_DIR$/res/drawable-mdpi/button_download.xml" />
-        <option value="$PROJECT_DIR$/res/drawable-mdpi/button_edit.xml" />
-        <option value="$PROJECT_DIR$/res/values-v11/styles.xml" />
-        <option value="$PROJECT_DIR$/res/values/styles.xml" />
+        <option value="$PROJECT_DIR$/res/layout/activity_word_list.xml" />
+        <option value="$PROJECT_DIR$/res/layout/list_item.xml" />
+        <option value="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/TopicsListActivity.java" />
+        <option value="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/WordsListActivity.java" />
+        <option value="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/ChooseLocalSetActivity.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/res/values/themes.xml" />
-        <option value="$PROJECT_DIR$/res/values/colors.xml" />
-        <option value="$PROJECT_DIR$/res/layout/title_bar.xml" />
-        <option value="$PROJECT_DIR$/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/res/layout/starting_point.xml" />
-        <option value="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/StartingPointActivity.java" />
-        <option value="$PROJECT_DIR$/res/layout/splash_screen.xml" />
+        <option value="$PROJECT_DIR$/res/layout-xlarge/activity_main.xml" />
+        <option value="$PROJECT_DIR$/res/layout-large/activity_main.xml" />
+        <option value="$PROJECT_DIR$/res/layout-normal/activity_main.xml" />
+        <option value="$PROJECT_DIR$/res/layout-small/activity_main.xml" />
+        <option value="$PROJECT_DIR$/res/drawable-mdpi/button_arrow.xml" />
+        <option value="$PROJECT_DIR$/res/drawable-mdpi/button_plus.xml" />
+        <option value="$PROJECT_DIR$/res/drawable-mdpi/button_minus.xml" />
+        <option value="$PROJECT_DIR$/res/layout/activity_main.xml" />
+        <option value="$PROJECT_DIR$/res/drawable-mdpi/button_undo.xml" />
+        <option value="$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/MainActivity.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="-1" />
     <option name="y" value="24" />
-    <option name="width" value="1920" />
-    <option name="height" value="1032" />
+    <option name="width" value="1922" />
+    <option name="height" value="1033" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Android Lint</id>
+          </State>
+          <State>
+            <id>Error handling</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Abstraction issues</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -242,8 +275,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -334,19 +365,40 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FiszkiShaker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FiszkiShaker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable-mdpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager2.WIDTH" value="558" />
+    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager2.WIDTH" value="567" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="UI_DESIGNER_EDITOR_MODE.PaletteToolWindowManager.SHOW" value="false" />
     <property name="options.lastSelected" value="appearance" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="UI_DESIGNER_EDITOR_MODE.PaletteToolWindowManager.WIDTH" value="226" />
+    <property name="UI_DESIGNER_EDITOR_MODE.PaletteToolWindowManager.WIDTH" value="206" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="S56600637d45c" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
@@ -361,10 +413,19 @@
     <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/res/drawable-mdpi" />
+      <recent name="$PROJECT_DIR$/res/layout-large" />
+      <recent name="$PROJECT_DIR$/res/layout-xlarge" />
+      <recent name="$PROJECT_DIR$/res/layout-small" />
+      <recent name="$PROJECT_DIR$/res/layout-normal" />
+    </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="pl.rafalmanka.fiszki.shaker.view" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/res/layout" />
+      <recent name="$PROJECT_DIR$/res/layout-xlarge" />
       <recent name="C:\Users\r.manka\Dropbox\Moje projekty\android_workspace\FiszkiShaker\res\drawable-mdpi" />
       <recent name="C:\Users\r.manka\Dropbox\Moje projekty\android_workspace\FiszkiShaker\res\drawable-xxhdpi" />
     </key>
@@ -461,7 +522,7 @@
     </configuration>
     <configuration default="false" name="FiszkiShaker" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="FiszkiShaker" />
-      <option name="ACTIVITY_CLASS" value="" />
+      <option name="ACTIVITY_CLASS" value="pl.rafalmanka.fiszki.shaker.view.AddNewWordsetActivity" />
       <option name="MODE" value="default_activity" />
       <option name="DEPLOY" value="true" />
       <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
@@ -520,34 +581,55 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="24" width="1920" height="1032" extended-state="0" />
-    <editor active="false" />
+    <frame x="-1" y="24" width="1922" height="1033" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32993197" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38675213" sideWeight="0.74518687" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32993197" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997773" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3280543" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22168803" sideWeight="0.28684807" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3265306" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4332579" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="6" y="8" width="1354" height="715" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32993197" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17254274" sideWeight="0.6719457" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21477273" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16221985" sideWeight="0.74518687" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25481313" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23126338" sideWeight="0.7852273" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850778" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -612,128 +694,140 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/drawable-mdpi/button_settings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="54" selection-start="321" selection-end="321" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-mdpi/edit.png">
-      <provider selected="true" editor-type-id="images">
+    <entry file="file://$PROJECT_DIR$/res/layout/list_item.xml">
+      <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-mdpi/button_download.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="421" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-mdpi/button_edit.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="50" selection-start="202" selection-end="202" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="235" column="9" selection-start="8460" selection-end="8460" vertical-scroll-proportion="4.78125" vertical-offset="612" max-vertical-offset="5678">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/activity_main.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="39" selection-end="39" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2499">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="46" selection-start="843" selection-end="843" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/themes.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="40" selection-start="91" selection-end="91" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="170">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="16" selection-start="1312" selection-end="1346" vertical-scroll-proportion="0.0" vertical-offset="284" max-vertical-offset="1530">
-          <folding>
-            <element signature="e#1132#1188#0" expanded="false" />
-            <element signature="e#1493#1516#0" expanded="false" />
-            <element signature="e#1781#1806#0" expanded="false" />
-            <element signature="e#2061#2083#0" expanded="false" />
-            <element signature="e#2337#2359#0" expanded="false" />
-            <element signature="e#2612#2639#0" expanded="false" />
-            <element signature="e#2895#2926#0" expanded="false" />
-            <element signature="e#3157#3191#0" expanded="false" />
-            <element signature="e#3451#3486#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values-v11/styles.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="46" selection-start="468" selection-end="468" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="391">
+        <state line="3" column="40" selection-start="191" selection-end="191" vertical-scroll-proportion="0.13170731" vertical-offset="0" max-vertical-offset="450">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="46" selection-start="222" selection-end="222" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
+        <state line="12" column="32" selection-start="609" selection-end="609" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+    <entry file="file://$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/TopicsListActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="54" selection-start="2300" selection-end="2300" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="945">
+        <state line="55" column="39" selection-start="1779" selection-end="1779" vertical-scroll-proportion="0.29647058" vertical-offset="216" max-vertical-offset="4050">
+          <folding>
+            <element signature="e#2127#2155#0" expanded="false" />
+            <element signature="e#3901#3929#0" expanded="false" />
+            <element signature="e#6954#6998#0" expanded="false" />
+            <element signature="e#7028#7078#0" expanded="false" />
+            <element signature="e#7402#7441#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/WordsListActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="207" column="92" selection-start="8610" selection-end="8610" vertical-scroll-proportion="0.32648402" vertical-offset="3583" max-vertical-offset="6030">
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#3186#3436#0" expanded="false" />
+            <element signature="e#3425#3426#0" expanded="false" />
+            <element signature="e#4574#4602#0" expanded="false" />
+            <element signature="e#10585#10629#0" expanded="false" />
+            <element signature="e#10659#10709#0" expanded="false" />
+            <element signature="e#11033#11072#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/model/DatabaseHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="28" selection-start="650" selection-end="665" vertical-scroll-proportion="0.16941176" vertical-offset="0" max-vertical-offset="10458">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/title_bar.xml">
+    <entry file="file://$PROJECT_DIR$/res/layout/activity_word_list.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="52" selection-start="696" selection-end="696" vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="666">
+        <state line="22" column="20" selection-start="740" selection-end="740" vertical-scroll-proportion="0.34146342" vertical-offset="256" max-vertical-offset="666">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/starting_point.xml">
+    <entry file="file://$PROJECT_DIR$/res/layout/activity_list.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="84" column="60" selection-start="3741" selection-end="3760" vertical-scroll-proportion="0.0" vertical-offset="1494" max-vertical-offset="2826">
+        <state line="21" column="38" selection-start="724" selection-end="749" vertical-scroll-proportion="0.0" vertical-offset="340" max-vertical-offset="561">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/splash_screen.xml">
-      <provider selected="true" editor-type-id="android-designer">
+    <entry file="file://$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/LanguageListActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="0" selection-start="1517" selection-end="1517" vertical-scroll-proportion="0.26342282" vertical-offset="47" max-vertical-offset="3349">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="70" selection-start="1640" selection-end="1640" vertical-scroll-proportion="0.08557047" vertical-offset="595" max-vertical-offset="1530">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/ChooseLocalSetActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="69" selection-start="1883" selection-end="1883" vertical-scroll-proportion="0.02852349" vertical-offset="561" max-vertical-offset="1870">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable-mdpi/button_plus.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="38" selection-start="357" selection-end="357" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="324">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable-mdpi/button_minus.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="39" selection-start="360" selection-end="360" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="324">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable-mdpi/button_arrow.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="39" selection-start="360" selection-end="360" vertical-scroll-proportion="0.28616852" vertical-offset="0" max-vertical-offset="629">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable-mdpi/button_undo.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="38" selection-start="357" selection-end="357" vertical-scroll-proportion="0.28616852" vertical-offset="0" max-vertical-offset="629">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
         <state />
       </provider>
-      <provider editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="195">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="148" column="40" selection-start="5598" selection-end="5598" vertical-scroll-proportion="-11.0" vertical-offset="2356" max-vertical-offset="3492">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/StartingPointActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/pl/rafalmanka/fiszki/shaker/view/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="45" selection-start="1943" selection-end="1943" vertical-scroll-proportion="1.1628319" vertical-offset="207" max-vertical-offset="1062">
+        <state line="281" column="41" selection-start="9719" selection-end="9719" vertical-scroll-proportion="0.7901431" vertical-offset="3895" max-vertical-offset="6066">
           <folding />
         </state>
       </provider>

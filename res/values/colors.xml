@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="my_color">#ff13a0de</color>
+    <color name="colors_white">#ffffff</color>
+    <color name="colors_black">#000000</color>
+    <color name="colors_titlebar_settings">#ffc4a769</color>
+    <color name="colors_grey">#DDCEB1</color>
+    <color name="colors_title_grey">#D1C3A8</color>
+    <color name="colors_layout_purple">#585171</color>
+    <color name="colors_titlebar_purple">#ff504a67</color>
+    <color name="colors_titlebar_brown">#ff8ebcbd</color>
+    <color name="colors_listview_brown">#9ACCCD</color>
+    <color name="colors_titlebar_green">#ff40ae4e</color>
+    <color name="colors_listview_green">#46BE55</color>
+    <color name="colors_button_red">#D5634D</color>
+    <color name="white_grey">#ddceb1</color>
+
     <style name="customTheme" >
         <item name="android:windowTitleBackgroundStyle">@style/WindowTitleBackground </item>
         <item name="android:windowTitleSize">60dp</item>

@@ -4,24 +4,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import pl.rafalmanka.fiszki.shaker.R;
 
-/**
- * Splash screen activity
- *
- * @author Catalin Prata
- */
 public class SplashScreen extends Activity {
 
     // used to know if the back button was pressed in the splash screen activity and avoid opening the next activity
     private boolean mIsBackButtonPressed;
     private static final int SPLASH_DURATION = 1500; // 2 seconds
+    private static final String TAG = SplashScreen.class.getSimpleName();
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG, "onCreated");
         setContentView(R.layout.splash_screen);
 
         Handler handler = new Handler();

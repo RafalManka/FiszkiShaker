@@ -8,11 +8,14 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -36,7 +39,27 @@ public class AddNewWordsetActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_new_dictionary);
+
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
+        setContentView(R.layout.add_new_wordset);
+
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.title_bar);
+        TextView titleBar = (TextView) findViewById(R.id.textView_titlebar);
+        titleBar.setText(R.string.title_bar_starting_point_activity);
+        LinearLayout ll = (LinearLayout) findViewById(R.id.layout_titlebar);
+        ll.setBackgroundColor(getResources().getColor(R.color.my_color));
+        titleBar.setText(getString(R.string.title_add_new_wordset));
+        ImageButton ib = (ImageButton) findViewById(R.id.imageButton_titlebar);
+        ib.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), StartingPointActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mLanguage = sharedPreferences.getString(SettingsActivity.CURRENT_WORDSET, SettingsActivity.DEFAULT_WORDSET);
 
@@ -87,6 +110,8 @@ public class AddNewWordsetActivity extends Activity {
                     CheckBox checkBox = new CheckBox(view.getContext());
                     checkBox.setText(editTextWord + " - " + editTextDescription);
                     checkBox.setChecked(true);
+                    checkBox.setTextColor(getResources().getColor(R.color.colors_black));
+                    checkBox.setBackgroundColor(getResources().getColor(R.color.colors_white));
                     checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                         @Override

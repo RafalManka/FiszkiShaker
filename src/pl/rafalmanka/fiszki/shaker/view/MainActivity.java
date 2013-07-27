@@ -68,9 +68,6 @@ public class MainActivity extends Activity {
         Log.d(TAG, "creating layout of an activity");
         setContentView(R.layout.activity_main);
 
-        Log.d(TAG, "creating instance of bouncing animation");
-        // bounce = AnimationUtils.loadAnimation(this, R.anim.bounce);
-
         Log.d(TAG, "assigning strings from layout to variables");
 
         mTypeFace = Typeface.createFromAsset(getAssets(),
@@ -94,7 +91,6 @@ public class MainActivity extends Activity {
         mButtonNextWord = (Button) findViewById(R.id.button_next_word);
         mButtonNextWord.setClickable(false);
         mButtonNextWord.setTextColor(Color.DKGRAY);
-        // mButtonNextWord.setTextColor(Color.DKGRAY);
         onEvent();
 
         mShakeDetector = new ShakeDetector(new OnShakeListener() {
@@ -143,6 +139,191 @@ public class MainActivity extends Activity {
         }
     }
 
+
+
+
+
+    public void gotoAddNewWord(View v) {
+        Log.i(TAG, "onClicked");
+
+        try {
+            Intent intent = new Intent(this, AddNewWordActivity.class);
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.e(TAG, "Error: ", e);
+        }
+    }
+
+
+    private void onEvent() {
+
+        if (mAllowNextWord) {
+            mAllowNextWord = false;
+
+            mButtonNextWord.setClickable(false);
+            mButtonNextWord.setBackgroundResource(R.drawable.arrow_blocked);
+
+            mButtonMarkCorrect.setClickable(true);
+            mButtonMarkCorrect.setBackgroundResource(R.drawable.button_plus);
+
+            mButtonMarkIncorrect.setClickable(true);
+            mButtonMarkIncorrect.setBackgroundResource(R.drawable.button_minus);
+
+            DatabaseHandler db = new DatabaseHandler(this);
+
+            if (mSharedPreferences.getBoolean(SettingsActivity.RANDOMIZE_PREFERENCE, false)) {
+                mWord = db.getRandom();
+            } else {
+                mWord = db.getNext(mCounter);
+                mCounter++;
+            }
+            mWordOrig.setText(Html.fromHtml(mWord.getWord()));
+            animateFiszka(mWordOrig, 1500);
+            mWordTranslation.setText(Html.fromHtml(mWord
+                    .getConcatenatedTranslations()));
+
+            playSound();
+        } else {
+            Log.d(TAG, "you have to mark answer before going to next word");
+        }
+    }
+
+    public void onNextWordClick(View view) {
+        if (!mFlipcardFace) {
+            onCardClick(view);
+            mFlipAnimation.setAnimationListener(new AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    onEvent();
+                    clearAllButtons();
+                }
+            });
+        } else {
+            onEvent();
+            clearAllButtons();
+        }
+
+    }
+
+    private void clearAllButtons() {
+
+        mButtonMarkCorrect.setClickable(true);
+        mButtonMarkCorrect.setBackgroundResource(R.drawable.button_plus);
+
+        mButtonMarkIncorrect.setClickable(true);
+        mButtonMarkIncorrect.setBackgroundResource(R.drawable.button_minus);
+
+        mButtonNextWord.setClickable(false);
+        mButtonNextWord.setBackgroundResource(R.drawable.arrow_blocked);
+        mUndo=false;
+    }
+
+    public void addScore(View view) {
+        Log.d(TAG, "addScore for id: " + view.getId());
+
+        switch (view.getId()) {
+            case R.id.button_word_known:
+                if (mUndo) {
+                    mUndo=false;
+                    mWordCorrect--;
+                    mAllowNextWord = false;
+
+                    mButtonMarkCorrect.setClickable(true);
+                    mButtonMarkCorrect.setBackgroundResource(R.drawable.button_plus);
+
+                    mButtonMarkIncorrect.setClickable(true);
+                    mButtonMarkIncorrect.setBackgroundResource(R.drawable.button_minus);
+
+                    mButtonNextWord.setClickable(false);
+                    mButtonNextWord.setBackgroundResource(R.drawable.arrow_blocked);
+
+                } else {
+                    mUndo=true;
+                    mWordCorrect++;
+                    mAllowNextWord = true;
+
+                    mButtonMarkCorrect.setClickable(true);
+                    mButtonMarkCorrect.setBackgroundResource(R.drawable.button_undo);
+
+                    mButtonMarkIncorrect.setClickable(false);
+                    mButtonMarkIncorrect.setBackgroundResource(R.drawable.minus_blocked);
+
+                    mButtonNextWord.setClickable(true);
+                    mButtonNextWord.setBackgroundResource(R.drawable.button_arrow);
+
+                }
+                mCorrectTotal.setText(mWordCorrect + "");
+                break;
+            case R.id.button_word_unknown:
+                if (mUndo) {
+                    mUndo=false;
+                    mWordIncorrect--;
+                    mAllowNextWord = false;
+
+                    mButtonMarkCorrect.setClickable(true);
+                    mButtonMarkCorrect.setBackgroundResource(R.drawable.button_plus);
+
+                    mButtonMarkIncorrect.setClickable(true);
+                    mButtonMarkIncorrect.setBackgroundResource(R.drawable.button_minus);
+
+                    mButtonNextWord.setClickable(false);
+                    mButtonNextWord.setBackgroundResource(R.drawable.arrow_blocked);
+
+
+                } else {
+                    mUndo=true;
+                    mWordIncorrect++;
+                    mAllowNextWord = true;
+
+                    mButtonMarkCorrect.setClickable(false);
+                    mButtonMarkCorrect.setBackgroundResource(R.drawable.plus_blocked);
+
+                    mButtonMarkIncorrect.setClickable(true);
+                    mButtonMarkIncorrect.setBackgroundResource(R.drawable.button_undo);
+
+                    mButtonNextWord.setClickable(true);
+                    mButtonNextWord.setBackgroundResource(R.drawable.button_arrow);
+
+                }
+                mIncorrectTotal.setText(mWordIncorrect + "");
+                break;
+        }
+
+    }
+
+
+    public void onCardClick(View view) {
+        if (mFlipcardFace) {
+            mFlipcardFace = false;
+        } else {
+            mFlipcardFace = true;
+        }
+        flipCard();
+    }
+
+    private void flipCard() {
+        View rootLayout = (View) findViewById(R.id.main_activity_root);
+        View cardFace = (View) findViewById(R.id.flipcard_front);
+        View cardBack = (View) findViewById(R.id.flipcard_back);
+
+        mFlipAnimation = new FlipAnimation(cardFace, cardBack);
+        if (cardFace.getVisibility() == View.GONE) {
+            mFlipAnimation.reverse();
+        }
+
+        rootLayout.startAnimation(mFlipAnimation);
+    }
+
+
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -182,184 +363,6 @@ public class MainActivity extends Activity {
         }
 
         return false;
-    }
-
-    private void onEvent() {
-        if (mAllowNextWord) {
-            Log.d(TAG, "allowed");
-            mAllowNextWord = false;
-            Log.d(TAG, "mAllowNextWord changed to false 2");
-            Log.d(TAG, "onEvented");
-
-            Log.d(TAG, "preparing database");
-            DatabaseHandler db = new DatabaseHandler(this);
-
-            if (mSharedPreferences.getBoolean(SettingsActivity.RANDOMIZE_PREFERENCE, false)) {
-                Log.d(TAG, "fetching single random row");
-                mWord = db.getRandom();
-            } else {
-                mWord = db.getNext(mCounter);
-                mCounter++;
-            }
-
-
-            Log.d(TAG, "name of set: " + mWord.getNameOfSet() + " ,word: "
-                    + mWord.getWord() + " , language: " + mWord.getLanguage());
-
-            Log.d(TAG, "setting new title: " + mWord.getWord());
-            mWordOrig.setText(Html.fromHtml(mWord.getWord()));
-
-            Log.d(TAG, "animating title");
-            animateFiszka(mWordOrig, 1500);
-            // mWordOrig.startAnimation(bounce);
-
-            Log.d(TAG,
-                    "showing description: "
-                            + mWord.getConcatenatedTranslations());
-            mWordTranslation.setText(Html.fromHtml(mWord
-                    .getConcatenatedTranslations()));
-
-            playSound();
-        } else {
-            Log.d(TAG, "not allowed");
-        }
-    }
-
-    public void gotoSelectLanguage(View v) {
-        Log.i(TAG, "onClicked");
-
-        try {
-            Intent intent = new Intent(this, LanguageListActivity.class);
-            startActivity(intent);
-        } catch (Exception e) {
-            Log.e(TAG, "Error: ", e);
-        }
-    }
-
-    public void onNextWordClick(View view) {
-        if (!mFlipcardFace) {
-            onCardClick(view);
-
-            mFlipAnimation.setAnimationListener(new AnimationListener() {
-
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    onEvent();
-                    clearAllButtons();
-                }
-
-            });
-        } else {
-            onEvent();
-            clearAllButtons();
-        }
-
-    }
-
-    private void clearAllButtons() {
-        clearButton(mButtonMarkCorrect, R.string.know_this_word,
-                new View[]{mButtonMarkIncorrect});
-        clearButton(mButtonMarkIncorrect, R.string.dont_know_this_word,
-                new View[]{mButtonMarkCorrect});
-    }
-
-    private void clearButton(View button, int resource, View[] unblockButtons) {
-        Log.d(TAG, "clearing button: " + button.getId());
-        if (unblockButtons != null) {
-            for (View unblockButton : unblockButtons) {
-                Log.d(TAG, "unblocking button: " + unblockButton.getId());
-                unblockButton.setClickable(true);
-                ((TextView) unblockButton).setTextColor(Color.BLACK);
-            }
-        }
-        Log.d(TAG, "setting text of button back to " + getText(resource));
-        ((TextView) button).setText(resource);
-        Log.d(TAG, "setting undo to false ");
-        mUndo = false;
-        mButtonNextWord.setClickable(false);
-        mButtonNextWord.setTextColor(Color.DKGRAY);
-        mAllowNextWord = false;
-        Log.d(TAG, "mAllowNextWord changed to false 1");
-    }
-
-    private void changeButtonToUndo(View button, View[] blockedButtons) {
-        Log.d(TAG, "changing button to undo button: " + button.getId());
-        if (blockedButtons != null) {
-            for (View blockedButton : blockedButtons) {
-                Log.d(TAG, "blopcking button " + button.getId());
-                blockedButton.setClickable(false);
-                ((TextView) blockedButton).setTextColor(Color.DKGRAY);
-            }
-        }
-        ((TextView) button).setText(R.string.undo);
-        mUndo = true;
-        mButtonNextWord.setClickable(true);
-        mButtonNextWord.setTextColor(Color.BLACK);
-        mAllowNextWord = true;
-        Log.d(TAG, "mAllowNextWord changed to true");
-    }
-
-    public void onCardClick(View view) {
-        if (mFlipcardFace) {
-            mFlipcardFace = false;
-        } else {
-            mFlipcardFace = true;
-        }
-        flipCard();
-    }
-
-    private void flipCard() {
-        View rootLayout = (View) findViewById(R.id.main_activity_root);
-        View cardFace = (View) findViewById(R.id.flipcard_front);
-        View cardBack = (View) findViewById(R.id.flipcard_back);
-
-        mFlipAnimation = new FlipAnimation(cardFace, cardBack);
-        if (cardFace.getVisibility() == View.GONE) {
-            mFlipAnimation.reverse();
-        }
-
-        rootLayout.startAnimation(mFlipAnimation);
-    }
-
-    public void addScore(View view) {
-        Log.d(TAG, "addScore for id: " + view.getId());
-
-        switch (view.getId()) {
-            case R.id.button_word_known:
-                Log.d(TAG, "word known id: " + R.id.button_word_known);
-                if (mUndo) {
-                    mWordCorrect--;
-                    clearButton(mButtonMarkCorrect, R.string.know_this_word,
-                            new View[]{mButtonMarkIncorrect});
-                } else {
-                    mWordCorrect++;
-                    changeButtonToUndo(mButtonMarkCorrect,
-                            new View[]{mButtonMarkIncorrect});
-                }
-                mCorrectTotal.setText(mWordCorrect + "");
-                break;
-            case R.id.button_word_unknown:
-                if (mUndo) {
-                    mWordIncorrect--;
-                    clearButton(mButtonMarkIncorrect, R.string.dont_know_this_word,
-                            new View[]{mButtonMarkCorrect});
-                } else {
-                    mWordIncorrect++;
-                    changeButtonToUndo(mButtonMarkIncorrect,
-                            new View[]{mButtonMarkCorrect});
-                }
-                mIncorrectTotal.setText(mWordIncorrect + "");
-                break;
-        }
-
     }
 
 }

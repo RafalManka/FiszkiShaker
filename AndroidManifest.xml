@@ -36,49 +36,49 @@
                 android:name="pl.rafalmanka.fiszki.shaker.view.MainActivity"
                 android:label="@string/activity_main"
                 android:screenOrientation="portrait"
-                android:theme="@android:style/Theme.NoTitleBar" >
+                android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="pl.rafalmanka.fiszki.shaker.view.LanguageListActivity"
             android:label="@string/choose_language"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/customTheme" >
         </activity>
         <activity
             android:name="pl.rafalmanka.fiszki.shaker.view.TopicsListActivity"
             android:label="@string/choose_topic"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/customTheme" >
         </activity>
         <activity
             android:name="pl.rafalmanka.fiszki.shaker.view.WordsListActivity"
             android:label="@string/choose_words"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/customTheme" >
         </activity>
         <activity
             android:name="pl.rafalmanka.fiszki.shaker.view.SettingsActivity"
             android:label="@string/activity_settings"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/customTheme" >
         </activity>
          <activity
             android:name="pl.rafalmanka.fiszki.shaker.view.AddNewWordActivity"
             android:label="@string/activity_add_new_word"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/customTheme" >
         </activity>
         <activity
-            android:name=".view.AddNewWordsetActivity"
+            android:name="pl.rafalmanka.fiszki.shaker.view.AddNewWordsetActivity"
             android:label="@string/activity_add_new_wordset"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/customTheme" >
         </activity>
          <activity
             android:name="pl.rafalmanka.fiszki.shaker.view.ChooseLocalSetActivity"
             android:label="@string/activity_choose_local_set"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/customTheme" >
         </activity>
     </application>
 

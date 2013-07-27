@@ -1,5 +1,6 @@
 package pl.rafalmanka.fiszki.shaker.view;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,9 +16,13 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
@@ -66,9 +71,28 @@ public class WordsListActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreated");
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_list);
-        Log.d(TAG, "onCreated");
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
+
+        LinearLayout ll = (LinearLayout) findViewById(R.id.layout_titlebar);
+        ll.setBackgroundColor(getResources().getColor(R.color.colors_titlebar_green));
+
+        TextView tv = (TextView) findViewById(R.id.textView_titlebar);
+        tv.setText(R.string.titlebar_word_list);
+
+        ImageButton ib = (ImageButton) findViewById(R.id.imageButton_titlebar);
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), StartingPointActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         Bundle bundle = getIntent().getExtras();
         mLanguageId = bundle.getInt("language_id");
         mWordsetId = bundle.getInt("topic_id");
@@ -177,7 +201,11 @@ public class WordsListActivity extends Activity {
                 ListView lv = (ListView) findViewById(R.id.list_view);
 
                 saveWordsButton = new Button(this);
+
                 saveWordsButton.setText(R.string.submit);
+                saveWordsButton.setBackgroundColor(getResources().getColor(R.color.colors_button_red));
+                saveWordsButton.setPadding(15,15,15,15);
+                saveWordsButton.setTextColor(getResources().getColor(R.color.colors_white));
 
                 saveWordsButton.setOnClickListener(new OnClickListener() {
 
@@ -203,7 +231,15 @@ public class WordsListActivity extends Activity {
 
                 });
 
-                lv.addHeaderView(saveWordsButton);
+                LinearLayout ll = new LinearLayout(this);
+                ll.setOrientation(LinearLayout.VERTICAL);
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(30, 10, 30, 10);
+                ll.addView(saveWordsButton, layoutParams);
+
+                lv.addHeaderView(ll);
                 WordListViewAdapter adapter = new WordListViewAdapter(this,
                         blogPosts);
                 lv.setAdapter(adapter);

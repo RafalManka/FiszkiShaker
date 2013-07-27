@@ -13,7 +13,8 @@
             android:gravity="left"
             android:padding="10dip"
             android:textColor="@android:color/white"
-            android:textSize="18sp" >
+            android:textSize="18sp"
+            android:text="Hello there matey">
 
         </TextView>
 </LinearLayout>

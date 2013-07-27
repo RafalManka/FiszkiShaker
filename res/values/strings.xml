@@ -31,7 +31,7 @@
     <string name="menu_add_new_dictionary">dodaj nowy zestaw</string>
     <string name="textView_add_new_dictionary_enter_title">Nazwa nowego słownika:</string>
     <string name="pozwol_innym_na_korzystanie_z_niego">pozwól, by inni mogli wykorzystać ten zestaw w przyszłości</string>
-    <string name="textView_add_new_word">dodaj pozycję</string>
+    <string name="textView_add_new_word">dodaj pozycję:</string>
     <string name="activity_add_new_wordset">dodaj</string>
     <string name="word">słowo</string>
     <string name="translation">tłumaczenie</string>
@@ -54,5 +54,12 @@
     <string name="title_bar_starting_point_activity">Menu główne</string>
     <string name="activity_flipcards">Fiszki</string>
     <string name="activity_download_wordset">Pobierz słówka</string>
+    <string name="title_add_new_wordset">Dodaj nowy zestaw słówek</string>
+    <string name="title_bar_settings_activity">Ustawienia</string>
+    <string name="activity_choose_language">Wybierz język</string>
+    <string name="titlebar_topic_list">Wybierz zestaw</string>
+    <string name="titlebar_word_list">podgląd</string>
+    <string name="i_know_the_answer">znam słowo</string>
+    <string name="go_to_next">następne</string>
 
 </resources>

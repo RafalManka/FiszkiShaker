@@ -21,6 +21,6 @@
         <item name="android:background">@color/titlebackgroundcolor</item>
     </style>
 
-    <color name="titlebackgroundcolor">#3c3f41</color>
+    <color name="titlebackgroundcolor">#0866b1</color>
     <color name="titletextcolor">#FFFF00</color>
 </resources>

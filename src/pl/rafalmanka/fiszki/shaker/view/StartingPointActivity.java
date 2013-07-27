@@ -19,8 +19,12 @@ public class StartingPointActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
         setContentView(R.layout.starting_point);
+
+
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.title_bar);
         TextView titleBar = (TextView) findViewById(R.id.textView_titlebar);
         titleBar.setText(R.string.title_bar_starting_point_activity);

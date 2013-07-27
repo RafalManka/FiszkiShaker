@@ -1,6 +1,7 @@
 package pl.rafalmanka.fiszki.shaker.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -8,8 +9,12 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import pl.rafalmanka.fiszki.shaker.R;
 
@@ -29,11 +34,28 @@ public class SettingsActivity extends Activity implements OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         super.onCreate(savedInstanceState);
-
-
         Log.d(TAG, "onCreated");
         setContentView(R.layout.settings);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.title_bar);
+
+        TextView titleBar = (TextView) findViewById(R.id.textView_titlebar);
+        titleBar.setText(R.string.title_bar_starting_point_activity);
+
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_titlebar);
+        linearLayout.setBackgroundColor(getResources().getColor(R.color.colors_titlebar_settings));
+
+        ImageButton ib = (ImageButton) findViewById(R.id.imageButton_titlebar);
+        ib.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), StartingPointActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         mSharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
 
