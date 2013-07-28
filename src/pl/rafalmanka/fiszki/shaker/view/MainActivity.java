@@ -11,6 +11,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -26,6 +27,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import pl.rafalmanka.fiszki.shaker.R;
 import pl.rafalmanka.fiszki.shaker.animations.FlipAnimation;
 import pl.rafalmanka.fiszki.shaker.model.DatabaseHandler;
@@ -33,7 +36,9 @@ import pl.rafalmanka.fiszki.shaker.model.Word;
 import pl.rafalmanka.fiszki.shaker.utils.ShakeDetector;
 import pl.rafalmanka.fiszki.shaker.utils.ShakeDetector.OnShakeListener;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
+
+
     private final String TAG = "MainActivity";
     private TextView mWordOrig;
     private TextView mWordTranslation;
@@ -57,10 +62,19 @@ public class MainActivity extends Activity {
     private FlipAnimation mFlipAnimation;
     private SharedPreferences mSharedPreferences;
     private int mCounter = 0;
+    private TextToSpeech mTextToSpeech;
+    private String mCurrentWord;
+    private ImageButton mVoiceButton;
+    private int mStatus;
+    private String mLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
+
+
+
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         Log.d(TAG, "OnCreated");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -114,12 +128,62 @@ requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
             }
         });
 
+
+        mTextToSpeech = new TextToSpeech(this, this);
+
+        mVoiceButton = (ImageButton) findViewById(R.id.imageButton_voice);
+        mVoiceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (mStatus == TextToSpeech.SUCCESS) {
+
+                    Log.d(TAG, "Locale.US: "+mLanguage);
+                    int result = mTextToSpeech.setLanguage(new Locale(mLanguage));
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA
+                            || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "This Language is not supported");
+                    } else {
+                        mVoiceButton.setEnabled(true);
+                        speakOut();
+                    }
+
+                } else {
+                    Log.e("TTS", "Initilization Failed!");
+                }
+
+            }
+        });
+
+    }
+
+    private void speakOut() {
+        mTextToSpeech.speak(mCurrentWord, TextToSpeech.QUEUE_FLUSH, null);
     }
 
     @Override
+    public void onInit(int status) {
+        mStatus=status;
+
+    }
+
+
+
+    @Override
     protected void onPause() {
+
+        if( mTextToSpeech != null ){
+            mTextToSpeech.stop();
+            mTextToSpeech.shutdown();
+        }
+
+        if(mSensorManager != null ){
+            mSensorManager.unregisterListener(mShakeDetector);
+        }
+
         super.onPause();
-        mSensorManager.unregisterListener(mShakeDetector);
+
     }
 
     @Override
@@ -188,7 +252,9 @@ requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
                 mWord = db.getNext(mCounter);
                 mCounter++;
             }
-            mWordOrig.setText(Html.fromHtml(mWord.getWord()));
+            mCurrentWord = Html.fromHtml(mWord.getWord()).toString();
+            mLanguage = mWord.getLanguage();
+            mWordOrig.setText(mCurrentWord);
             animateFiszka(mWordOrig, 1500);
             mWordTranslation.setText(Html.fromHtml(mWord
                     .getConcatenatedTranslations()));
@@ -375,5 +441,6 @@ requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 
         return false;
     }
+
 
 }

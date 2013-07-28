@@ -60,7 +60,7 @@ public class AddNewWordsetActivity extends Activity {
 
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mLanguage = sharedPreferences.getString(SettingsActivity.CURRENT_WORDSET, SettingsActivity.DEFAULT_WORDSET);
+        mLanguage = sharedPreferences.getString(SettingsActivity.CURRENT_LANGUAGE, SettingsActivity.DEFAULT_LANGUAGE);
 
         mEditTextTitle = (EditText) findViewById(R.id.editText_add_new_dictionary_enter_title);
         mEditTextTitle.setHint(R.string.title);

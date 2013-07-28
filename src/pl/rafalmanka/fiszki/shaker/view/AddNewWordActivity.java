@@ -3,6 +3,7 @@ package pl.rafalmanka.fiszki.shaker.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -56,7 +57,16 @@ public class AddNewWordActivity extends Activity {
             Word word = new Word();
             word.setWord(newWord.getText().toString());
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            word.setSetName(sharedPreferences.getString(SettingsActivity.CURRENT_WORDSET, SettingsActivity.DEFAULT_WORDSET));
+            Log.d(TAG,"CURRENT_WORDSET: "
+                    +sharedPreferences.getString(SettingsActivity.CURRENT_WORDSET, SettingsActivity.DEFAULT_WORDSET));
+            String nameOfSet = sharedPreferences.getString(SettingsActivity.CURRENT_WORDSET, SettingsActivity.DEFAULT_WORDSET);
+            word.setSetName(nameOfSet);
+
+            String wordsetLanguage = databaseHandler.getlanguageFromWordset(nameOfSet);
+
+            Log.d(TAG, "wordsetLanguage: "+wordsetLanguage);
+            word.setLanguage(wordsetLanguage);
+
             word.setTranslations(DatabaseHandler.addWordToList(new ArrayList<Word>(), new Word(newTranslation.getText().toString())));
             databaseHandler.addWord(word);
             Toast.makeText(view.getContext(), R.string.word_succesfully_added,

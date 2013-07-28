@@ -44,7 +44,7 @@ public class LanguageListActivity extends ListActivity {
     public static final String TAG = LanguageListActivity.class.getSimpleName();
     private JSONArray mTopicsData = null;
     protected ProgressBar mProgressBar;
-    private final String KEY_TITLE = "language_title";
+    private final String KEY_TITLE = "title_long";
     private TextView noItemsToDisplay;
     private String mLanguageId;
 
