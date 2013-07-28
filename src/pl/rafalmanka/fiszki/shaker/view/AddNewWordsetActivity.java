@@ -46,7 +46,6 @@ public class AddNewWordsetActivity extends Activity {
 
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.title_bar);
         TextView titleBar = (TextView) findViewById(R.id.textView_titlebar);
-        titleBar.setText(R.string.title_bar_starting_point_activity);
         LinearLayout ll = (LinearLayout) findViewById(R.id.layout_titlebar);
         ll.setBackgroundColor(getResources().getColor(R.color.my_color));
         titleBar.setText(getString(R.string.title_add_new_wordset));
@@ -84,15 +83,16 @@ public class AddNewWordsetActivity extends Activity {
             public void onClick(View view) {
 
                 String editTextTitle = mEditTextTitle.getText().toString();
-                if (mEditTextTitle.isEnabled()) {
-                    mEditTextTitle.setEnabled(false);
-                }
 
                 String editTextWord = mEditTextWord.getText().toString();
-                String editTextDescription = mEditTextDescription.getText()
-                        .toString();
-                if (!editTextWord.equals("") && !editTextDescription.equals("")) {
-                    //TODO
+                String editTextDescription = mEditTextDescription.getText().toString();
+
+                if ( ( !editTextWord.equals("") ) &&  ( !editTextDescription.equals("") ) && ( !editTextTitle.equals("") ) ) {
+
+                    if (mEditTextTitle.isEnabled()) {
+                        mEditTextTitle.setEnabled(false);
+                    }
+
                     final Word wordInputed = new Word();
 
                     wordInputed.setSetName(editTextTitle);
@@ -160,14 +160,19 @@ public class AddNewWordsetActivity extends Activity {
 
             @Override
             public void onClick(View view) {
+                Log.d(TAG,"check if arraylist is empty");
 
-                DatabaseHandler databaseHandler = new DatabaseHandler(
-                        getBaseContext());
-                databaseHandler.addNewSet(mWordsList);
+                if(!mWordsList.isEmpty()){
+                    Log.d(TAG,"no its not  empty");
+                    DatabaseHandler databaseHandler = new DatabaseHandler(
+                            getBaseContext());
+                    databaseHandler.addNewSet(mWordsList);
 
-                Intent intent = new Intent(view.getContext(),
-                        MainActivity.class);
-                startActivity(intent);
+                    Intent intent = new Intent(view.getContext(),
+                            MainActivity.class);
+                    startActivity(intent);
+                }
+
 
             }
         });

@@ -10,8 +10,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,22 +27,6 @@ import pl.rafalmanka.fiszki.shaker.model.DatabaseHandler;
 
 public class ChooseLocalSetActivity extends ListActivity {
 
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-
-        SharedPreferences mSharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        Editor editor = mSharedPreferences.edit();
-        editor.putString(SettingsActivity.CURRENT_WORDSET, mWordtList[position]);
-        editor.commit();
-
-        Log.d(TAG, "preference set to: " + mSharedPreferences.getString(SettingsActivity.CURRENT_WORDSET, "default"));
-
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
     public static final String TAG = ChooseLocalSetActivity.class.getSimpleName();
     protected ProgressBar mProgressBar;
     public String[] mWordtList;
@@ -46,12 +34,35 @@ public class ChooseLocalSetActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreated");
+        super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 
         setContentView(R.layout.activity_list);
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.layout_list);
+        rl.setBackgroundColor(getResources().getColor(R.color.manage_sets_layout));
 
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar_activity_list);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.title_bar);
+        TextView titleBar = (TextView) findViewById(R.id.textView_titlebar);
+        titleBar.setText(R.string.manage_sets);
+        titleBar.setTextColor(getResources().getColor(R.color.colors_black));
+
+        LinearLayout ll = (LinearLayout) findViewById(R.id.layout_titlebar);
+        ll.setBackgroundColor(getResources().getColor(R.color.manage_sets_title));
+
+        ImageButton ib = (ImageButton) findViewById(R.id.imageButton_titlebar);
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), StartingPointActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
         mProgressBar.setVisibility(View.VISIBLE);
         GetWordsets getWordsets = new GetWordsets();
         getWordsets.execute();
@@ -72,6 +83,22 @@ public class ChooseLocalSetActivity extends ListActivity {
             handleDisplayWordsets();
         }
 
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        SharedPreferences mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        Editor editor = mSharedPreferences.edit();
+        editor.putString(SettingsActivity.CURRENT_WORDSET, mWordtList[position]);
+        editor.commit();
+
+        Log.d(TAG, "preference set to: " + mSharedPreferences.getString(SettingsActivity.CURRENT_WORDSET, "default"));
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void handleDisplayWordsets() {

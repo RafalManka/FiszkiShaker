@@ -14,6 +14,15 @@
     <color name="colors_listview_green">#46BE55</color>
     <color name="colors_button_red">#D5634D</color>
     <color name="white_grey">#ddceb1</color>
+    <color name="color_button_add_word">#00A753</color>
+    <color name="color_layout_add_word">#fffee274</color>
+    <color name="color_titlebar_add_new_word">#ffe7ce69</color>
+    <color name="color_button_orange">#F1734C</color>
+    <color name="button_blue">#0db9de</color>
+    <color name="manage_sets_layout">#AFC2E3</color>
+    <color name="manage_sets_title">#ffa1b3d1</color>
+    <color name="colors_managesets_yellow">#E3DBA9</color>
+
 
     <style name="customTheme" >
         <item name="android:windowTitleBackgroundStyle">@style/WindowTitleBackground </item>

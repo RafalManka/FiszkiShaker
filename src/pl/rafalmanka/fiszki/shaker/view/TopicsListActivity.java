@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -62,8 +63,8 @@ public class TopicsListActivity extends ListActivity {
         TextView tv = (TextView) findViewById(R.id.textView_titlebar);
         tv.setText(R.string.titlebar_topic_list);
 
-        LinearLayout bgLinearLayout = (LinearLayout) findViewById(R.id.layout_list);
-        bgLinearLayout.setBackgroundColor(getResources().getColor(R.color.colors_listview_brown));
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.layout_list);
+        rl.setBackgroundColor(getResources().getColor(R.color.colors_listview_brown));
 
         ImageButton ib = (ImageButton) findViewById(R.id.imageButton_titlebar);
         ib.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +79,7 @@ public class TopicsListActivity extends ListActivity {
         mLanguageId = bundle.getInt("language_id");
         Log.d(TAG, "retrieving extras (mLanguageId): " + mLanguageId);
 
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar_activity_list);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
         Log.d(TAG, "process bar created");
         noItemsToDisplay = (TextView) findViewById(R.id.no_items_to_display);
         Log.d(TAG, "no items to display textarea created");

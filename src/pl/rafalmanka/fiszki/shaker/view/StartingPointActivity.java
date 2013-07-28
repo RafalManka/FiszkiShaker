@@ -58,6 +58,11 @@ public class StartingPointActivity extends Activity {
         startActivity(intent);
     }
 
+    public void gotoManageSets(View view){
+        Intent intent = new Intent(this, ChooseLocalSetActivity.class);
+        startActivity(intent);
+    }
+
     public void gotoDownloadWordset(View view){
         Intent intent = new Intent(this, LanguageListActivity.class);
         startActivity(intent);

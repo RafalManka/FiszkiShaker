@@ -96,20 +96,13 @@ public class WordsListActivity extends Activity {
         Bundle bundle = getIntent().getExtras();
         mLanguageId = bundle.getInt("language_id");
         mWordsetId = bundle.getInt("topic_id");
-        Log.d(TAG, "retrieving extras (topic_id): " + mWordsetId
-                + " and language_id: " + mLanguageId);
 
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
-        Log.d(TAG, "process bar created");
         noItemsToDisplay = (TextView) findViewById(R.id.no_items_to_display);
-        Log.d(TAG, "\"no items to display\" textarea created");
 
         if (isNetworkAvaileable()) {
-            Log.d(TAG, "network is availeable, continue... ");
             mProgressBar.setVisibility(View.VISIBLE);
-            Log.d(TAG, "progress bar set to visible");
             GetWordsFromAPITask getBlogPostsTask = new GetWordsFromAPITask();
-            Log.d(TAG, "async task finished");
             getBlogPostsTask.execute();
         } else {
             Log.d(TAG, "no internet connection, generating alert");
@@ -141,16 +134,11 @@ public class WordsListActivity extends Activity {
         } else {
             try {
                 mLanguageId = mWordsData.getInt(KEY_LANGUAGE_ID);
-                Log.d(TAG, "language id of wordset: " + mLanguageId);
                 mLanguage = Html.fromHtml(mWordsData.getString(KEY_LANGUAGE))
                         .toString();
-                Log.d(TAG, "language of wordset: " + mLanguage);
-
                 mWordsetId = mWordsData.getInt(KEY_WORDSET_ID);
-                Log.d(TAG, "wordset id: " + mWordsetId);
                 mWordset = Html.fromHtml(mWordsData.getString(KEY_WORDSET))
                         .toString();
-                Log.d(TAG, "wordset: " + mWordset);
                 JSONArray jsonWords = mWordsData.getJSONArray(KEY_WORDS);
 
                 ArrayList<HashMap<String, String>> blogPosts = new ArrayList<HashMap<String, String>>();
@@ -203,7 +191,7 @@ public class WordsListActivity extends Activity {
                 saveWordsButton = new Button(this);
 
                 saveWordsButton.setText(R.string.submit);
-                saveWordsButton.setBackgroundColor(getResources().getColor(R.color.colors_button_red));
+                saveWordsButton.setBackgroundResource(R.drawable.button_import_wordset);
                 saveWordsButton.setPadding(15,15,15,15);
                 saveWordsButton.setTextColor(getResources().getColor(R.color.colors_white));
 

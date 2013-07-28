@@ -21,7 +21,7 @@
             android:background="@drawable/brokeh_effect_flipcard_topbar"
             android:onClick="gotoAddNewWord"
             android:padding="5dp"
-            android:text="@string/wybierz_zestaw" />
+            android:text="@string/activity_add_new_word" />
 
         <LinearLayout
             android:layout_width="wrap_content"

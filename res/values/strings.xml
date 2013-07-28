@@ -61,5 +61,8 @@
     <string name="titlebar_word_list">podgląd</string>
     <string name="i_know_the_answer">znam słowo</string>
     <string name="go_to_next">następne</string>
+    <string name="title_add_new_word">dodaj nowe słowo do tego słownika</string>
+    <string name="manage_wordsets">Moje słówka</string>
+    <string name="manage_sets">Moje słówka</string>
 
 </resources>

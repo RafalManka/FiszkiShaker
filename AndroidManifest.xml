@@ -36,7 +36,7 @@
                 android:name="pl.rafalmanka.fiszki.shaker.view.MainActivity"
                 android:label="@string/activity_main"
                 android:screenOrientation="portrait"
-                android:theme="@android:style/Theme.Black.NoTitleBar" >
+                android:theme="@style/customTheme" >
         </activity>
         <activity
             android:name="pl.rafalmanka.fiszki.shaker.view.LanguageListActivity"

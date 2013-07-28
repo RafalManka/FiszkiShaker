@@ -17,10 +17,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import pl.rafalmanka.fiszki.shaker.R;
@@ -57,18 +60,28 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         Log.d(TAG, "OnCreated");
         super.onCreate(savedInstanceState);
-        mSharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        Log.d(TAG, "creating preferences");
-
-        Log.d(TAG, "creating layout of an activity");
         setContentView(R.layout.activity_main);
 
-        Log.d(TAG, "assigning strings from layout to variables");
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.title_bar);
+        TextView titleBar = (TextView) findViewById(R.id.textView_titlebar);
+        titleBar.setText(R.string.activity_flipcards);
+        LinearLayout ll = (LinearLayout) findViewById(R.id.layout_titlebar);
+        ll.setBackgroundColor(getResources().getColor(R.color.colors_titlebar_purple));
+        ImageButton ib = (ImageButton) findViewById(R.id.imageButton_titlebar);
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), StartingPointActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
 
         mTypeFace = Typeface.createFromAsset(getAssets(),
                 "ubuntu_font/Ubuntu-B.ttf");
@@ -76,8 +89,6 @@ public class MainActivity extends Activity {
         mWordOrig.setTypeface(mTypeFace);
         mWordTranslation = (TextView) findViewById(R.id.flipcard_back);
         mWordTranslation.setTypeface(mTypeFace);
-
-        Log.d(TAG, "creating instance of sensor event");
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);

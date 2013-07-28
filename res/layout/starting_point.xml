@@ -135,6 +135,24 @@
                     android:layout_height="fill_parent"
                     android:layout_margin="15dp"
                     android:orientation="vertical">
+                <ImageButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="70dp"
+                        android:src="@drawable/button_list"
+                        android:scaleType="fitCenter"
+                        android:contentDescription="@string/activity_choose_local_set"
+                        android:id="@+id/imageButton_manage_sets"
+                        android:onClick="gotoManageSets"
+                        android:background="@android:color/transparent"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView_manage_sets"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="center"
+                        android:text="@string/manage_wordsets"
+                        android:gravity="center"/>
 
             </LinearLayout>
 

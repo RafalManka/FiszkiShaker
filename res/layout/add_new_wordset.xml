@@ -9,14 +9,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <!--<TextView
-            android:id="@+id/textView_add_new_dictionary_enter_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/textView_add_new_dictionary_enter_title"
-            android:layout_margin="10dp"
-            android:textAppearance="?android:attr/textAppearanceLarge" />-->
-
         <EditText
             android:id="@+id/editText_add_new_dictionary_enter_title"
             android:layout_width="match_parent"
@@ -29,16 +21,6 @@
 
             <requestFocus />
         </EditText>
-
-
-
-        <!--<TextView
-            android:id="@+id/textView_add_new_set"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/textView_add_new_word"
-            android:layout_margin="10dp"
-            android:textAppearance="?android:attr/textAppearanceLarge" />-->
 
         <EditText
             android:id="@+id/editText_add_new_dictionary_add_new_word"
@@ -58,14 +40,15 @@
             android:ems="10"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="30dp"/>
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="10dp"/>
 
         <Button
             android:id="@+id/button_add_new_dictionary_add_another"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_to_list"
-            android:background="#F1734C"
+            android:background="@drawable/button_add_new_wordset"
 
             android:textColor="@android:color/white"
             android:padding="15dp"
@@ -86,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/create_set"
-            android:background="#F1734C"
+            android:background="@drawable/button_add_new_wordset"
             android:padding="15dp"
             android:textColor="@android:color/white"
             android:textStyle="bold"

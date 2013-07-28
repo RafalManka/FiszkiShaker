@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -61,8 +62,8 @@ public class LanguageListActivity extends ListActivity {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_titlebar);
         linearLayout.setBackgroundColor(getResources().getColor(R.color.colors_titlebar_purple));
 
-        LinearLayout bgLinearLayout = (LinearLayout) findViewById(R.id.layout_list);
-        bgLinearLayout.setBackgroundColor(getResources().getColor(R.color.colors_layout_purple));
+        RelativeLayout rL = (RelativeLayout) findViewById(R.id.layout_list);
+        rL.setBackgroundColor(getResources().getColor(R.color.colors_layout_purple));
 
         ImageButton ib = (ImageButton) findViewById(R.id.imageButton_titlebar);
         ib.setOnClickListener(new View.OnClickListener() {
@@ -73,16 +74,15 @@ public class LanguageListActivity extends ListActivity {
             }
         });
 
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar_activity_list);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
         noItemsToDisplay = (TextView) findViewById(R.id.no_items_to_display);
 
         if (isNetworkAvaileable()) {
             mProgressBar.setVisibility(View.VISIBLE);
+            mProgressBar.bringToFront();
             GetBlogPostsTask getBlogPostsTask = new GetBlogPostsTask();
             getBlogPostsTask.execute();
         } else {
-            // Toast.makeText(this, "Network is unavaileable!",
-            // Toast.LENGTH_LONG) .show();
             updateDisplayForErrors();
             noItemsToDisplay.setText(R.string.no_items_to_display);
             mProgressBar.setVisibility(View.INVISIBLE);
@@ -185,15 +185,12 @@ public class LanguageListActivity extends ListActivity {
             JSONArray jsonResponse = null;
             StringBuilder builder = new StringBuilder();
             HttpClient client = new DefaultHttpClient();
-            HttpGet httpget = new HttpGet(
-                    "http://api.rafalmanka.pl/api/fetchLanguages");
+            HttpGet httpget = new HttpGet("http://api.rafalmanka.pl/api/fetchLanguages");
 
             try {
                 HttpResponse response = client.execute(httpget);
                 StatusLine statusLine = response.getStatusLine();
-                Log.d(TAG, "status line: " + statusLine);
                 responseCode = statusLine.getStatusCode();
-                Log.i(TAG, responseCode + "");
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     HttpEntity entity = response.getEntity();
                     InputStream content = entity.getContent();
@@ -201,12 +198,10 @@ public class LanguageListActivity extends ListActivity {
                             new InputStreamReader(content));
                     String line;
                     while ((line = reader.readLine()) != null) {
-                        Log.d(TAG, "line: " + line);
                         builder.append(line);
                     }
 
                     jsonResponse = new JSONArray(builder.toString());
-                    Log.i(TAG, builder.toString());
                 } else {
                     Log.d(TAG, builder.toString());
                 }
