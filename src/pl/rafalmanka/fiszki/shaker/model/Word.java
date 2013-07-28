@@ -16,10 +16,11 @@ public class Word {
 	private int mLanguageId;
 	private int mWordsetId;
 	private int mSetId;
-	
-	public static String mNameOfSet = SettingsActivity.DEFAULT_WORDSET;
 
-	public Word() {
+	public static String mNameOfSet = SettingsActivity.DEFAULT_WORDSET;
+    private String mWordStatus;
+
+    public Word() {
 	}
 	
 	public Word(String word) {
@@ -154,4 +155,12 @@ public class Word {
 	public int getSetId(){
 		return mSetId;
 	}
+
+    public void setStatus(String wordStatus) {
+        mWordStatus = wordStatus;
+    }
+
+    public String getStatus() {
+        return mWordStatus;
+    }
 }

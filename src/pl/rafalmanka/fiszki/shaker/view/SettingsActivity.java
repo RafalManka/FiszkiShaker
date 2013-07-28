@@ -21,16 +21,21 @@ import pl.rafalmanka.fiszki.shaker.R;
 public class SettingsActivity extends Activity implements OnClickListener {
 
     public static String TAG = SettingsActivity.class.getSimpleName();
+
     private CheckBox mSoundCheckBox;
     private CheckBox mRandomCheckBox;
     private Button mButton;
     private SharedPreferences mSharedPreferences;
+
     public final static String SOUND_PREFERENCE = "SOUND_PREFERENCE";
     public final static String RANDOMIZE_PREFERENCE = "RANDOMIZE_PREFERENCE";
     public final static String CURRENT_WORDSET = "CURRENT_WORDSET";
-    public final static String DEFAULT_WORDSET = "default";
-    public static final String DEFAULT_LANGUAGE = "en";
     public static final String CURRENT_LANGUAGE = "CURRENT_LANGUAGE";
+
+    public static final String DEFAULT_WORDSET = "default";
+    public static final String DEFAULT_LANGUAGE = "en";
+    public static final String DEFAULT_WORD_STATUS = "assets_default";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

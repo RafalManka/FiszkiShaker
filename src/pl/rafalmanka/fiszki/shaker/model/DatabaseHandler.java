@@ -22,7 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public static final String TAG = DatabaseHandler.class.getSimpleName();
 
-    public static final int DATABASE_VERSION = 113;
+    public static final int DATABASE_VERSION = 117;
     public static final String DATABASE_NAME = "fiszki_shaker";
     public static final String COLUMN_WORD_ID = "id_word";
     public static final String COLUMN_TRANSLATION_ID = "id_translation";
@@ -37,14 +37,62 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String TABLE_WORDSET = "wordset";
     public static final String TABLE_WORD_HAS_SET = "word_has_wordset";
     public static final String TABLE_LANGUAGE = "language";
+    public static final String COLUMN_WORD_STATUS = "word_status";
     private static String mLanguage = "en";
 
     private Context mContext;
+
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         Log.d(TAG, "constructing DatabaseHandler");
         this.mContext = context;
+    }
+
+    private void createDb(SQLiteDatabase db) {
+
+        Log.d(TAG, "creating table word");
+        String CREATE_TABLE_WORD = "CREATE TABLE " + TABLE_WORD + " ("
+                + COLUMN_WORD_ID + " INTEGER PRIMARY KEY, " + COLUMN_WORD
+                + " TEXT, "+COLUMN_WORD_STATUS+" TEXT)";
+        Log.d(TAG, "Executing: " + CREATE_TABLE_WORD);
+        db.execSQL(CREATE_TABLE_WORD);
+
+        Log.d(TAG, "creating table word_has_translation");
+        String CREATE_TABLE_WORD_HAS_TRANSLATION = "CREATE TABLE "
+                + TABLE_WORD_HAS_TRANSLATION + "  (" + COLUMN_WORD_ID
+                + " INTEGER REFERENCES " + TABLE_WORD + " (" + COLUMN_WORD_ID
+                + "), " + COLUMN_TRANSLATION_ID + " INTEGER REFERENCES "
+                + TABLE_WORD + " (" + COLUMN_WORD_ID + ")   ) ";
+        Log.d(TAG, "Executing: " + CREATE_TABLE_WORD_HAS_TRANSLATION);
+        db.execSQL(CREATE_TABLE_WORD_HAS_TRANSLATION);
+
+        Log.d(TAG, "creating table language");
+        String CREATE_TABLE_LANGUAGE = "CREATE TABLE " + TABLE_LANGUAGE + " ("
+                + COLUMN_LANGUAGE_ID + " INTEGER PRIMARY KEY, "
+                + COLUMN_LANGUAGE + " TEXT)";
+        Log.d(TAG, "Executing: " + CREATE_TABLE_LANGUAGE);
+        db.execSQL(CREATE_TABLE_LANGUAGE);
+
+        Log.d(TAG, "creating table word_set");
+        String CREATE_TABLE_WORD_SET = "CREATE TABLE " + TABLE_WORDSET + " ("
+                + COLUMN_WORDSET_ID + " INTEGER PRIMARY KEY, "
+                + COLUMN_WORDSET_NAME + " TEXT, " + COLUMN_LANGUAGE_ID
+                + " INTEGER REFERENCES " + TABLE_LANGUAGE + "("
+                + COLUMN_LANGUAGE_ID + ")   )";
+        Log.d(TAG, "Executing: " + CREATE_TABLE_WORD_SET);
+        db.execSQL(CREATE_TABLE_WORD_SET);
+
+        Log.d(TAG, "creating table word_has_set");
+        String CREATE_TABLE_WORD_HAS_SET = "CREATE TABLE " + TABLE_WORD_HAS_SET
+                + " (" + COLUMN_WORDSET_ID + " INTEGER REFERENCES "
+                + TABLE_WORDSET + "(" + COLUMN_WORDSET_ID
+                + ")  , " + COLUMN_WORD_ID
+                + " INTEGER REFERENCES " + TABLE_WORD + " (" + COLUMN_WORD_ID
+                + ")   )";
+        Log.d(TAG, "Executing: " + CREATE_TABLE_WORD_HAS_SET);
+        db.execSQL(CREATE_TABLE_WORD_HAS_SET);
+
     }
 
     @Override
@@ -111,6 +159,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             Word word = new Word();
             word.setWord(position[0]);
             word.setSetName(SettingsActivity.DEFAULT_WORDSET);
+            word.setStatus(SettingsActivity.DEFAULT_WORD_STATUS);
             Word translation = new Word();
             translation.setWord(position[1]);
             ArrayList<Word> translations = new ArrayList<Word>();
@@ -209,6 +258,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             contentValues = new ContentValues();
             contentValues
                     .put(COLUMN_WORD, TextUtils.htmlEncode(word.getWord()));
+            contentValues.put(COLUMN_WORD_STATUS, word.getStatus());
             long lastInsertedId_word = db.insert(TABLE_WORD, null,
                     contentValues);
 
@@ -239,51 +289,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    private void createDb(SQLiteDatabase db) {
 
-        Log.d(TAG, "creating table word");
-        String CREATE_TABLE_WORD = "CREATE TABLE " + TABLE_WORD + " ("
-                + COLUMN_WORD_ID + " INTEGER PRIMARY KEY, " + COLUMN_WORD
-                + " TEXT)";
-        Log.d(TAG, "Executing: " + CREATE_TABLE_WORD);
-        db.execSQL(CREATE_TABLE_WORD);
-
-        Log.d(TAG, "creating table word_has_translation");
-        String CREATE_TABLE_WORD_HAS_TRANSLATION = "CREATE TABLE "
-                + TABLE_WORD_HAS_TRANSLATION + "  (" + COLUMN_WORD_ID
-                + " INTEGER REFERENCES " + TABLE_WORD + " (" + COLUMN_WORD_ID
-                + "), " + COLUMN_TRANSLATION_ID + " INTEGER REFERENCES "
-                + TABLE_WORD + " (" + COLUMN_WORD_ID + ")   ) ";
-        Log.d(TAG, "Executing: " + CREATE_TABLE_WORD_HAS_TRANSLATION);
-        db.execSQL(CREATE_TABLE_WORD_HAS_TRANSLATION);
-
-        Log.d(TAG, "creating table language");
-        String CREATE_TABLE_LANGUAGE = "CREATE TABLE " + TABLE_LANGUAGE + " ("
-                + COLUMN_LANGUAGE_ID + " INTEGER PRIMARY KEY, "
-                + COLUMN_LANGUAGE + " TEXT)";
-        Log.d(TAG, "Executing: " + CREATE_TABLE_LANGUAGE);
-        db.execSQL(CREATE_TABLE_LANGUAGE);
-
-        Log.d(TAG, "creating table word_set");
-        String CREATE_TABLE_WORD_SET = "CREATE TABLE " + TABLE_WORDSET + " ("
-                + COLUMN_WORDSET_ID + " INTEGER PRIMARY KEY, "
-                + COLUMN_WORDSET_NAME + " TEXT, " + COLUMN_LANGUAGE_ID
-                + " INTEGER REFERENCES " + TABLE_LANGUAGE + "("
-                + COLUMN_LANGUAGE_ID + ")   )";
-        Log.d(TAG, "Executing: " + CREATE_TABLE_WORD_SET);
-        db.execSQL(CREATE_TABLE_WORD_SET);
-
-        Log.d(TAG, "creating table word_has_set");
-        String CREATE_TABLE_WORD_HAS_SET = "CREATE TABLE " + TABLE_WORD_HAS_SET
-                + " (" + COLUMN_WORDSET_ID + " INTEGER REFERENCES "
-                + TABLE_WORDSET + "(" + COLUMN_WORDSET_ID
-                + ")  , " + COLUMN_WORD_ID
-                + " INTEGER REFERENCES " + TABLE_WORD + " (" + COLUMN_WORD_ID
-                + ")   )";
-        Log.d(TAG, "Executing: " + CREATE_TABLE_WORD_HAS_SET);
-        db.execSQL(CREATE_TABLE_WORD_HAS_SET);
-
-    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

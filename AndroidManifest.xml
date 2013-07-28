@@ -81,6 +81,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/customTheme" >
         </activity>
+
+        <service android:name=".services.PushWordsService" />
     </application>
 
 </manifest>

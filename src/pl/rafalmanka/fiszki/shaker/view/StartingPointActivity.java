@@ -2,19 +2,24 @@ package pl.rafalmanka.fiszki.shaker.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import pl.rafalmanka.fiszki.shaker.R;
+import pl.rafalmanka.fiszki.shaker.services.PushWordsService;
 
 /**
  * Created by r.manka on 24.07.13.
  */
 public class StartingPointActivity extends Activity {
 
+    private static final String TAG = StartingPointActivity.class.getSimpleName();
     private ImageView mBookImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,16 @@ public class StartingPointActivity extends Activity {
 
         TextView settingsActivity = (TextView) findViewById(R.id.textView_add_wordset);
         settingsActivity.setText(R.string.activity_add_new_wordset);
+
+        ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (mWifi.isConnected()) {
+           Log.d(TAG, "wifi is connected");
+           startService(new Intent(this, PushWordsService.class));
+        } else {
+            Log.d(TAG, "wifi not connected");
+        }
+
     }
 
     public void gotoFlipcards(View view){
