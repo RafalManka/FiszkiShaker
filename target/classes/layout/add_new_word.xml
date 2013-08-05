@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_layout_add_word"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/editText_add_new_word_word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/add_new_word_word"
+        android:paddingLeft="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp">
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/editText_add_new_word_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/add_new_word_description"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"/>
+
+    <Button
+        android:id="@+id/button_add_new_word_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="addNewWord"
+        android:text="@string/button_add_new_word_submit"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:padding="15dp"
+        android:background="@drawable/button_add_new_word"
+        android:textColor="@android:color/white"/>
+
+</LinearLayout>

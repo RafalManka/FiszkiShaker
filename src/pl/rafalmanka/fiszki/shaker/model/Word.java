@@ -20,60 +20,12 @@ public class Word {
 	public static String mNameOfSet = SettingsActivity.DEFAULT_WORDSET;
     private String mWordStatus;
 
-    public Word() {
-	}
+    public Word() { }
 	
 	public Word(String word) {
 		mWord = word;
 	}
 
-	/*public Word(int id, String word, String translation, String language) {
-		Log.d(TAG, "4 argument constructor (id:" + id + ",word:" + word
-				+ ",description:" + translation + ",languuage:" + language
-				+ ")");
-		mWordId = id;
-		mWord = word;
-//		Word translation = new Word();
-//		translation.setWord(description);
-//		mTranslations.add(translation);
-		mLanguage = language;
-	}
-
-	public Word(String word, String translation, String language) {
-		Log.d(TAG, "3 argument constructor (word:" + word + ",description:"
-				+ translation + ",languuage:" + language + ")");
-		mWord = word;
-//		Word translation = new Word();
-//		translation.setWord(description);
-//		mTranslations.add(translation);
-		mLanguage = language;
-	}
-
-	public Word(String nameOfSet, String word, String translation,
-			String language) {
-		mNameOfSet = nameOfSet;
-		mWord = word;
-//		Word _translation = new Word();
-//		_translation.setWord(translation);
-//		mTranslations.add(_translation);
-		mLanguage = language;
-	}
-
-	public Word(int id, String nameOfSet, String word, String translation,
-			String language) {
-		mWordId = id;
-		mNameOfSet = nameOfSet;
-		mWord = word;
-		Word _translation = new Word();
-		_translation.setWord(translation);
-		mTranslations.add(_translation);
-		mLanguage = language;
-	}
-
-	public Word(String word) {
-		mWord = word;
-	}
-*/
 	public int getID() {
 		return mWordId;
 	}

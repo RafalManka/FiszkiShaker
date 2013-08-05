@@ -192,6 +192,7 @@ public class WordsListActivity extends Activity {
 
                 saveWordsButton.setText(R.string.submit);
                 saveWordsButton.setBackgroundResource(R.drawable.button_import_wordset);
+                saveWordsButton.setId(12312);
                 saveWordsButton.setPadding(15,15,15,15);
                 saveWordsButton.setTextColor(getResources().getColor(R.color.colors_white));
 
@@ -202,7 +203,7 @@ public class WordsListActivity extends Activity {
 
                         DatabaseHandler dbHandler = new DatabaseHandler(v
                                 .getContext());
-                        dbHandler.addNewSet(wordInfo);
+                        dbHandler.addNewSet( wordInfo.get(0).getLanguage(), wordInfo.get(0).getNameOfSet() , wordInfo);
 
                         SharedPreferences mSharedPreferences =
                                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

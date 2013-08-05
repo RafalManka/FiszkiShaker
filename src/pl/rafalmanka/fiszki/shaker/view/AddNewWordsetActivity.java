@@ -30,7 +30,6 @@ public class AddNewWordsetActivity extends Activity {
     private EditText mEditTextWord;
     private EditText mEditTextDescription;
     private EditText mEditTextTitle;
-    private CheckBox mCheckboxAllowOthersToUseSet;
     private ArrayList<Word> mWordsList = new ArrayList<Word>();
     private String mLanguage;
 
@@ -39,17 +38,16 @@ public class AddNewWordsetActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-
         setContentView(R.layout.add_new_wordset);
-
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.title_bar);
         TextView titleBar = (TextView) findViewById(R.id.textView_titlebar);
         LinearLayout ll = (LinearLayout) findViewById(R.id.layout_titlebar);
-        ll.setBackgroundColor(getResources().getColor(R.color.my_color));
+        ll.setBackgroundColor(getResources().getColor(R.color.color_add_wordset_titlebar));
         titleBar.setText(getString(R.string.title_add_new_wordset));
         ImageButton ib = (ImageButton) findViewById(R.id.imageButton_titlebar);
+        
         ib.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,9 +62,6 @@ public class AddNewWordsetActivity extends Activity {
 
         mEditTextTitle = (EditText) findViewById(R.id.editText_add_new_dictionary_enter_title);
         mEditTextTitle.setHint(R.string.title);
-
-        mCheckboxAllowOthersToUseSet = (CheckBox) findViewById(R.id.checkBox_allow_other_to_use_set);
-        mCheckboxAllowOthersToUseSet.setChecked(true);
 
         mEditTextWord = (EditText) findViewById(R.id.editText_add_new_dictionary_add_new_word);
         mEditTextWord.setHint(R.string.word);
@@ -110,6 +105,8 @@ public class AddNewWordsetActivity extends Activity {
                     CheckBox checkBox = new CheckBox(view.getContext());
                     checkBox.setText(editTextWord + " - " + editTextDescription);
                     checkBox.setChecked(true);
+                    
+                    checkBox.setPadding(50, 0, 0, 0);
                     checkBox.setTextColor(getResources().getColor(R.color.colors_black));
                     checkBox.setBackgroundColor(getResources().getColor(R.color.colors_white));
                     checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -166,7 +163,7 @@ public class AddNewWordsetActivity extends Activity {
                     Log.d(TAG,"no its not  empty");
                     DatabaseHandler databaseHandler = new DatabaseHandler(
                             getBaseContext());
-                    databaseHandler.addNewSet(mWordsList);
+                    databaseHandler.addNewSet( mWordsList.get(0).getLanguage() , mWordsList.get(0).getNameOfSet() , mWordsList);
 
                     Intent intent = new Intent(view.getContext(),
                             MainActivity.class);

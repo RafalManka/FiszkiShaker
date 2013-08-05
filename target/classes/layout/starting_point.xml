@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="match_parent"
+              android:background="#0072B1"
+        >
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal">
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    >
+
+                <ImageButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="70dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/button_book"
+                        android:id="@+id/imageButton_go_to_flipcard"
+                        android:contentDescription="@string/activity_flipcards"
+                        android:onClick="gotoFlipcards"
+                        android:background="@android:color/transparent"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView_flipcards"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="center"
+                        android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_margin="15dp"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content">
+
+                <ImageButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="70dp"
+                        android:src="@drawable/settings"
+                        android:scaleType="fitCenter"
+                        android:contentDescription="@string/activity_settings"
+                        android:id="@+id/imageButton_go_to_settings"
+                        android:onClick="gotoSettings"
+                        android:background="@android:color/transparent"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView_settings"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="center"
+                        android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_margin="15dp"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content">
+
+                <ImageButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="70dp"
+                        android:src="@drawable/cloud_download"
+                        android:contentDescription="@string/activity_download_wordset"
+                        android:scaleType="fitCenter"
+                        android:id="@+id/imageButton"
+                        android:onClick="gotoDownloadWordset"
+                        android:background="@android:color/transparent"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView_download"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="center"
+                        android:singleLine="false"
+                        android:gravity="center"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp">
+
+            <LinearLayout
+                    android:layout_width="70dp"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="15dp"
+                    android:orientation="vertical">
+
+                <ImageButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="70dp"
+                        android:src="@drawable/button_edit"
+                        android:scaleType="fitCenter"
+                        android:contentDescription="@string/activity_add_new_wordset"
+                        android:id="@+id/imageButton_add_wordset"
+                        android:onClick="gotoAddWordset"
+                        android:background="@android:color/transparent"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView_add_wordset"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="center"
+                        android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="70dp"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="15dp"
+                    android:orientation="vertical">
+                <ImageButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="70dp"
+                        android:src="@drawable/button_list"
+                        android:scaleType="fitCenter"
+                        android:contentDescription="@string/activity_choose_local_set"
+                        android:id="@+id/imageButton_manage_sets"
+                        android:onClick="gotoManageSets"
+                        android:background="@android:color/transparent"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView_manage_sets"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="center"
+                        android:text="@string/manage_wordsets"
+                        android:gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="70dp"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="15dp"
+                    android:orientation="vertical">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

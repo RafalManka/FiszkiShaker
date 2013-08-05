@@ -92,9 +92,6 @@ public class TopicsListActivity extends ListActivity {
             Log.d(TAG, "async task finished");
             getBlogPostsTask.execute();
         } else {
-            //just in case for future reference
-            // Toast.makeText(this, "Network is unavaileable!",
-            // Toast.LENGTH_LONG).show();
             Log.d(TAG, "no internet connection, generating alert");
             updateDisplayForErrors();
             Log.d(TAG, "setting text for no items to display textview");

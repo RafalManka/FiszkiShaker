@@ -81,7 +81,7 @@
                         android:src="@drawable/cloud_download"
                         android:contentDescription="@string/activity_download_wordset"
                         android:scaleType="fitCenter"
-                        android:id="@+id/imageButton"
+                        android:id="@+id/imageButton_download_wordset"
                         android:onClick="gotoDownloadWordset"
                         android:background="@android:color/transparent"/>
 

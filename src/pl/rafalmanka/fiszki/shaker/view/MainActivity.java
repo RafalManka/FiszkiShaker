@@ -70,16 +70,15 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-
-
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         Log.d(TAG, "OnCreated");
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);      
         setContentView(R.layout.activity_main);
 
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.title_bar);
+        
+        
+        
         TextView titleBar = (TextView) findViewById(R.id.textView_titlebar);
         titleBar.setText(R.string.activity_flipcards);
         LinearLayout ll = (LinearLayout) findViewById(R.id.layout_titlebar);
