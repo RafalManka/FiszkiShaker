@@ -22,7 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public static final String TAG = DatabaseHandler.class.getSimpleName();
 
-    public static final int DATABASE_VERSION = 118;
+    public static final int DATABASE_VERSION = 119;
     public static final String DATABASE_NAME = "fiszki_shaker";
     public static final String COLUMN_WORD_ID = "id_word";
     public static final String COLUMN_TRANSLATION_ID = "id_translation";
@@ -194,7 +194,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         long lastInsertedId_Language = insertOrfetchLanguageID(db, language);
         long lastInsertedId_wordSet = insertOrFetchWordset(db, nameOfSet,
                 lastInsertedId_Language);
-        insertWordsIntoDb(db, words, lastInsertedId_wordSet);
+        insertOrFetchWordsId(db, words, lastInsertedId_wordSet);
         Log.d(TAG, "db successfully populated");
     }
 
@@ -248,7 +248,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return lastInsertedId_wordSet;
     }
 
-    private void insertWordsIntoDb(SQLiteDatabase db, ArrayList<Word> words,
+    private void insertOrFetchWordsId(SQLiteDatabase db, ArrayList<Word> words,
                                    long lastInsertedId_wordSet) {
         ContentValues contentValues = new ContentValues();
         Log.d(TAG, "inserting words");
@@ -701,6 +701,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String query = "SELECT * FROM " + TABLE_WORDSET +" WHERE "+COLUMN_WORDSET_NAME+" = '"+wordsetName+"'";
 		Cursor cursor = db.rawQuery(query, null);		
 		cursor.moveToFirst();			
+		db.close();
+		return cursor;
+	}
+
+	public Cursor getWordTranslationRelation(String word, String translation) {
+		SQLiteDatabase db = getReadableDatabase();
+		String query = "SELECT * FROM "+TABLE_WORD_HAS_TRANSLATION+" AS wht INNER JOIN "+COLUMN_WORD+" AS w ON w."+COLUMN_WORD_ID+"=wht."
+				+COLUMN_WORD_ID+" INNER JOIN "+TABLE_WORD+" AS t ON wht."+COLUMN_TRANSLATION_ID+"=t."+COLUMN_WORD_ID+" WHERE w."+COLUMN_WORD+"='"+word+"' AND " +
+						"t."+COLUMN_WORD+" =  '"+translation+"'";
+		Log.d(TAG, "query: "+query);
+		Cursor cursor = db.rawQuery(query, null);		
+		cursor.moveToFirst();
+		db.close();
+		return cursor;
+	}
+
+	public Cursor getWordWordsetRelation(String word, String wordsetName) {
+		SQLiteDatabase db = getReadableDatabase();
+		String query = "SELECT * FROM "+TABLE_WORD_HAS_SET+" AS whw INNER JOIN "+COLUMN_WORD+" AS w ON w."+COLUMN_WORD_ID+"=whw."
+				+COLUMN_WORD_ID+" INNER JOIN "+TABLE_WORDSET+" AS ws ON whw."+COLUMN_WORDSET_ID+"=ws."+COLUMN_WORDSET_ID
+				+" WHERE w."+COLUMN_WORD+"='"+word+"' AND " +
+						"ws."+COLUMN_WORDSET_NAME+" =  '"+wordsetName+"'";
+		
+		Log.d(TAG, "query: "+query);
+		Cursor cursor = db.rawQuery(query, null);		
+		cursor.moveToFirst();
 		db.close();
 		return cursor;
 	}
