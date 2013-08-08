@@ -3,18 +3,22 @@ package pl.rafalmanka.fiszki.shaker.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,9 +60,28 @@ public class AddNewWordsetActivity extends Activity {
             }
         });
 
+        Spinner spinner = (Spinner) findViewById(R.id.dropdown_language_chooser);
+        spinner.setPadding(10, 0, 0, 0);
+        
+        ArrayList<String> arrayList = new ArrayList<String>();
+        
+        DatabaseHandler dbh = new DatabaseHandler(getApplicationContext());
+        Cursor langCursor = dbh.getLanguageList();
+        Log.d(TAG, "rafman: "+langCursor.getCount());
+        Log.d(TAG, "rafman: "+langCursor.getString(langCursor.getColumnIndex(DatabaseHandler.COLUMN_LANGUAGE_SHORT)));
+        do{
+        	arrayList.add(langCursor.getString(langCursor.getColumnIndex(DatabaseHandler.COLUMN_LANGUAGE_SHORT)));
+        }while(langCursor.moveToNext());
+        langCursor.close();
 
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+        		android.R.layout.simple_spinner_item, arrayList);
+        
+        dataAdapter.setDropDownViewResource(R.layout.item_spinner);
+        spinner.setAdapter(dataAdapter);
+        
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mLanguage = sharedPreferences.getString(SettingsActivity.CURRENT_LANGUAGE, SettingsActivity.DEFAULT_LANGUAGE);
+        mLanguage = sharedPreferences.getString(SettingsActivity.CURRENT_LOCALE, SettingsActivity.DEFAULT_LOCALE);
 
         mEditTextTitle = (EditText) findViewById(R.id.editText_add_new_dictionary_enter_title);
         mEditTextTitle.setHint(R.string.title);

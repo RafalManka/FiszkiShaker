@@ -30,10 +30,10 @@ public class SettingsActivity extends Activity implements OnClickListener {
     public final static String SOUND_PREFERENCE = "SOUND_PREFERENCE";
     public final static String RANDOMIZE_PREFERENCE = "RANDOMIZE_PREFERENCE";
     public final static String CURRENT_WORDSET = "CURRENT_WORDSET";
-    public static final String CURRENT_LANGUAGE = "CURRENT_LANGUAGE";
+    public static final String CURRENT_LOCALE = "CURRENT_LANGUAGE";
 
     public static final String DEFAULT_WORDSET = "default";
-    public static final String DEFAULT_LANGUAGE = "en";
+    public static final String DEFAULT_LOCALE = "en";
     public static final String DEFAULT_WORD_STATUS = "assets_default";
 
 

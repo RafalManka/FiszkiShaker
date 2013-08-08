@@ -1,6 +1,7 @@
 package pl.rafalmanka.fiszki.shaker.view;
 
 import android.app.Activity;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -23,9 +24,10 @@ public class SplashScreenActivity extends Activity {
         Log.d(TAG, "onCreated");
         setContentView(R.layout.splash_screen);
 
-        DatabaseHandler db = new DatabaseHandler(this); // ensure that database exists
-        db.getRandom();
-        db.close();
+        // ensure that database exists
+        DatabaseHandler.createDatabaseIfNotExist( getApplicationContext() );
+      
+ 
         
         Handler handler = new Handler();
 
